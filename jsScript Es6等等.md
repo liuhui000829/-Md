@@ -620,7 +620,7 @@ console.log(show());       '' 没有返回值为 undefined
     (1) NodeList对象
     const divList = document.querySelectorAll('div')
     console.log(divList);                          // NodeList(3) [div.div, div.div, div.div]
-    divList.map(item => console.log(item))         // divList.map is not a function 貌似是divList不是真正的数组
+    divList.map(item => console.log(item))         // divList.map is not a function   divList不是真正的数组
 
     for (const item of divList) {        
             console.log(item);                         // 输出三个div Dom元素
@@ -1011,6 +1011,320 @@ console.log(show());       '' 没有返回值为 undefined
     const g = f.bind(null)(1,2,3)
     console.log(g);
 ```
+
+### 6. 对象的扩展
+
+#### 1. 属性的简洁表示法
+
+```
+	1. 基本
+    const foo = 'bar';
+    const foo2 = 'bar2';
+    const baz = { foo, foo2 };
+    console.log(baz);           // {foo: 'bar', foo2: 'bar2'}
+    等同于
+    const baz = {foo: foo,foo2: foo2};
+
+
+
+
+    // 2. CommonJS 模块输出一组变量，就非常合适使用简洁写法。
+    let ms = {};
+
+    function getItem (key) {
+      return key in ms ? ms[key] : null;
+    }
+
+    function setItem (key, value) {
+      ms[key] = value;
+    }
+
+    function clear () {
+      ms = {};
+    }
+
+    module.exports = { getItem, setItem, clear };
+    等同于
+    module.exports = {
+      getItem: getItem,
+      setItem: setItem,
+      clear: clear
+    };
+
+
+
+    
+    // 3. 属性的赋值器（setter）和取值器（getter），事实上也是采用这种写法。
+    const cart = {
+        _wheels: 4,
+        
+        get wheels() {
+            return this._wheels;
+        },
+
+        set wheels(value) {
+            if (value < this._wheels) {
+                throw new Error('数值太小了！');
+            }
+            this._wheels = value;
+        }
+    }
+
+
+
+
+    
+    // 4.注意，简写的对象方法不能用作构造函数，会报错。
+    const obj = {
+        f() {
+            this.foo = 'bar';
+            console.log(this.foo);
+
+        }
+    };
+
+    new obj.f() //  Uncaught TypeError: obj.f is not a constructor
+
+```
+
+
+
+#### 2. 属性名表达式
+
+```
+	// 1. 基本概念
+    // 方法一
+    obj.foo = true;
+    // 方法二
+    obj['a' + 'bc'] = 123;
+
+
+
+    // 2. 例子
+    let lastWord = 'last word';
+    const a = {
+        'first word': 'hello',
+        [lastWord]: 'world'
+    };
+    console.log(
+        a['first word'],    // "hello"
+        a[lastWord],        // "world"
+        a['last word'],     // "world"
+    );
+
+
+
+    // 3. 表达式还可以用于定义方法名。
+    let obj = {
+        ['h' + 'ello']() {
+            return 'hi';
+        }
+    };
+    
+    obj.hello() // hi
+
+   
+
+
+    // 4. 注意，属性名表达式与简洁表示法，不能同时使用，会报错。
+
+    // 报错
+    const foo = 'bar';
+    const bar = 'abc';
+    const baz = { [foo] };              // 编译报错
+
+    // 正确
+    const foo = 'bar';
+    const baz = { [foo]: 'abc' };
+
+
+
+
+   // 5. 注意，属性名表达式如果是一个对象，默认情况下会自动将对象转为字符串[object Object]，这一点要特别小心。
+
+    const keyA = { a: 1 };
+    const keyB = { b: 2 };
+
+    const myObject = {
+        [keyA]: 'valueA',
+        [keyB]: 'valueB'
+    };
+
+    console.log(
+        myObject // {[object Object]: 'valueB'} 为什么keyA不见了 因为key都是一样的 所以后面覆盖前面
+    );
+```
+
+
+
+#### 3. 方法的name属性
+
+```
+	// 1.基本
+    const person = {
+        sayName() {
+            console.log('hello!');
+        },
+    };
+
+    person.sayName.name         // "sayName"
+    // 上面代码中，方法的name属性返回函数名（即方法名）
+
+
+
+  
+    // 2. 如果对象的方法使用了取值函数（getter）和存值函数（setter），
+    // 则name属性不是在该方法上面，而是该方法的属性的描述对象的get和set属性上面，返回值是方法名前加上get和set。
+
+    const obj = {
+        get foo() { },
+        set foo(x) { }
+    };
+
+    obj.foo.name     // TypeError: Cannot read property 'name' of undefined
+
+    const descriptor = Object.getOwnPropertyDescriptor(obj, 'foo');
+    
+    descriptor.get.name  // "get foo"
+    descriptor.set.name  // "set foo"
+
+
+
+
+   
+    // 3. 有两种特殊情况:bind方法创造的函数，(1) name属性返回bound加上原函数的名字；
+    // (2) Function构造函数创造的函数，name属性返回anonymous。
+    
+    var doSomething = function () { };
+    
+    doSomething.bind().name      // "bound doSomething"
+    
+    new Function().name          // "anonymous"
+
+
+
+
+    // 4. 如果对象的方法是一个 Symbol 值，那么name属性返回的是这个 Symbol 值的描述。
+
+    const key1 = Symbol('description');
+    const key2 = Symbol();
+    let obj = {
+        [key1]() { },
+        [key2]() { },
+    };
+    obj[key1].name // "[description]"
+    obj[key2].name // ""
+
+
+```
+
+
+
+#### 4. 属性的可枚举性和遍历
+
+```
+	1. 可枚举性
+    对象的每个属性都有一个描述对象（Descriptor）,用来控制该属性的行为。
+    Object.getOwnPropertyDescriptor方法可以获取该属性的描述对象。
+
+    let obj = { foo: 123, foo2: 456 };
+    let descriptor = Object.defineProperty(obj, 'foo')
+    console.log(descriptor);
+    {
+        value: 123,
+        writable: true,
+        enumerable: true,
+        configurable: true
+    }
+
+
+	// (1)
+    描述对象的enumerable属性，称为“可枚举性”，如果该属性为false，就表示某些操作会忽略当前属性。
+    目前，有四个操作会忽略enumerable为false的属性。
+
+    for...in循环：    只遍历对象自身的和继承的可枚举的属性。
+    Object.keys()：   返回对象自身的所有可枚举的属性的键名。
+    JSON.stringify()：只串行化对象自身的可枚举的属性。
+    Object.assign()： 忽略enumerable为false的属性，只拷贝对象自身的可枚举的属性。
+
+    这四个操作之中，前三个是 ES5 就有的，最后一个Object.assign()是 ES6 新增的。其中，
+    只有for...in会返回继承的属性，其他三个方法都会忽略继承的属性，只处理对象自身的属性。
+    实际上，引入“可枚举”（enumerable）这个概念的最初目的，就是让某些属性可以规避掉for...in操作，
+    不然所有内部属性和方法都会被遍历到。比如，对象原型的toString方法，以及数组的length属性，
+    就通过“可枚举性”，从而避免被for...in遍历到。 
+
+
+
+	// (2)
+    Object.getOwnPropertyDescriptor(Object.prototype, 'toString').enumerable		// false
+    Object.getOwnPropertyDescriptor([], 'length').enumerable						// false
+    
+    上面代码中，toString和length属性的enumerable都是false，因此for...in不会遍历到这两个继承自原型的属性。另外，ES6 规定，	   所有 Class 的原型的方法都是不可枚举的。
+    
+    
+    
+	// (3)
+    Object.getOwnPropertyDescriptor(class { foo() { } }.prototype, 'foo').enumerable // false
+   
+    总的来说，操作中引入继承的属性会让问题复杂化，大多数时候，我们只关心对象自身的属性。所以，尽量不要用for...in循环，而用		     Object.keys()代替。
+    
+
+
+     // 2. 属性的遍历
+     // ES6 一共有 5 种方法可以遍历对象的属性。
+
+    （1）for...in												(1)对象自身可枚举 (2) 继承可枚举
+     for...in循环遍历对象自身的和继承的可枚举属性（不含 Symbol 属性）。 
+
+    （2）Object.keys(obj)										(1)对象自身可枚举	
+     Object.keys返回一个数组，包括对象自身的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键名。
+
+    （3）Object.getOwnPropertyNames(obj)						(1)对象自身所有属性(包括不可枚举)
+     Object.getOwnPropertyNames返回一个数组，包含对象自身的所有属性（不含 Symbol 属性，但是包括不可枚举属性）的键名。
+
+    （4）Object.getOwnPropertySymbols(obj)					(1)对象自身所有Symbol
+     Object.getOwnPropertySymbols返回一个数组，包含对象自身的所有 Symbol 属性的键名。
+
+    （5）Reflect.ownKeys(obj)									(1)对象自身(symbol + 不可枚举)
+     Reflect.ownKeys返回一个数组，包含对象自身的（不含继承的）所有键名，不管键名是 Symbol 或字符串，也不管是否可枚举。
+
+    以上的 5 种方法遍历对象的键名，都遵守同样的属性遍历的次序规则。
+
+        首先遍历所有数值键，按照数值升序排列。
+        其次遍历所有字符串键，按照加入时间升序排列。
+        最后遍历所有 Symbol 键，按照加入时间升序排列。
+        Reflect.ownKeys({ [Symbol()]: 0, b: 0, 10: 0, 2: 0, a: 0 })
+        // ['2', '10', 'b', 'a', Symbol()]
+        上面代码中，Reflect.ownKeys方法返回一个数组，包含了参数对象的所有属性。这个数组的属性次序是这样的，
+        首先是数值属性2和10，其次是字符串属性b和a，最后是 Symbol 属性。
+
+```
+
+
+
+#### 5.
+
+#### 6.
+
+#### 7.
+
+#### 8.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
