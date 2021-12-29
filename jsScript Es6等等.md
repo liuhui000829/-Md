@@ -740,7 +740,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 4. find() 和 findIndex()
 
-```
+```js
 	// 1. Array.prototype.find()
     
     let arr = [1, 5, 10, 15];
@@ -787,7 +787,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 5. fill()
 
-```
+```js
 	console.log(new Array(3));              		// [empty × 3]
     console.log(new Array(3).fill());       		// [undefined, undefined, undefined]
     console.log(new Array(3).fill('from'));         // ['from', 'from', 'from']
@@ -810,7 +810,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 6. entries()，keys() 和 values()
 
-```
+```js
     for (let index of ['a', 'b'].keys()) {
         console.log(index);
     }
@@ -1300,15 +1300,330 @@ console.log(show());       '' 没有返回值为 undefined
 
 ```
 
+#### 5. super关键字
+
+```
+	1.this关键字总是指向函数所在的当前对象，ES6 又新增了另一个类似的关键字super，指向当前对象的原型对象。
+    const proto = {
+        foo: 'hello'
+    };
+
+    const obj = {
+        foo: 'world',
+        find() {
+            return super.foo;
+        }
+    };
+    Object.setPrototypeOf(obj, proto);
+    obj.find() // "hello"
+    上面代码中，对象obj.find()方法之中，通过super.foo引用了原型对象proto的foo属性。
 
 
-#### 5.
 
-#### 6.
 
-#### 7.
+    2. 注意,super关键字表示原型对象时，只能用在对象的方法之中，用在其他地方都会报错。
+    const obj = {
+        foo: super.foo               // 报错
+    }
 
-#### 8.
+    const obj = {
+        foo: () => super.foo         // 报错
+    }
+
+    const obj = {
+        foo: function () {
+            return super.foo         // 报错
+        }
+    }
+
+    总结: 
+    上面三种super的用法都会报错，因为对于 JavaScript 引擎来说，这里的super都没有用在对象的方法之中。
+    第一种写法是super用在属性里面，第二种和第三种写法是super用在一个函数里面，然后赋值给foo属性。目前，
+    只有对象方法的简写法可以让 JavaScript 引擎确认定义的是对象的方法。
+    JavaScript 引擎内部，super.foo等同于Object.getPrototypeOf(this).foo（属性）或 	Object.getPrototypeOf(this).foo.call(this)（方法）。
+
+
+
+
+    3. 一个例子
+    const proto = {
+        x: 'hello',
+        foo() {
+            console.log(this.x);
+        },
+    };
+
+    const obj = {
+        x: 'world',
+        foo() {
+            super.foo();
+        }
+    }
+
+    Object.setPrototypeOf(obj, proto);
+    obj.foo() // "world"
+    上面代码中，super.foo指向原型对象proto的foo方法，但是绑定的this却还是当前对象obj,因此输出的就是world。
+```
+
+#### 6. 对象的扩展运算符
+
+##### 1. 解构赋值
+
+```
+	对象的解构赋值用于从一个对象取值，相当于将目标对象自身的所有可遍历的（enumerable）、但尚未被读取的属性，
+    分配到指定的对象上面。所有的键和它们的值，都会拷贝到新对象上面。
+
+    1. 基本
+    let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+    x ==> 1
+    y ==> 2
+    z ==> { a: 3, b: 4 }
+    上面代码中，变量z是解构赋值所在的对象。它获取等号右边的所有尚未读取的键（a和b），将它们连同值一起拷贝过来。
+
+
+
+
+    2. 由于解构赋值要求等号右边是一个对象，所以如果等号右边是undefined或null，就会报错，因为它们无法转为对象。 
+    let { ...z } = null;                 // 运行时错误
+    let { ...z } = undefined;            // 运行时错误
+
+
+
+
+    3. 解构赋值必须是最后一个参数，否则会报错。
+    let { ...x, y, z } = someObject;     // 句法错误
+    let { x, ...y, ...z } = someObject;  // 句法错误
+    上面代码中，解构赋值不是最后一个参数，所以会报错。
+
+
+
+
+    4. 注意:解构赋值的拷贝是浅拷贝，即如果一个键的值是复合类型的值（数组、对象、函数）、那么解构赋值
+       拷贝的是这个值的引用，而不是这个值的副本。
+    let obj = { a: { b: 1 } };
+    let { ...x } = obj;
+    obj.a === x.a  true
+    上面代码中，x是解构赋值所在的对象，拷贝了对象obj的a属性。a属性引用了一个对象，修改这个对象的值，会影响到解构赋值对它的引用。
+
+
+
+
+    5. 扩展运算符的解构赋值，不能复制继承自原型对象的属性。
+    let o1 = { a: 1 };
+    let o2 = { b: 2 };
+    o2.__proto__ = o1;
+    let { ...o3 } = o2;
+    o3       // { b: 2 }
+    o3.a     // undefined
+    上面代码中，对象o3复制了o2，但是只复制了o2自身的属性，没有复制它的原型对象o1的属性。
+
+
+
+
+
+    6. 下面是另一个例子。
+    const o = Object.create({ x: 1, y: 2 });            // Object.create()==>原型对象
+    o.z = 3;
+    let { x, ...newObj } = o;
+    let { y, z } = newObj;
+    console.log(
+        x, y, z                                         // 1 undefined 3
+    );
+
+    (1).变量x是单纯的解构赋值，所以可以读取对象o继承的属性；(2).变量y和z是扩展运算符的解构赋值只能读取对象o自身的属性
+    所以变量z可以赋值成功，变量y取不到值。
+    注意 :ES6 规定，变量声明语句之中，如果使用解构赋值，扩展运算符后面必须是一个变量名
+         ,而不能是一个解构赋值表达式，所以上面代码引入了中间 变量newObj，如果写成下面这样会报错。
+
+    let { x, ...{ y, z } } = o;
+    //SyntaxError: ... must be followed by an identifier in declaration contexts
+
+
+
+
+
+    7. 解构赋值的一个用处，是扩展某个函数的参数，引入其他操作。
+    function baseFunction({ a, b }) {}
+    function wrapperFunction({ x, y, ...restConfig }) {
+    // 使用 x 和 y 参数进行操作
+    // 其余参数传给原始函数
+    return baseFunction(restConfig);
+    }
+    上面代码中，原始函数baseFunction接受a和b作为参数，函数wrapperFunction在baseFunction的基础上进行了扩展，
+    能够接受多余的参数，并且保留原始函数的行为。
+
+```
+
+##### 2. 扩展运算符
+
+```
+    1. 对象的扩展运算符（...）用于取出参数对象的所有可遍历属性，拷贝到当前对象之中。
+    let z = { a: 3, b: 4 };
+    let n = { ...z };
+    n // { a: 3, b: 4 }
+
+
+
+    2.由于数组是特殊的对象，所以对象的扩展运算符也可以用于数组。
+    let foo = { ...['a', 'b', 'c'] };
+    foo
+    // {0: "a", 1: "b", 2: "c"}
+
+
+
+    3.如果扩展运算符后面是一个空对象，则没有任何效果。
+    {...{ }, a: 1 }
+    // { a: 1 }
+
+
+
+    4.如果扩展运算符后面不是对象，则会自动将其转为对象。
+    // 等同于 {...Object(1)}
+    {...1 } // {}
+    上面代码中，扩展运算符后面是整数1，会自动转为数值的包装对象Number{ 1 }。由于该对象没有自身属性，所以返回一个空对象。
+
+
+
+    5.下面的例子都是类似的道理。
+    {...true }       // 等同于 {...Object(true)}          {}
+    {...undefined }  // 等同于 {...Object(undefined)}     {}
+    {...null }       // 等同于 {...Object(null)}          {}  
+
+
+
+    6. 如果扩展运算符后面是字符串，它会自动转成一个类似数组的对象，因此返回的不是空对象。
+    {...'hello' }        // {0: "h", 1: "e", 2: "l", 3: "l", 4: "o"}
+
+
+
+
+    7. 对象的扩展运算符等同于使用Object.assign()方法。
+    let aClone = { ...a };       // 等同于 let aClone = Object.assign({}, a);
+    上面的例子只是拷贝了对象实例的属性，如果想完整克隆一个对象，还拷贝对象原型的属性，可以采用下面的写法。
+
+    // 写法一
+    const clone1 = {
+        __proto__: Object.getPrototypeOf(obj),
+        ...obj
+    };
+
+    // 写法二
+    const clone2 = Object.assign(
+        Object.create(Object.getPrototypeOf(obj)),
+        obj
+    );
+
+    // 写法三
+    const clone3 = Object.create(
+        Object.getPrototypeOf(obj),
+        Object.getOwnPropertyDescriptors(obj)
+    )
+    上面代码中，写法一的__proto__属性在非浏览器的环境不一定部署，因此推荐使用写法二和写法三。
+
+
+
+
+    8. 扩展运算符可以用于合并两个对象。
+    let ab = { ...a, ...b };         // 等同于 let ab = Object.assign({}, a, b);
+
+
+
+
+    9. 如果用户自定义的属性，放在扩展运算符后面，则扩展运算符内部的同名属性会被覆盖掉。
+    let a = { x: 1, y: 2 }
+    let aWithOverrides = { ...a, x: 3, y: 4 };
+    console.log(aWithOverrides);    //x = 3, y = 4
+
+    等同于 let aWithOverrides = { ...a, ...{ x: 1, y: 2 } };
+    等同于 let x = 1, y = 2, aWithOverrides = { ...a, x, y };
+    等同于 let aWithOverrides = Object.assign({}, a, { x: 1, y: 2 });
+    上面代码中，a对象的x属性和y属性，拷贝到新对象后会被覆盖掉。
+
+
+    9.1 这用来修改现有对象部分的属性就很方便了。
+    let newVersion = {
+        ...previousVersion,
+        name: 'New Name'         // Override the name property  重写了name属性
+    };
+    上面代码中，newVersion对象自定义了name属性，其他属性全部复制自previousVersion对象。
+
+
+    9.2 如果把自定义属性放在扩展运算符前面，就变成了设置新对象的默认属性值。
+    let aWithDefaults = { x: 1, y: 2, ...a };
+    // 等同于 let aWithDefaults = Object.assign({}, { x: 1, y: 2 }, a);
+    // 等同于 let aWithDefaults = Object.assign({ x: 1, y: 2 }, a);
+
+
+
+
+
+    10. 与数组的扩展运算符一样，对象的扩展运算符后面可以跟表达式。
+    const obj = {
+        ...(x > 1 ? { a: 1 } : {}),
+        b: 2,
+    };
+
+
+
+
+    11.扩展运算符的参数对象之中，如果有取值函数get，这个函数是会执行的。
+    let a = {
+        get x() {
+            throw new Error('not throw yet');
+        }
+    }
+    let aWithXGetter = { ...a }; // 报错
+    上面例子中，取值函数get在扩展a对象时会自动执行，导致报错。
+```
+
+
+
+#### 7. AggregateError 错误对象
+
+```
+ 	ES2021 标准之中，为了配合新增的Promise.any()方法（详见《Promise 对象》一章），还引入一个新的错误对象AggregateError，	也放在这一章介绍。
+     AggregateError 在一个错误对象里面，封装了多个错误。如果某个单一操作，同时引发了多个错误，，需要同时抛出这些错误，
+     那么就可以抛出一个 AggregateError 错误对象，把各种错误都放在这个对象里面。
+
+
+     1. AggregateError 本身是一个构造函数，用来生成 AggregateError 实例对象。
+     AggregateError(errors[, message])
+
+
+
+
+     2. AggregateError()构造函数可以接受两个参数。
+     errors：数组，它的每个成员都是一个错误对象。该参数是必须的。
+     message：字符串，表示 AggregateError 抛出时的提示信息。该参数是可选的。
+
+    const error = new AggregateError([
+        new Error('ERROR_11112'),
+        new TypeError('First name must be a string'),
+        new RangeError('Transaction value must be at least 1'),
+        new URIError('User profile link must be https'),
+    ], 'Transaction cannot be processed')
+    上面示例中，AggregateError()的第一个参数数组里面，一共有四个错误实例。第二个参数字符串则是这四个错误的一个整体的提示。
+
+
+
+
+    3. AggregateError的实例对象有三个属性。
+    name：错误名称，默认为“AggregateError”。
+    message：错误的提示信息。
+    errors：数组，每个成员都是一个错误对象。
+
+    try {
+        throw new AggregateError([
+            new Error("some error"),
+        ], 'Hello');
+    } catch (e) {
+        console.log(e instanceof AggregateError); // true
+        console.log(e.message);                   // "Hello"
+        console.log(e.name);                      // "AggregateError"
+        console.log(e.errors);                    // [ Error: "some error" ]
+```
+
+
 
 
 
@@ -2007,7 +2322,7 @@ const promise = new Promise(function (resolve, reject) {
 #### 25. Promise.reject
 
 ```
- // Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
+     Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
      Promise.reject().catch(e=>console.log(e))           //undefined
      console.log(123456);
     
