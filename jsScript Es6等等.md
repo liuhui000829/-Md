@@ -4161,6 +4161,8 @@ module.exports = {
 
 ## 1. 基础部分
 
+
+
 ```
 git add -m '  '
 git commit -m ' '
@@ -4187,7 +4189,7 @@ git config --global user.email  "asdasdliuhui@sina.com"
 
 
 
-## 2. 连接远程仓库
+### 2. 连接远程仓库
 
 ```
 1.git(github)配置密钥（私钥、ssh、公钥）
@@ -4211,6 +4213,34 @@ git config --global user.email  "asdasdliuhui@sina.com"
 
 
 
+
+```
+
+### 3.修改了远程仓库的名字，本地怎么切换仓库
+
+```java
+方法:
+1. 修改远程仓库名字，如图：
+    
+    Settings -> repository name
+
+2. 查看本地远程仓库
+
+    git remote -v
+    origin    git@github.com:WSS201912/linux_-imx-rel_imx_4.1.15_2.1.0_ga_ex.git (fetch)
+    origin    git@github.com:WSS201912/linux_-imx-rel_imx_4.1.15_2.1.0_ga_ex.git (push)
+    
+3. 删除远程仓库origin
+        
+	$ git remote rm origin
+    
+4. 添加远程仓库（修改过名字的远程仓库）
+
+	git remote add origin git@github.com:WSS201912/linux_imx-rel_imx_4.1.15_2.1.0_ga_ex.git
+        
+5. 同步
+
+	git pull origin master
 
 ```
 
