@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom事件分析</title>
+    <style>
+        html,
+        body,
+        div {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div1 {
+            width: 400px;
+            height: 400px;
+            background: red;
+        }
+
+        .div2 {
+            width: 300px;
+            height: 300px;
+            background: blue;
+        }
+
+        .div3 {
+            width: 200px;
+            height: 200px;
+            background: purple;
+        }
+
+        .div4 {
+            width: 100px;
+            height: 100px;
+            background: yellowgreen;
+        }
+
+        li {
+            height: 50px;
+            line-height: 50px;
+            list-style: none;
+            background: skyblue;
+            border-bottom: 1px solid slateblue;
+        }
+    </style>
+</head>
+
+<body>
+    1.事件冒泡处理 捕获 阻止事件者捕获 案例
+    <br /><br />
+    <div class="div1">
+        div1
+        <div class="div2">
+            div2
+            <div class="div3">
+                div3
+                <div class="div4">
+                    div4
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+    2.事件委托练习
+    <ul class="list">
+        <li>123</li>
+        <li>456</li>
+        <li>789</li>
+    </ul>
+</body>
+
+</html>
+<script>
+    const div1 = document.querySelector('[class=div1]');
+    const div2 = document.querySelector('[class=div2]');
+    const div3 = document.querySelector('[class=div3]');
+    const div4 = document.querySelector('[class=div4]');
+
+
+    // 1. 第一个全部是冒泡
+    // div1.addEventListener('click',function(){ console.log('冒泡div1');})
+    // div2.addEventListener('click',function(){ console.log('冒泡div2');})
+    // div3.addEventListener('click',function(){ console.log('冒泡div3');})
+    // div4.addEventListener('click',function(){ console.log('冒泡div4');})
+
+    // 点击div4 冒泡4 > 冒泡3 > 冒泡2 > 冒泡1
+
+
+
+    // 2. 全部是捕获
+    // div1.addEventListener('click',function(){ console.log('捕获div1');},true)
+    // div2.addEventListener('click',function(){ console.log('捕获div2');},true)
+    // div3.addEventListener('click',function(){ console.log('捕获div3');},true)
+    // div4.addEventListener('click',function(){ console.log('捕获div4');},true)
+
+    // 点击div4 捕获1 > 捕获2 > 捕获3 > 捕获4
+
+
+
+
+    // 3. 既有冒泡 又有捕获 又有目标元素冒泡与捕获
+    // div1.addEventListener('click', function () { console.log('捕获div1'); }, true)
+    // div2.addEventListener('click', function (e) {console.log('冒泡div2'); })
+    // div3.addEventListener('click', function () { console.log('捕获div3'); }, true)
+    // div4.addEventListener('click', function () { console.log('冒泡div4'); })
+    // div4.addEventListener('click', function () { console.log('捕获div4'); }, true)
+
+    // 点击div4 捕获div1 > 捕获div3 > 捕获div4 > 冒泡div4 > 冒泡div2
+
+
+
+    // 4. stopPropagation
+    div1.addEventListener('click', function () { console.log("捕获div1"); }, true)
+    div2.addEventListener('click', function () { console.log("冒泡div2"); })
+    div3.addEventListener('click', function () { console.log('捕获div3'); }, true)
+    div4.addEventListener('click', function (e) { console.log('冒泡div4'); e.stopPropagation(); })
+    div4.addEventListener('click', function () { console.log('捕获div4'); }, true)
+
+    // 点击div4  捕获div1 > 捕获div3 > 捕获div4 > 冒泡div4
+
+
+
+
+    // 5. 跟上面相似 
+    // div1.addEventListener('click', function () {
+    //     console.log("捕获div1");
+    // }, true)
+    // div2.addEventListener('click', function (e) {
+    //     console.log("冒泡div2");
+    //     event.stopPropagation();
+    // })
+    // div3.addEventListener('click', function () {
+    //     console.log('捕获div3');
+    // }, true)
+    // div4.addEventListener('click', function () {
+    //     console.log('冒泡div4');
+    // })
+    // div4.addEventListener('click', function () {
+    //     console.log('捕获div4');
+    // }, true)
+
+    // 点击 div4 捕获div1 > 捕获div3 > 捕获div4 > 冒泡div4 > 冒泡div2
+
+    // 总结 阻止冒泡还是捕获 都是要走一遍 遇到event.stopPropagation()  整个事件流就停止了 
+    // retrun false 听说也是 阻止 事件冒泡捕获   但是自己没有成功 （在dom2级别事件中）
+
+
+    // 6. 事件委托
+    document.querySelector("ul").addEventListener('click', function (e) {
+        // 兼容性处理
+        var event = e || window.event;
+        var target = event.target || event.srcElement;
+        // 判断是否匹配目标元素
+        if (target.nodeName.toLocaleLowerCase() === 'li') {
+            console.log('the content is: ', target.innerHTML);
+        }
+    });
+
+    // 在上述代码中， target 元素则是在 #list 元素之下具体被点击的元素，
+    // 然后通过判断 target 的一些属性（比如：nodeName，id 等等）可以更
+    // 精确地匹配到某一类 #list li 元素之上；
+
+
+
+
+
+
+
+
+
+
+
+</script>

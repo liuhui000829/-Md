@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="div"> divContext1 </div>
+    <div class="div"> divContext2 </div>
+    <div class="div"> divContext3 </div>
+</body>
+
+</html>
+<script>
+    // 扩展运算符
+    // Array.from()
+    // Array.of()
+    // 数组实例的 copyWithin()
+    // 数组实例的 find() 和 findIndex()
+    // 数组实例的 fill()
+    // 数组实例的 entries()，keys() 和 values()
+    // 数组实例的 includes()
+    // 数组实例的 flat()，flatMap()
+    // 数组的空位
+    // Array.prototype.sort() 的排序稳定性
+
+
+    // ******************************************************* 扩展运算符 **************************************
+    // 展运算符（spread）是三个点（...）。它好比 rest 参数的逆运算，将一个数组转为用逗号分隔的参数序列。
+
+
+    // 1.
+    // function push(array, ...items) {
+    //     array.push(...items);
+    // }
+    // function add(x, y) {
+    //     return x + y;
+    // }
+    // const numbers = [4, 38];
+    // add(...numbers) // 42
+
+
+
+    // 2. 扩展运算符与正常的函数参数可以结合使用，非常灵活。
+    // function f(a, b, c, x, y) {
+    //     console.log(a, b, c, x, y);
+    // }
+    // f(-1, ...[1, 2], 5, ...[3])
+
+
+
+    // 3. 可以放表达式
+    // const arr = [...(6 > 0 ? ['a'] : []), 'b'];
+    // console.log(arr);            // ['a', 'b']
+
+
+
+
+    // 4. 空数组不产生任何效果
+    // [...[], 1]              // [1]
+
+
+
+
+    // 5. 注意,只有函数调用时,扩展运算符才可以放在圆括号中,否则会报错
+    // (...[1, 2])              // Uncaught SyntaxError: Unexpected number
+    // console.log((...[1, 2])) // Uncaught SyntaxError: Unexpected number
+    // console.log(...[1, 2])   // 1 2
+
+
+
+
+    // 6. 替代函数的 apply 方法
+    // 由于扩展运算符可以展开数组，所以不再需要apply方法，将数组转为函数的参数了。
+
+    // ES5 的写法
+    // function f(x, y, z) {
+    //     console.log(x + y + z);
+    // }
+    // f.apply(null, [0, 1, 2]);            // 3
+
+
+    // ES6写法
+    // function f(x, y, z) {
+    //     console.log(x + y + z);
+    // }
+    // f(...[0, 1, 2]);                    // 3
+
+
+
+
+    // 7. 下面是扩展运算符取代apply方法的一个实际的例子，应用Math.max方法，简化求出一个数组最大元素的写法。
+    // ES5 的写法
+    // Math.max.apply(null, [14, 3, 77])            // 77
+
+    // ES6 的写法
+    // Math.max(...[14, 3, 77])
+
+    // 等同于
+    // Math.max(14, 3, 77);
+
+
+    // 8. 另一个例子是通过push函数，将一个数组添加到另一个数组的尾部
+    // let arr = [1, 2, 3];
+    // let arr2 = [3, 4, 5];
+
+    // arr.push(arr2)   [ 1, 2, 3, [ 3, 4, 5 ] ]        并没有追加在末尾
+
+    // Es5
+    // Array.prototype.push.apply(arr,arr2)
+    // console.log(arr);                       // [ 1, 2, 3, 3, 4, 5 ]
+
+    // Es6
+    // arr.push(...arr2)
+    // console.log(arr);                       //[ 1, 2, 3, 3, 4, 5 ]
+
+
+
+    // 9. 另外一个例子
+    // let data1 = new (Date.bind.apply(Date, [null, 2015, 1, 1]))
+    // let data2 = new Date(...[2015, 1, 1]);
+    // console.log(data1, data2);   //2015-01-31T16:00:00.000Z 
+
+
+
+    // *******************************************扩展运算符的使用
+    // 1. 复制数组
+    // 2. 合并数组
+    // 3. 与解构赋值结合
+    // 4. 合并数组
+
+
+    // 1. 复制数组
+
+    // es5
+    // let a = [1, 2];
+    // let b = a.concat();
+    // console.log(b, a === b);               // [1, 2] false
+
+    // es6
+    // let a = [1, 2];
+    // let b = [...a];
+    // console.log(b, a === b);               // [1, 2] false
+
+
+
+    // 2. 合并数组
+    // let a = [1, 2];
+    // let b = [3, 4];
+    // Es5
+    // let c = a.concat(b);
+    // console.log(c);             // 1 2 3 4
+    // Es6
+    // let d = [...a, ...b];
+    // console.log(d);             // 1 2 3 4
+
+
+    // 注意: 不过，这两种方法都是浅拷贝，使用的时候需要注意。
+    // let a = [{ a: 1 }];
+    // let b = [{ b: 2 }];
+    // //es5
+    // let c = a.concat(b);
+    // console.log(c);            //[ { a: 1 }, { b: 2 } ]
+    // //es6
+    // let d = [...a, ...b];
+    // console.log(d);            //[ { a: 1 }, { b: 2 } ]
+
+    // console.log(c[0] === a[0]);     //true
+    // console.log(d[0] === a[0]);     //true
+
+
+
+    // 3. 与结构赋值结合 
+
+    // const [first, ...rest] = [1, 2, 3, 4, 5];
+    // console.log(
+    //     first,              // 1
+    //     rest                // [2, 3, 4, 5]
+    // );
+
+    // const [first, ...rest] = [];
+    // console.log(
+    //     first,              // undefined
+    //     rest                // []
+    // );
+
+    // const [first, ...rest] = ["foo"];
+    // console.log(
+    //     first,  // "foo"
+    //     rest    // []
+    // );
+
+
+    // 注意: 如果将扩展运算符用于数组赋值，只能放在参数的最后一位，否则会报错
+    // const [...butLast, last] = [1, 2, 3, 4, 5];                  // 报错
+    // const [first, ...middle, last] = [1, 2, 3, 4, 5];            // 报错
+
+
+
+    // 4. 字符串转换成真正的数组
+    // let str = 'hello';
+    // let arr = [...str];
+    // console.log(arr);                           //[ 'h', 'e', 'l', 'l', 'o' ]
+
+
+
+    // 5. 实现了 Iterator 接口的对象
+    // const go = function* () {
+    //     yield 1;
+    //     yield 2;
+    //     yield 3;
+    // };
+    // console.log([...go()]);                    // [1, 2, 3]
+
+
+
+
+    //*********************************************Array.from()************************************************
+    /* Array.from方法用于将两类对象转为真正的数组：类似数组的对象（array-like object）和
+       可遍历（iterable）的对象（包括 ES6 新增的数据结构 Set 和 Map）。 */
+
+
+
+
+    // 1. 下面是一个类似数组的对象，Array.from将它转为真正的数组。
+    // let arrayLike = {
+    //     '0': 'a',
+    //     '1': 'b',
+    //     '2': 'c',
+    //     length: 3
+    // };
+
+    // // ES5的写法
+    // var arr1 = [].slice.call(arrayLike); 
+    // console.log(arr1);                // ['a', 'b', 'c']
+
+    // // ES6的写法
+    // let arr2 = Array.from(arrayLike); // ['a', 'b', 'c']
+    // console.log(arr2);
+
+
+
+
+    // 2. 实际应用中,常见的类似数组的对象是 
+    // DOM 操作返回的 NodeList 集合和函数内部的arguments对象 Array.from都可以将它们转为真正的数组。
+    // (1) NodeList对象
+    // const divList = document.querySelectorAll('div')
+    // console.log(divList);                              // NodeList(3) [div.div, div.div, div.div]
+    // divList.map(item => console.log(item))             // divList.map is not a function 貌似是divList不是真正的数组
+
+    // for (const item of divList) {        
+    //         console.log(item);                         //输出三个div Dom元素
+    // }
+
+    // Array.from(divList).map(item => {
+    //     console.log(item);                             //输出三个div Dom元素
+    // })
+
+    // console.log(...divList);                           //输出三个div Dom元素
+
+    // for (const key in divList) {
+    //     console.log(key);                              // 0 1 2 entries keys values forEach length
+    // }
+
+    // (2) arguments 对象
+    // function agrs() {
+    //     console.log(arguments);                 // Arguments(3) [123, 456, Array(3), callee: ƒ, Symbol(Symbol.iterator): ƒ]
+    //     console.log(Array.from(arguments));     // [123, 456, Array(3)]
+    // }
+    // agrs(123,456,[1,2,3])
+
+
+
+
+
+    // 3. 字符串和 Set 结构都具有 Iterator 接口，因此可以被Array.from转为真正的数组。 
+    // 如果参数是一个真正的数组，Array.from会返回一个一模一样的新数组。
+    // Array.from('hello')                  // ['h', 'e', 'l', 'l', 'o']
+    // let namesSet = new Set(['a', 'b'])
+    // Array.from(namesSet)                 // ['a', 'b']
+    // Array.from([1, 2, 3])                // [ 1, 2, 3]
+
+
+
+
+
+    // 提醒: 扩展运算符（...）也可以将某些数据结构转为数组。
+    // // agruments对象
+    // function f() {
+    //     console.log([...arguments]);        // [1, 2, 3]
+    // }
+    // f(1, 2, 3)
+    // // NodeList对象
+    // console.log([...document.querySelectorAll('div')]);  //[div.div, div.div, div.div]
+
+
+
+
+
+    // 4. Array.from还可以接受第二个参数，作用类似于数组的map方法，用来对每个元素进行处理，将处理后的值放入返回的数组。
+    // let arr = [1, 2, 3];
+    // let arr2 = Array.from(arr, x => x * x);
+    // console.log(arr, arr2, arr === arr2);           //[1, 2, 3]  [1, 4, 9] false
+
+
+
+
+    // 下面的例子是取出一组 DOM 节点的文本内容。
+    // let spans = document.querySelectorAll('div');
+    // Es5
+    // let names1 = Array.prototype.map.call(spans, s => s.textContent);
+    // console.log(names1);                    // [' divContext1 ', ' divContext2 ', ' divContext3 ']
+
+    // Es6
+    // let names2 = Array.from(spans, s => s.textContent)
+    // console.log(names2);                    // [' divContext1 ', ' divContext2 ', ' divContext3 ']
+
+    // 将bool值返回为false
+    // let a = Array.from([1, , 2, , 3], n => n || 0)
+    // console.log(a);                            // [1, 0, 2, 0, 3]
+
+
+
+
+
+    // 5. 另一个例子是返回各种数据的类型。
+    // function typesOf() {
+    //     return Array.from(arguments, value => Object.prototype.toString.call(value))
+    // }
+    // console.log(typesOf(null, [], NaN));            // ['[object Null]', '[object Array]', '[object Number]']\
+
+
+
+
+
+    // 6.
+    // let a = Array.from({ length: 2 }, () => 'jack')
+    // console.log(a);                                 // ['jack', 'jack']
+
+
+
+
+    // *****************************************************Array.of()***********************************
+    // Array.of()方法用于将一组值,转换为数组。
+
+    // Array.of(3, 11, 8)  // [3,11,8]
+    // Array.of(3)         // [3]
+    // Array.of(3).length  // 1
+    // 这个方法的主要目的，是弥补数组构造函数Array()的不足。因为参数个数的不同，会导致Array()的行为有差异。
+    // Array()  // []
+    // Array(3) // [, , ,]
+    // Array(3, 11, 8) // [3, 11, 8]
+
+    // Array.of() // []
+    // Array.of(undefined) // [undefined]
+    // Array.of(1) // [1]
+    // Array.of(1, 2) // [1, 2]
+    // Array.of()总是返回参数值组成的数组。如果没有参数，就返回一个空数组。
+
+    // Array.of()方法可以用下面的代码模拟实现。
+    // function ArrayOf() {
+    //     return [].slice.call(arguments);
+    // }
+
+
+
+    //*******************************************数组实例的 find() 和 findIndex()*************************
+    // 1.
+    // let arr = [1, 5, 10, 15];
+    // let a = arr.find((value, index, arr) => {
+    //     arr[index] += 1
+    //     return value > 9;
+    // })
+    // console.log(a, arr);             // 10   [2, 6, 11, 15]
+
+
+
+
+    // 2.
+    // let arr = [1, 5, 10, 15];
+    // let a = arr.findIndex((value, index, arr) => {
+    //     return value > 9;
+    // })
+    // console.log(a);                     // 2   
+
+
+
+
+    // 3.
+    // function f(v) {
+    //     return v > this.age;
+    // }
+    // let person = { name: 'John', age: 20 };
+    // let a = [10, 12, 26, 15].find(f, person);               // findIndex也可以绑定第二个参数
+    // console.log(a);                                         // 26
+
+
+
+
+
+    // 4.
+    // console.log([NaN].indexOf(NaN));                        // -1  
+    // console.log([NaN].findIndex(y => Object.is(NaN, y)));   // 0
+    // 上面代码中，indexOf方法无法识别数组的NaN成员，但是findIndex方法可以借助Object.is方法做到。
+
+
+
+
+
+    // *******************************************fill()**************************************
+    // console.log(new Array(3));              // [empty × 3]
+    // console.log(new Array(3).fill());       // [undefined, undefined, undefined]
+    // console.log(new Array(3).fill('from'));         // ['from', 'from', 'from']
+    // console.log(['a', 'b', 'c'].fill(7));           // [7, 7, 7]
+    // let arr = ['a', 'b', 'c', 'd'];
+    // let arrFill = arr.fill(7, 1, 3)
+    // console.log(arr, arrFill, arr === arrFill);    // ['a', 7, 7, 'd']  ['a', 7, 7, 'd'] true    改变了原数组
+
+
+
+    // 注意，如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝对象。
+    // let arr = new Array(3).fill({ name: "Mike" });
+    // arr[0].name = "Ben";
+    // console.log(arr);                // [{name: "Ben"}, {name: "Ben"}, {name: "Ben"}]
+
+    // let arr1 = new Array(3).fill([]);
+    // arr1[0].push(5);
+    // console.log(arr1);               // [[5], [5], [5]]
+
+
+
+
+    // ***********************************数组实例的 entries()，keys() 和 values()**************************
+    // for (let index of ['a', 'b'].keys()) {
+    //     console.log(index);
+    // }
+    // // 0
+    // // 1
+
+    // for (let elem of ['a', 'b'].values()) {
+    //     console.log(elem);
+    // }
+    // // 'a'
+    // // 'b'
+
+    // for (let [index, elem] of ['a', 'b'].entries()) {
+    //     console.log(index, elem);
+    // }
+    // // 0 "a"
+    // // 1 "b"
+
+    // // 如果不使用for...of循环，可以手动调用遍历器对象的next方法，进行遍历。
+    // let letter = ['a', 'b', 'c'];
+    // let entries = letter.entries();
+    // console.log(entries.next());            // {value: Array(2), done: false}
+    // console.log(entries.next());            // {value: Array(2), done: false}
+    // console.log(entries.next().value);      // [2, 'c']
+
+
+
+    //***************************************数组实例的 includes()*******************************************
+    console.log(
+        // [1, 2, 3].includes(2),        // true
+        // [1, 2, 3].includes(4),        // false
+
+        // [1, 2, NaN].includes(NaN),    // true
+
+        // [1, 2, 3].includes(3, 3),     // false
+        // [1, 2, 3].includes(2, -1),    // false   倒数位置开始
+
+        // [NaN].indexOf(NaN),           // -1  使用了严格相等的方式
+        // [NaN].includes(NaN),          // true
+    );
+
+
+
+    // 下面代码用来检查当前环境是否支持该方法，如果不支持，部署一个简易的替代版本
+    // const contains = (item, value) => {
+    //     return Array.prototype.includes
+    //         ? item.includes(value)
+    //         : item.some(el => el === value);            // some 返回true false 是否符合条件
+    // }
+    // console.log(contains([1, 2], 3));
+
+
+    // valueOf 返回的就是原始数据
+    // var fruits = ["Banana", "Orange", "Apple", "Mango"];
+    // var v = fruits.valueOf();
+    // console.log(v);         //["Banana", "Orange", "Apple", "Mango"]
+
+
+
+    //*********************************************flat()，flatMap()*****************************
+    console.log(
+        // [1, 2, [3, 4]].flat(),          // [1, 2, 3, 4]  
+        // [1, 2, [3, [4, 5]]].flat(),     // [1, 2, 3, [4, 5]]
+        // [1, 2, [3, [4, 5]]].flat(2),    // [1, 2, 3, 4, 5] 
+        
+        // 如果不管有多少层嵌套，都要转成一维数组，可以用Infinity关键字作为参数。
+        // [1, [2, [3]]].flat(Infinity),   // [1, 2, 3]
+        
+        // 如果原数组有空位，flat()方法会跳过空位。
+        // [1, 2, , 4, 5].flat(),           // [1, 2, 4, 5]
+        // Array.from([1, 2, , 4, 5]).flat(),  // [1, 2, undefined, 4, 5]
+
+    );
+    console.log(
+        // flatMap()只能展开一层数组。
+        // 相当于 [[[2]], [[4]], [[6]], [[8]]].flat()
+        // [1, 2, 3, 4].flatMap(x => [[x * 2]])          // [[2], [4], [6], [8]]
+    );
+    // arr.flatMap(function callback(currentValue[, index[, array]]) {
+    //     // ...
+    // }[, thisArg])
+
+
+
+
+
+
+    //**************************************************** 数组的空位 ************************************
+    // forEach(), filter(), reduce(), every() 和some()都, flat() 会跳过空位。
+    // map()会跳过空位，但会保留这个值
+    // join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串。
+    console.log(
+
+        // //forEach方法
+        // [, 'a'].forEach((x, i) => console.log(i)), // 1
+
+        // // filter方法
+        // ['a', , 'b'].filter(x => true), // ['a','b']
+
+        // // every方法
+        // [, 'a'].every(x => x === 'a'), // true
+
+        // // reduce方法
+        // [1, , 2].reduce((x, y) => x + y), // 3
+
+        // // some方法
+        // [, 'a'].some(x => x !== 'a'), // false
+
+        // // map方法
+        // [, 'a'].map(x => 1), // [,1]
+
+        // // join方法
+        // [, 'a', undefined, null].join('#'), // "#a##"
+
+        // // toString方法
+        // [, 'a', undefined, null].toString(), // ,a,,
+
+    );
+
+    // ******************************** ES6 则是明确将空位转为undefined。******************************
+    // Array.from方法会将数组的空位，转为undefined，也就是说，这个方法不会忽略空位。
+    // 扩展运算符（...）也会将空位转为undefined。
+    // copyWithin()会连空位一起拷贝
+    // fill()会将空位视为正常的数组位置
+    // for...of循环也会遍历空位。
+
+    // console.log(
+    //     Array.from(['a', , 'b']),              // [ "a", undefined, "b" ]
+    //     [...['a', , 'b']],                     // [ "a", undefined, "b" ]
+    //     [, 'a', 'b', ,].copyWithin(2, 0),      // [,"a",,"a"]
+    //     new Array(3).fill('a'),                // ["a","a","a"]
+    // );
+
+    // let arr = [, ,];
+    // for (let i of arr) {
+    //     console.log(1);                        // 1 1
+    // }
+    // arr.map(item => console.log(item))         // 直接跳过什么都不输出
+    // 上面代码中，数组arr有两个空位，for...of并没有忽略它们。如果改成map方法遍历，空位是会跳过的。
+
+
+    //(2) entries()、keys()、values()、find()和findIndex()会将空位处理成undefined。
+
+    console.log(
+        // entries()
+        // [...[, 'a'].entries()],         // [[0,undefined], [1, "a"]]
+
+        // // keys()
+        // [...[, 'a'].keys()],            // [0, 1]
+
+        // // values()
+        // [...[, 'a'].values()],          // [undefined, "a"]
+
+        // // find()
+        // [, 'a'].find(x => true),        // undefined
+
+        // // findIndex()
+        // [, 'a'].findIndex(x => true)    // 0
+
+    );
+
+
+</script>

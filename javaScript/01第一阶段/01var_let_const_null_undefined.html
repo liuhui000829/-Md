@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>var let const</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+   
+    // 0. 不写修饰符的b在window上, 在全局声明的a也在window上
+    // var a = 123;
+    // const fn = () => {
+    //     console.info('箭头函数',this)       //在window上
+    // }
+
+    // function hdms() {
+    //     b = 456;
+    //     var a = 456;
+    //     console.info('普通函数',window);
+    // }
+    // fn();
+    // hdms();
+    // console.info(this === window);   //true
+
+
+
+
+    // 1. 预解析
+    // var web = 'beidaqingniao.com'
+    // console.log(web);             //并不是输出web之后再报错 关键字Class  js会进行预解析  直接报错
+    // var class='hdcms';           
+
+
+
+
+    // 2. 变量提升
+    // console.info(web);              //undefined
+    // var web='hdms.com';
+
+
+
+
+    // 3. let const简单使用
+    // console.info(web,hdms);             // Uncaught ReferenceError: Cannot access 'web' before initialization
+    // let web='hdms.com'
+    // const hdms='hdms.com'
+
+
+
+
+    // 4.暂存性死区
+    // let web = 'hdms.com';               
+    // function func() {
+    //     console.log(web);                  // Uncaught ReferenceError: Cannot access 'web' before initialization
+    //     let web = 'hdms.com'
+    // }
+    // func();
+
+
+    // 5. 可怕的全局污染
+    // web = 5  //不声明直接使用
+
+
+
+
+    // 6. var的弊端
+    // var i = 99;
+    // for (var i = 0; i < 5; i++) {
+    //     console.log(i);         //0 1 2 3 4
+    // }
+    // console.log(i);             //5
+
+
+
+
+    // 7. 块级作用域
+    // let i = 99;
+    // for (let i = 0; i < 5; i++) {
+    //     console.log(i);         //0 1 2 3 4
+    // }
+    // console.log(i);             //99
+
+
+
+    
+    // 8. 块级作用域2
+    // {
+    //     let web='hdms.com';
+    // }
+    // console.log(web);           //访问不到
+
+
+
+
+    // 9. const 一探究竟      //作用域问题可以 可以重复声明
+    // const url = 'https://houdunren.com';
+    // function show() {
+    //     const url = 'https://houdunre.com'
+    // }
+    // show();
+
+
+
+
+    // 总结 let const var
+    /* 
+        var 1.变量提升 2.可以重复声明 3.在全局声明的变量属于window(非常可怕)
+        let/const 1.同一作用域不能重复声明  2.都具有块级作用域  3.都具有暂存性死区   4.不能先使用在声明
+        const修饰 引用类型/基本类型 1.引用类型的地址改变那么报错 2.基本类型不能更改
+    
+    */
+
+
+
+
+    //***************************************null&&undefined***********************
+
+    // 2. null 和 undefined 区别
+    // let web;
+    // console.log(web);                //undefined
+    // console.log(typeof null);        //object
+    // console.log(typeof undefined);   //undefined
+
+
+    function show(){
+        console.log(name);          //没有传参为   undefined
+    }
+    console.log(show());            //没有返回值为 undefined
+
+
+   
+
+
+
+
+
+
+
+</script>

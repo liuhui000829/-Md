@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this指向问题</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // this的指向在函数定义的时候是确定不了的，只有函数执行的时候才能确定，this最终指向调用它的对象。
+
+    // 1.函数调用模式
+    // 当一个函数并非一个对象的属性时，那么它就是被当做函数来调用的。在此种模式下，
+    // this被绑定为全局对象，在浏览器环境下就是window对象
+
+    // function a(){
+    //     var a = 'hello';
+    //     console.log(this.hello);        //undefined
+    //     console.log(this);              //window
+    // }
+    // a();
+
+
+
+    // 2. 方法调用模式
+    // 当函数被保存为一个对象的属性时，它就可称为这个对象的方法。当一个方法被调用时，this被绑定到这个对象上。
+    // 如果调用表达式包含一个提取属性的动作（. 或 []），那么它被称为方法调用
+
+    // let o={
+    //     name:'hello',
+    //     sayName(){
+    //         console.log(this,this.name);     //{name: 'hello', sayName: ƒ}     hello
+    //     }
+    // }
+    // o.sayName();
+    // 这里的this指向的对象是o，因为调用这个sayName()函数是通过o.sayName()执行的。
+
+
+
+    // 3.
+    //     let o={
+    //         name:'hello',
+    //         b:{
+    //             name:"world", 
+    //             sayName:function(){
+    //             console.log(this,this.name);     //{name: 'world', sayName: ƒ}     world
+    //         }
+    //         }
+
+    //     }
+    //    o.b.sayName();
+    // 因为是o.b调用的这个函数，所以指向b这个对象
+
+
+
+    // 4.
+    // let o = {
+    //     name: 'hello',
+    //     b: {
+    //         sayName: function () {
+    //             console.log(this, this.name);     //{ sayName: ƒ}     undefined
+    //         }
+    //     }
+    // }
+    // o.b.sayName();
+    // 同理，因为是o.b调用的这个函数，所以指向b这个对象
+
+
+
+    // 5
+    // let name='外层name'
+    // let o = {
+    //     name: 'hello',
+    //     b: {
+    //         name:'world',
+    //         sayName() {
+    //             console.log(this, this.name);     //window    ''
+    //         }
+    //     }
+    // }
+    // var t = o.b.sayName;
+    // t();
+    // t是全局变量，在全局环境下执行，this指向window   因为是let修饰的name不属于window 所以是''
+
+
+
+    // 6.构造函数调用模式
+    // 如果在一个函数前面加上new关键字来调用，那么就会创建一个连接到该函数的prototype成员的新对象，
+    // 同时，this会被绑定到这个新对象上。这种情况下，这个函数就可以成为此对象的构造函数。
+
+    // function Fn() {
+    //     console.log(this);          //Fn {}
+    // }
+    // new Fn;                         //带不带括号都是一样的 目前
+
+
+
+    // 7.
+    // function Fn() {
+    //     this.name = 'hello'
+    // }
+    // let a = new Fn();
+    // console.log(a.name);             //hello
+
+
+
+    // 当用new关键字，返回的是一个对象，this指向的就是那个返回的对象；
+    // 如果返回的不是对象，this还是指向函数的实例，虽然null属于对象，但是返回null依然指向函数实例
+
+
+
+    // //8.
+    // function Fn() {
+    //     this.name = 'hello'
+    //     return {}
+    // }
+    // let a = new Fn;
+    // console.log(a.name);                   //undefined
+
+
+
+    // 9.
+    // function Fn() {
+    //     this.name = 'hello'
+    //     return function () {
+
+    //     }
+    // }
+    // var a = new Fn;
+    // console.log(a, a.name);                    //ƒ(){}   ''
+
+
+
+
+    // 10.
+    //  function Fn() {
+    //     this.name = 'hello'
+    //     return 1
+    // }
+    // var a = new Fn;
+    // console.log(a,a.name);                    // {name: 'hello'}    'hello'
+
+
+    // 11
+    // function Fn() {
+    //     this.name = 'hello'
+    //     return undefined
+    // }
+    // var a = new Fn;
+    // console.log(a, a.name);                    // {name: 'hello'}    'hello'
+
+
+
+
+    // 12
+    // function Fn() {
+    //     this.name = 'hello'
+    //     return []
+    // }
+    // var a = new Fn;
+    // console.log(a, a.name);                      // [] undefined
+
+
+
+    // 13
+    // function Fn() {
+    //     this.name = 'hello'
+    //     return null
+    // }
+    // var a = new Fn;
+    // console.log(a, a.name);                      //  {name: 'hello'} 'hello'
+
+
+
+
+    // 4.apply和call调用模式
+    // JS中，函数也是对象，所有函数对象都有两个方法：apply和call，
+    // 这两个方法可以让我们构建一个参数数组传递给调用函数，也允许我们改变this的值
+
+
+
+    // var name='winName'
+    // let o={
+    //     name:'obj'
+    // }
+    // function sayName(){
+    //    console.log(this.name);
+    // }
+
+    // sayName();          //winName
+    // sayName.call();     //winName
+    // sayName.apply();    //winName
+    // sayName.call(o);    //obj
+    // sayName.call(o);    //obj
+    // sayName.bind(o)()   //obj
+
+
+    // 在全局范围内，this指向全局对象（浏览器下指window对象）
+    // 对象函数调用时，this指向当前对象
+    // 全局函数调用时，应该是指向调用全局函数的对象。
+    // 使用new关键字实例化对象时，this指向新创建的对象
+    // 当用apply和call上下文调用的时候指向传入的第一个参数
+
+
+    // 1. 练习
+    // var name = 'window';
+    // function showName() {
+    //     console.log(this.name);
+    // }
+
+    // var person1 = {
+    //     name: "hello",
+    //     sayName: showName
+    // }
+
+    // var person2 = {
+    //     name: 'world',
+    //     sayName: function () {
+    //         var fun= person1.sayName;
+    //         fun();
+
+    //     }
+    // }
+
+    // person1.sayName();                  //hello
+    // person2.sayName();                  //window
+
+    // 在执行person1.sayName()时，方法调用模式，this代表person1这个对象
+    // 在执行person2.sayName()时，方法调用，但是sayName，并没有执行，而是将sayName()
+    // 这个函数赋值给fun这个变量，fun是函数调用模式，this指向window，故输出全局的name
+
+
+
+
+
+    // 2.
+    // var color='green';
+    // var test={
+    //     color:'blue',
+    //     getColor:function(){
+    //         var color='red';
+    //         console.log(this.color);
+    //     }
+    // }
+    // var getColor=test.getColor;
+    // getColor();             //green
+    // test.getColor();        //blue
+
+
+
+    // 3.
+    // var A = { n: 4399 };
+    // var B = function () {
+    //     this.n = 9999
+    // }
+    // var C = function () {
+    //     var n = 8888
+    // }
+
+    // B.prototype = A;
+    // C.prototype = A;
+
+    // var b = new B();
+    // var c = new C();
+
+    // A.n++;
+    // console.log(b.n);       //9999
+    // console.log(c.n);       //4400
+
+
+    // 执行console.log(b.n)时，b对象有自己的属性n值
+    // 执行console.log(c.n)时，c对象没有自己的属性n值，会向上查找，找的A对象中的属性n值
+
+</script>

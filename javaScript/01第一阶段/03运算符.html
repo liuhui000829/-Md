@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    3. 比较运算符 案列
+    <input type="text" name='age'>
+    <span id='msg'></span>
+    <br>
+    <br>
+    <br>
+    <br>
+    4.逻辑运算符 案例<br />
+    输入密码:<input type='password' name='password1'><br />
+    新密码:<input type='password' name='password2'><br />
+    <span id='passMsg' name='passMsg'></span>
+
+</body>
+
+</html>
+<script>
+    // 1.赋值运算符 以及 算数运算符
+    // let a = 5;
+    // a += 1;            // 6
+    // a -= 5;            // 0
+    // a *= 5;            // 25
+    // a /= 5             // 1
+    // console.log(a);
+
+
+    // 2. 一元运算符的前置后置操作
+    // let n = 1;
+    // n++;
+    // ++n;
+    // console.log(n);         //3
+
+    // let m = 0;
+    // let f = 2;
+    // console.log(f + m++);               //表示先f+m 运算 之后m在+1         2
+    // console.log(f + ++m);            //表示先m+1 之后在 f+m             3
+
+
+
+
+    // 3. 比较运算符
+    // const span = document.querySelector('[id="msg"]');
+    // document.querySelector('[name="age"]').addEventListener('keyup', function () {
+    //     span.innerHTML = this.value >= 90 ? '年龄超出' : ''
+
+    // })
+
+
+    //4.逻辑运算符
+    // let inputs = document.querySelectorAll("[type=password]");
+    // console.log(inputs);
+    // const query = name => {
+    //     return document.querySelector(`[name=${name}]`)
+    // }
+    // [...inputs].map(items => {
+    //     items.addEventListener('keyup', function () {
+    //         let msg = "";
+    //         if (query('password1').value !== query('password2').value || query('password1').value.length < 5) {
+    //             // console.log(query('password1').value.length);
+    //             msg = '两次密码不一致 或者密码长度小于5'
+    //         }
+    //         query("passMsg").innerHTML = msg
+    //     })
+    // })
+
+
+
+    // 5. 短路运算的妙用
+    // let sex = prompt('请输入') || '保密';
+    // console.log(sex);
+    // function start(num = 5) {
+    //     return '*'.repeat(num);
+    // }
+    // console.log(start());
+
+
+
+    // 7. 创建div 可以输入的div 逻辑运算符的锻炼
+    // function hd(option = {}) {
+    //     const div = document.createElement('div');
+    //     div.style.width=option.width?option.width:'100px';
+    //     div.style.height=option.height?option.height:'100px';
+    //     div.style.background=option.background?option.background:'red';
+    //     document.body.appendChild(div)
+    // }
+    // hd({width:"30px",height:'30px',background:'green'})
+
+
+
+    //8.whild控制循环
+
+
+
+
+
+
+</script>

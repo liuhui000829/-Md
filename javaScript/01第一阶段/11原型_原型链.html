@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原型 原型链</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // 1. 写一个原型链继承的列子
+    // function Animal() {
+    //     this.eat = function () {
+    //         console.log("在吃饭");
+    //     }
+    // }
+
+    // function Dog() {
+    //     this.bark = function () {
+    //         console.log("黑色");
+    //     }
+    // }
+
+    // Dog.prototype = new Animal();
+    // var hashiqi = new Dog();
+    // hashiqi.eat();
+    // hashiqi.bark();
+
+    // 2. 封装Dom查询
+    //   function Elem(id){
+    //     document.getElementById(id)
+    //   }    
+
+    //   Elem.prototype.html=function(val){
+    //       var elem=this.elem;
+    //       if(val){
+    //           elem.innerHTML=val;
+    //           return this;
+    //       }
+    //       else{
+    //           elem.innerHTML;
+    //       }
+    //   }
+    //   Elem.prototype.on=function(type,fn){
+    //     var elem=this.elem;
+    //     elem.addEventListener(type,fn)
+    //   }
+
+    //   var div1=new Elem('div1')
+    //   console.log(div1.html());
+
+
+
+    // 3. 构造函数
+    // function User(name, age) {
+    //     this.name = name;
+    //     this.age = age;
+    //     // return this 默认有这一行
+
+    // }
+    // const user = new User("智能三", 26);
+
+
+    // class Animal {
+    //     constructor(name, age) {
+    //         this.name = name;
+    //         this.age = age;
+    //     }
+    // }
+
+    // class Dog extends Animal {
+    //     constructor(name, age, color) {
+    //         super(name, age);
+    //         this.color = color;
+    //     }
+    //     static {
+    //         console.log("静态代码块");
+    //     }
+    //     print() {
+    //         console.log(this.name, this.age, this.color);
+    //     }
+    // }
+
+
+
+    // let dog = new Dog("哈哈", 3, "黑色");
+    // let dog2 = new Dog("哈哈2", 3, "黑色2");
+    // dog.print();
+    // dog2.print();
+
+
+    // 4. prototype 和 __proto__
+    function User() {
+        this.a = 1;
+    }
+
+
+
+    User.prototype.bb = { bb: function () { return 'bb' } }
+
+
+    const user = new User();
+
+    console.dir(user);
+    console.info(user.a,user.bb.bb());
+    console.info(user.__proto__===User.prototype);              // true
+
+    console.info(user.__proto__.bb.bb());                       // bb
+  
+
+
+
+
+
+</script>

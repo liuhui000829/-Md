@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script>
+    //1.如何让 a==1 && a==2 &&a==3
+    // let a = {
+    //     _default:0,
+    //     toString() {
+    //         return ++this._default;
+    //     }
+    // }
+    // if (a == 1 && a == 2 && a == 3) {
+    //     console.log("成功了");
+
+    // }
+
+
+
+
+    //2.如何让 a===1 && a===2 &&a===3
+    // let _default = 0;
+    // Object.defineProperty(window, 'a', {
+    //     get() {
+    //         return ++_default;
+    //     }
+    // })
+    // if (a === 1 && a === 2 && a === 3) {
+    //     console.log("成功了");
+
+    // }
+
+
+
+
+    //3.数组去重用对象的key不能重复的原理 这种有问题
+    // let arr = [1, 1, 'true', 'true', true, true, 15, 15, false,
+    //     false, undefined, undefined, null, null, NaN, NaN, 'NaN', 'NaN',
+    //     0, 0, 'a', 'a', {}, {}, {}, Object, Object,Array,Array,Function,Function
+    // ];
+    // // 对象Key不能重复的方法
+    // function distinct(arr) {
+    //     let obj = {}
+    //     let newArray = []
+    //     for (let i = 0; i < arr.length; i++) {
+    //         if (!obj[arr[i]]) {         //检测对象身上没有这个key的话 进if
+    //             obj[arr[i]] = 1
+    //             newArray.push(arr[i])
+    //         }
+    //     }
+    //     return newArray
+    // }
+    // console.log(distinct(arr))          //[1, "true", 15, false, undefined, null, NaN, 0, "a", {}, Object, Array, Function]
+
+    // 4.深度克隆 lodash上的方法
+    // var objects = [{ 'a': 1 }, { 'b': 2 }];
+    // var deep = _.cloneDeep(objects);
+    // console.log("lodash",deep[0] === objects[0]);
+
+
+
+
+    // // 5.如何比较两个数组是否相等
+    // //(1)
+    // let a = [1, 2, 3]
+    // let b = [1, 2, 3]
+    // const str = 'a';
+    // const str2 = new String('a');
+
+    // const equals = (a, b) => {
+    //     console.log(JSON.stringify(a), JSON.stringify(b));
+    //     return JSON.stringify(a) === JSON.stringify(b);
+    // }
+
+
+    // console.log(
+    //     str, str2,                  // a, String {'a'}             
+    //     str === str2,               // false
+    //     undefined === null,         // false
+    // );
+
+    // // 但是这样会有些许问题
+    // console.log(
+    //     equals(a, b),                   // [1,2,3] [1,2,3]    true
+    //     equals([str], [str2]),          // ["a"] ["a"]        true
+    //     equals([undefined], [null]),    // [null] [null]      true
+
+    // );
+
+
+    // // (2)更好的方式使用 Array.prototype.every()
+    // const a = [1, 2, 3];
+    // const b = [1, 2, 3];
+    // const str = 'a';
+    // const str2 = new String('a');
+
+    // const everyEquals = (a, b) => {
+    //     return a.length === b.length && a.every((v, i) => v === b[i]);
+    // }
+    // console.log(
+    //     everyEquals(a, b),                       //  true
+    //     everyEquals([str], [str2]),              //  false
+    //     everyEquals([undefined], [null]),        //  false
+
+    // );
+
+
+
+    // (3) 如果是乱序 
+
+    /*
+        1. 先合并两个数组
+           1, "true", 15, false, undefined, null, 0, "a", Object, Array, Function,'99' '98'
+        2. for of循环每一次都拿出一个值 看两个数组是否都有 前面11次两个都有
+           但是到第十二次的时候 '99'这个值 aCount有 但是bCount没有 所以返回false
+    */
+    const a = [1, "true", 15, false, undefined, null, 0, "a", Object, Array, Function, ,{}];
+    const b = ["true", 1, 15, false, undefined, null, 0, "a", Object, Array, Function, ,{}];
+
+
+    const filterEquals = (a, b) => {
+        if (a.length !== b.length) return false;
+        const uniqueValues = new Set([...a, ...b]);
+        console.log(uniqueValues);
+
+        for (const v of uniqueValues) {
+            const aCount = a.filter(e => e === v).length;
+            const bCount = b.filter(e => e === v).length;
+            console.info(aCount, bCount)
+            if (aCount !== bCount) return false;
+        }
+        return true;
+    }
+    console.log(
+        filterEquals(a, b)                       //  false
+    );
+
+
+
+
+    // 6 冒泡排序
+    // let arr = [3, 2, 1,6]
+    // for (let i = 0; i < arr.length - 1; i++) {              // 表示轮数 length-1
+    //     for (let j = 0; j < arr.length - i - 1; j++) {      // 表示次数 length-i-1
+    //         if(arr[j+1]<arr[j]){                            // 如果后边的数大于前面的数 调换
+    //             [arr[j + 1], arr[j]] = [arr[j], arr[j + 1]]
+    //         }
+    //     }
+    // }
+    // console.log(arr);           // 1 2 3
+
+
+</script>
