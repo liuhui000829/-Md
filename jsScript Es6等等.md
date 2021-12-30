@@ -2,14 +2,14 @@
 
 # 一. javaScript
 
-## 1. 基础部分
+## 1. 基础部分 
 
 ### 1. var let const
 
 **1. 不写修饰符的 b 在window上, 在全局声明的a也在window上**
 
 ```js
- var a = 123;
+ var a = 123;;
  const fn = () => {
  console.info('箭头函数',this)      '' window
 }
@@ -4533,6 +4533,8 @@ rimraf node_modules 		切换到 node_modules所在的目录
 
 使用:
 import { provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data'
+
+// 测试github改名
 ```
 
 
