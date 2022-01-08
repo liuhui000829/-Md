@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+
+    // 1. 创建对象的三种方式
+    // // 1. 利用new Object()创建对象
+    // let obj = new Object();
+    // // 2. 利用对象字面量创建对象
+    // let obj2 = {};
+    //
+    // // 3. 利用构造函数创建对象
+    // function Star(uname, age) {
+    //     this.uname = uname;
+    //     this.age = age;
+    //     this.sing = function () {
+    //         console.log("我会唱歌")
+    //     }
+    // }
+    //
+    // let ldh = new Star("刘德华", 18);
+    // let zxy = new Star("张学友", 19);
+    // console.log(ldh, zxy);
+    // ldh.sing();
+    // zxy.sing();
+
+
+    // // 2. 实例成员与静态成员
+    // // 构造函数中的属性和方法我们称为成员,成员可以添加
+    // function Star(uname, age) {
+    //     this.uname = uname;
+    //     this.age = age;
+    //     this.sing = function () {
+    //         return "我会唱歌";
+    //     }
+    // }
+    //
+    // let ldh = new Star("刘德华", 18);
+    // let zxy = new Star("张学友", 19);
+    // // 1. 实例成员就是构造函数内部通过this添加的成员, uname age sing 就是实例成员
+    // // 实例成员只能通过实例化的对象来访问
+    // console.log(
+    //     ldh.uname,
+    //     ldh.age,
+    //     ldh.sing()
+    // )
+    // // console.log(Star.sing)     // undefined  不能通过构造函数来访问实例成员
+    // // 2. 静态成员 在构造函数本身上添加的成员 sex 就是成成员变量
+    // Star.sex = "男";
+    // // 静态成员只能通过构造函数来访问
+    // console.log(
+    //     Star.sex,
+    //      // ldh.sex                 // undefined 不能通过对象来访问
+    // )
+    //
+    // // console.log(ldh.sing ,zxy.sing,ldh.sing===zxy.sing);
+    // console.dir(Star);
+
+
+    // // 3. 原型对象prototype
+    // // 每一个构造函数都有一个prototype属性
+    // function Star(uname, age) {
+    //     this.uname = uname;
+    //     this.age = age;
+    // }
+    // Star.prototype.sing=function(){
+    //     return "我会唱歌";
+    // }
+    //
+    // let ldh = new Star("刘德华", 18);
+    // let zxy = new Star("张学友", 19);
+    // Star.sex = "男";
+    //
+    //
+    // console.log(ldh.sing === zxy.sing); // true
+    // console.dir(Star);
+    // // 注意: 一般情况下,我们的公共属性定义到构造函数中,公共的方法我们放到原型对象上
+
+
+    // // 4. 对象原型__proto__
+    // // 每一个对象都有一个__proto__属性
+    // function Star(uname, age) {
+    //     this.uname = uname;
+    //     this.age = age;
+    // }
+    // Star.prototype.sing=function(){
+    //     return "我会唱歌";
+    // }
+    //
+    // let ldh = new Star("刘德华", 18);
+    // let zxy = new Star("张学友", 19);
+    // Star.sex = "男";
+    //
+    //
+    //
+    // console.dir(ldh);   // 对象身上系统自己添加一个__proto__指向我们的原型对昂prototype
+    // console.info(ldh.__proto__===Star.prototype);           // true
+
+    //
+    // // 方法的查找规则: 首先查看ldh 对象身上是否有sing方法,如果有就执行对象身上的sing
+    // // 如果没有sing这个方法,因为有__proto__的存在,就去构造函数原型对象prototype身上去查找sing这个方法
+    // ldh.sing();         // 我会唱歌
+
+
+    // // 5. 构造函数constructor
+    // function Star(uname, age) {
+    //     this.uname = uname;
+    //     this.age = age;
+    // }
+    //
+    // // 很多情况下,我们需要手动的利用constructor这个属性 指回原来的构造函数
+    // // Star.prototype.sing=function(){
+    // //     return "我会唱歌";
+    // // }
+    // // Star.prototype.move=function(){
+    // //     return "我会演电影"
+    // // }
+    // // ...
+    //
+    // Star.prototype = {
+    //     // 如果修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
+    //     constructor: Star,
+    //     sing() {
+    //         return "我会唱歌";
+    //     },
+    //     move() {
+    //         return "我会演电影"
+    //     }
+    // }
+    //
+    // let ldh = new Star("刘德华", 18);
+    // let zxy = new Star("张学友", 19);
+    //
+    // console.log(ldh.__proto__);         // {sing: ƒ, constructor: ƒ}
+    // console.log(Star.prototype);        // {sing: ƒ, constructor: ƒ}
+    // console.log(ldh.__proto__.constructor);  // constructor: ƒ Star(uname, age)
+    // console.log(Star.prototype.constructor); // constructor: ƒ Star(uname, age)
+
+
+    // // 6. 构造函数中this的指向问题
+    // let that, that2;
+    //
+    // function Star(uname, age) {
+    //     that = this;
+    //     this.uname = uname;
+    //     this.age = age;
+    // }
+    //
+    // Star.prototype = {
+    //     // 如果修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
+    //     constructor: Star,
+    //     sing() {
+    //         that2 = this;
+    //         return "我会唱歌";
+    //     },
+    //     move() {
+    //         return "我会演电影"
+    //     }
+    // }
+    // let ldh = new Star("刘德华", 18);
+    // // 1. 在构造函数中,里面的this指的是对象实例
+    // // 2. 原型对象函数里的this 指向的是实例对象 ldh
+    // ldh.sing();
+    // console.log(ldh === that);      // true
+    // console.log(ldh === that2)      // true
+
+
+    // 7. 扩展内置对象
+    Array.prototype.sum = function () {
+        let sum = 0;
+        for (let i = 0; i < this.length; i++) {
+            sum += this[i];
+        }
+        return sum;
+    }
+
+    let arr = [1, 2, 3];
+    console.log(arr.sum())
+
+
+    let arr2 = new Array(11, 22, 33);
+    console.log(arr2.sum());		// 66
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>extends</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    // // 1. call 方法
+    // function fn(x, y) {
+    //     console.log(this);
+    //     console.log("我想和咖啡")
+    //     console.log(x + y);
+    // }
+    //
+    // let o = {
+    //     name: 'andy'
+    // }
+    // // fn();
+    // // 1. call() 可以调用函数
+    // // fn.call();
+    // // 2. call() 可以改变这个函数的this指向
+    // fn.call(o, 1, 2);         // {name: 'andy'} 我想喝咖啡 3
+
+
+    // 2. 借用父构造函数继承属性
+    function Fu(uname, age) {
+        this.uname = uname;
+        this.age = age;
+    }
+
+    Fu.prototype.money = function () {
+        return 10000;
+    }
+
+
+    function Zi(uname, age, score) {
+        Fu.call(this, uname, age);      // 通过call把父构造函数中的this改变为子构造函数中的this
+        this.score = score;             // 还可以添加自己的属性
+    }
+
+    // Zi.prototype=Fu.prototype;       // 这样赋值有问题,直接把父原型对象赋值给子原型对象,那么f身上也有了z的方法
+    Zi.prototype = new Fu();            // 1.
+    Zi.prototype.constructor = Zi;
+    Zi.prototype.exam = function () {
+        return "考试";
+    }
+
+    let son = new Zi("刘德华", 18, 80);
+    console.log(son)                    // zi {uname: '刘德华', age: 18, score: 80}
+
+
+</script>

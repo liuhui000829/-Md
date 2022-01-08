@@ -1,5 +1,3 @@
-
-
 # 一. javaScript
 
 ## 1. 基础部分 
@@ -2375,6 +2373,449 @@ function loadingIMg(path) {
         }
     })()
 ```
+
+
+
+## 4. 高级部分
+
+### 1. 构造函数以及原型
+
+#### 1.1 概述 :
+
+```javascript
+// 在典型的oop的语言中(如java)，都存在类的概念,类就是对象的模板,对象就是类的实例,但在es6之前,js中并没有引入类的概念，
+// 创建对象的三种方式
+
+1. 对象字面量
+	let obj2 = {};
+2. new Object()
+	let obj = new Object();
+3. 自定义构造函数
+	function Star(uname, age) {
+        this.uname = uname;
+        this.age = age;
+        this.sing = function () {
+            console.log("我会唱歌")
+        }
+    }
+
+    let ldh = new Star("刘德华", 18);
+    let zxy = new Star("张学友", 19);
+    console.log(	ldh,	// Star{uname: '刘德华', age: 18, sing: ƒ}}
+                	zxy); 	// Star{uname: '张学友', age: 19, sing: ƒ}}
+    ldh.sing();				// 我会唱歌
+    zxy.sing();				// 我会唱歌
+
+```
+
+#### 1.2 构造函数
+
+**构造函数是一种特殊的函数,主要用来初始化对象,即为对象成员变量赋初始值,它总是与new一起使用,我们可以把对象中一些公共的方法和属性提取出来，然后封装到这个函数里面**
+
+```js
+
+1.在js中,使用构造函数要注意一下两点
+	1. 构造函数用于创建一类对象,其首字母要大写
+	2. 构造函数要和new一起使用才有意义
+
+2. new 在执行时会做4件事情
+	1. 在内存中创建一个空对象
+    2. 让this指向这个新的对象
+    3. 执行构造函数里面的代码,给这个新对象创建属性和方法
+	4. 返回这个新对象(所以构造函数中不需要写return)
+
+3. 静态成员与实例成员
+	javaScript的构造函数中可以添加一些成员,可以在构造函数本身上添加,也可以在构造函数内部的this上添加,通过这两种方式添加的成员分别是静态成员和实例成员
+	* 静态成员: 在构造函数本身上添加的成员称为静态成员,只能由构造函数本身来访问
+	* 实例成员: 在构造函数内部创建的对象称为实例成员,只能由实例化的对象来访问
+    
+	// 2. 实例成员与静态成员
+    // 构造函数中的属性和方法我们称为成员,成员可以添加
+    function Star(uname, age) {
+        this.uname = uname;
+        this.age = age;
+        this.sing = function () {
+            return "我会唱歌";
+        }
+    }
+
+    let ldh = new Star("刘德华", 18);
+    let zxy = new Star("张学友", 19);
+    // 1. 实例成员就是构造函数内部通过this添加的成员, uname age sing 就是实例成员
+    // 实例成员只能通过实例化的对象来访问
+    console.log(
+        ldh.uname,
+        ldh.age,
+        ldh.sing()
+    )
+    // console.log(Star.sing)     // undefined  不能通过构造函数来访问实例成员
+    // 2. 静态成员 在构造函数本身上添加的成员 sex 就是成成员变量
+    Star.sex = "男";
+    // 静态成员只能通过构造函数来访问
+    console.log(
+        Star.sex,				   // 男
+        // ldh.sex                 // undefined 不能通过对象来访问
+    )
+    
+    
+    
+```
+
+#### 1.3 构造函数的问题
+
+**构造函数方法很好用,但是存在内存浪费的问题**
+
+![image-20220108000658085](\typora-user-images\image-20220108000658085.png)
+
+
+
+```java
+继上面的例子:
+
+console.log(ldh.sing , 
+            zxy.sing,
+            ldh.sing===zxy.sing);		//false
+
+ƒ () {
+            return "我会唱歌";
+        }
+
+ƒ () {
+            return "我会唱歌";
+        } 
+
+false
+
+    * 优化: 那么我们应该怎么避免这种情况呢? 
+```
+
+
+
+#### 1.4 构造函数和原型 prototype
+
+构造函数通过原型分配的函数是所有函数所<span style="color:red">**共享的**</span>
+
+javaScript规定,==每一个构造函数都有一个prototype属性==，指向另一个对象,注意这个prototype就是一个对象,这个对象的所有属性和方法,都被构造函数所拥有.
+
+==我们可以把那些不变的方法,直接定义在prototype对象上,这样所有对象的实例就可以共享这些方法了。==
+
+```js
+console.dir(Star);
+```
+
+![image-20220108140500488](typora-user-images\image-20220108140500488.png)
+
+```js
+	// 2. 原型对象prototype
+    // 每一个构造函数都有一个prototype属性
+    function Star(uname, age) {
+        this.uname = uname;
+        this.age = age;
+    }
+    Star.prototype.sing=function(){
+        return "我会唱歌";
+    }
+
+    let ldh = new Star("刘德华", 18);
+    let zxy = new Star("张学友", 19);
+    Star.sex = "男";
+	
+	console.log(ldh.sing);  			// 我会唱歌
+    console.log(ldh.sing === zxy.sing); // true
+	
+	// 注意: 一般情况下,我们的公共属性定义到构造函数中,公共的方法我们放到原型对象上
+```
+
+**问答 ?**
+
+1. 原型是什么?
+
+   一个对象,我们也称为prototype为  <span style="color:red">**原型对象**</span>
+
+2. 原型的作用是什么?
+
+   <span style="color:red">**共享方法**</span>
+
+#### 1.5 对象原型_ _proto_ _
+
+<span style="color:red">**上面例子 sing是定义在构造函数Star的原型对象身上的 为什么实例对象ldh可以访问呢？**</span>
+
+对象都有一个属性_ _proto_ _指向构造函数的prototype原型对象,之所以我们对象可以使用构造函数prototype原型对象的属性和方法,就是因为对象有_ _ _proto_ _的存在
+
+```js
+console.info(ldh);
+```
+
+![image-20220108145221983](\typora-user-images\image-20220108145221983.png)
+
+```javascript
+	// 4. 对象原型__proto__
+    // 每一个对象都有一个__proto__属性
+    function Star(uname, age) {
+        this.uname = uname;
+        this.age = age;
+    }
+    Star.prototype.sing=function(){
+        return "我会唱歌";
+    }
+
+    let ldh = new Star("刘德华", 18);
+    let zxy = new Star("张学友", 19);
+    Star.sex = "男";
+
+    console.dir(ldh);   // 对象身上系统自己添加一个__proto__指向我们的原型对象prototype
+    console.info(ldh.__proto__===Star.prototype);  	// true
+    // 方法的查找规则: 首先查看ldh 对象身上是否有sing方法,如果有就执行对象身上的sing
+    // 如果没有sing这个方法,因为有__proto__的存在,就去构造函数原型对象prototype身上去查找sing这个方法
+    ldh.sing();         // 我会唱歌
+
+```
+
+* <span style="color:red">**_ _proto_ _对象原型和原型对象prototype是等价的**</span>
+* <span style="color:red">**_ _proto_ _对象原型的意义就在于为对象的查找机制提供了一个方向，或者说一条线路,但是它是一个非标准的属性,因此实际开发中，不可以使用这个属性,他只是内部指向原型对象的prototype**</span>
+* **下图说明**
+
+![image-20220108145110313](\typora-user-images\image-20220108145110313.png)
+
+#### 1.6 constructor 构造函数
+
+==对象原型(_ _proto_ _)和构造函数原型对象(prototype)==里面都有一个属性==constructor==属性,constructor我们称为构造函数, 因为它指向构造函数本身
+
+==constructor 主要用于记录该对象引用于哪个构造函数,它可以让原型对象重新指向原来的构造函数==
+
+```js
+console.log(ldh.__proto__);
+console.log(Star.prototype);
+
+console.log(ldh.__proto__.constructor );					
+console.log(Star.prototype.constructor );
+
+
+```
+
+**返回的结果 :**
+
+![image-20220108164133588](\typora-user-images\image-20220108164133588.png)
+
+**Code :**
+
+```js
+	// 5. 构造函数constructor
+    function Star(uname, age) {
+        this.uname = uname;
+        this.age = age;
+    }
+    // 很多情况下,我们需要手动的利用constructor这个属性 指回原来的构造函数
+    // Star.prototype.sing=function(){
+    //     return "我会唱歌";
+    // }
+    // Star.prototype.move=function(){
+    //     return "我会演电影"
+    // }
+    // ...
+
+    Star.prototype={
+        // 如果修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
+        constructor:Star,
+        sing(){
+            return "我会唱歌";
+        },
+        move(){
+            return "我会演电影"
+        }
+    }
+
+    let ldh = new Star("刘德华", 18);
+    let zxy = new Star("张学友", 19);
+
+
+    console.log(ldh.__proto__);         // {constructor: ƒ, sing: ƒ, move: ƒ}
+    console.log(Star.prototype);        // {constructor: ƒ, sing: ƒ, move: ƒ}
+    console.log(ldh.__proto__.constructor);  // constructor: ƒ Star(uname, age)
+    console.log(Star.prototype.constructor); // constructor: ƒ Star(uname, age)
+```
+
+#### 1.7 构造函数 、实例对象、原型对象三者的关系
+
+![image-20220108171722293](\typora-user-images\image-20220108171722293.png)
+
+<span style="color:red">**每个构造函数都有一个对象prototype原型对象, 可是原型对象身上又有一个属性constructor又指回了构造函数,构造函数实例化之后产生了一个对象实例,对象实例身上有一个_ _proto_  _对象原型,又指向了prototype原型对象 所以形成了一个铁三角的关系**</span>
+
+#### 1.8 原型链
+
+![image-20220108174102049](\typora-user-images\image-20220108174102049.png)
+
+<span style="color:red">**访问一个对象的属性，如果它自身没有，那么他会根据它自身的_ _proto_ _去构造函数的原型对象prototype上去寻找，如果还是没有，那么继续根据构造函数的_ _proto_ _属性继续寻找，直到object的原型对象，还是没有则返回null, 所以查找一个对象的属性 层层递进的_ _proto_ _ 形成了一个链条，这个链条就是原型链**</span>
+
+#### 1.9 javaScript的成员查找机制(规则)
+
+==1. 当访问一个对象的属性(包括方法)时，首先查找这个对象自身有没有这个属性==
+
+==2. 如果没有就查找他的原型(也就是_ _proto_ _指向的是prototype原型对象)==
+
+==3. 如果还没有就查找原型对象的原型(Obj的原型对象).==
+
+==4. 一次类推一直找到Object为止(null)==
+
+==5._ _proto_ _对象原型的意义在于为对象成员查找机制提供一个方向,或者说一条线路==
+
+#### 1.10 在构造函数中this的指向问题
+
+```js
+	// 6. 构造函数中this的指向问题
+    let that, that2;
+
+    function Star(uname, age) {
+        that = this;
+        this.uname = uname;
+        this.age = age;
+    }
+
+    Star.prototype = {
+        // 如果修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
+        constructor: Star,
+        sing() {
+            that2 = this;
+            return "我会唱歌";
+        },
+        move() {
+            return "我会演电影"
+        }
+    }
+    let ldh = new Star("刘德华", 18);
+    // 1. 在构造函数中,里面的this指的是对象实例
+    // 2. 原型对象函数里的this 指向的是实例对象 ldh
+    ldh.sing();
+    console.log(ldh === that);      // true
+    console.log(ldh === that2)      // true
+
+```
+
+#### 1.11 扩展内置对象
+
+==可以通过原型对象,对原来内置对象进行扩展自定义的方法，比如给数组增加自定义方法的功能==
+
+<span style="color:red">**注意: 数组和字符串内置对象不能给原型对象覆盖操作Array.prototype={},只能使用Array.prototype.xxx=function(){}的方式**</span>
+
+```javascript
+    Array.prototype.sum = function () {
+        let sum = 0;
+        for (let i = 0; i < this.length; i++) {
+            sum += this[i];
+        }
+        return sum;
+    }
+
+    let arr = [1, 2, 3];
+    console.log(arr.sum())			// 6
+
+	let arr2 = new Array(11, 22, 33);
+    console.log(arr2.sum());		// 66
+
+```
+
+### 2. 继承
+
+ES6之前并没有给我们提供extends继承,我们可以通过<span style="color:red">**构造函数+原型对象**</span>实现继承，被称为<span style="color:red">**组合继承**</span>
+
+<span style="color:red">**(其中构造函数继承属性	原型对象继承方法)**</span>
+
+#### 2.1 call()
+
+**调用这个函数,并且修改函数运行时的this**
+
+```js
+fun.call(thisArg, arg1, arg2)
+```
+
+* thisArg：当前调用函数this的指向对象
+* arg1,arg2: 传递的其他参数
+
+```js
+ 	// 1. call 方法
+    function fn(x, y) {
+        console.log(this);
+        console.log("我想和咖啡")
+        console.log(x + y);
+    }
+
+    let o = {
+        name: 'andy'
+    }
+    // fn();
+    // 1. call() 可以调用函数
+    // fn.call();
+    // 2. call() 可以改变这个函数的this指向
+    fn.call(o, 1, 2);         // {name: 'andy'} 我想喝咖啡 3
+
+
+```
+
+#### 2.2 借用构造函数继承父类型属性
+
+<span style="color:red">**核心原理: 通过call()把父类型的this指向子类型的this,这样就可以实现子类型继承父类性的属性**</span>
+
+```java
+	// 2. 借用父构造函数继承属性
+    function fu(uname, age) {
+        this.uname = uname;
+        this.age = age;
+    }
+
+    function zi(uname, age, score) {
+        fu.call(this, uname, age);      // 通过call把父构造函数中的this改变为子构造函数中的this
+        this.score = score;             // 还可以添加自己的属性
+    }
+
+    let son = new zi("刘德华", 18, 80);
+    console.log(son.uname);
+    console.log(son)                    // zi {uname: '刘德华', age: 18, score: 80}
+
+
+```
+
+#### 2.3 继承原型对象继承父类型方法
+
+```js
+	// 2. 借用父构造函数继承属性
+    function Fu(uname, age) {
+        this.uname = uname;
+        this.age = age;
+    }
+
+    Fu.prototype.money = function () {
+        return 10000;
+    }
+
+
+    function Zi(uname, age, score) {
+        Fu.call(this, uname, age);      // 通过call把父构造函数中的this改变为子构造函数中的this
+        this.score = score;             // 还可以添加自己的属性
+    }
+
+    // Zi.prototype=Fu.prototype;       // 这样赋值有问题,直接把父原型对象赋值给子原型对象,那么f身上也有了z的方法
+    Zi.prototype = new Fu(); 			// 参考 x           
+    Zi.prototype.constructor = Zi;
+    Zi.prototype.exam = function () {
+        return "考试";
+    }
+
+    let son = new Zi("刘德华", 18, 80);
+    console.log(son)                    // zi {uname: '刘德华', age: 18, score: 80}
+
+```
+
+**x :**
+
+![image-20220108221301218](\typora-user-images\image-20220108221301218.png)
+
+
+
+
+
+
+
+
 
 # 二. Vue
 
