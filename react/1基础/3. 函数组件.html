@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .yellow {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div"> </div>
+
+</body>
+
+</html>
+
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/babel">
+
+    function MyComponent() {
+
+        const a = () => console.log("123")
+        const b = () => console.log("456");
+
+        const myId = "hello"
+        const myData = "hello,React"
+        const project = ['Angular', 'React', 'Vue']
+
+        return (
+            <div>
+                <h2 className='yellow' id={myId.toLowerCase()}>
+                    <span style={{ color: "skyblue" }}>{myData.toUpperCase()}</span>
+                </h2>
+
+                <ul>
+                    {
+                        project.map((v, index) => <li key={index}>{v}</li>)
+                    }
+                </ul>
+            </div>
+        )
+    }
+
+    ReactDOM.render(<MyComponent />, document.getElementById("div"));
+/*
+    执行了ReactDOM.render(<MyComponent />...之后发生了什么
+        1.react解析组件标签,找到了MyComponent组件
+        2.发现组件是使用函数定义的，随后调用该函数,将返回的值虚拟Dom转为真实dom，随后呈现在页面上
+
+*/
+
+
+
+
+
+</script>

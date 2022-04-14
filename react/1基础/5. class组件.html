@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/babel">
+
+    class MyComponent extends React.Component {
+        render() {
+            //render再什么地方? render在组件原型对象身上
+            console.log("this", this);  // this是MyComponent组件实例对象
+            return (
+                <div>
+                    <h1>你好, 类组件</h1>
+                </div>
+            )
+        }
+
+    }
+    ReactDOM.render(<MyComponent />, document.getElementById("div"))
+    // ReactDOM.render 之后发生了什么事情
+    // 实例化了MyComponent组件,随后调用了其原型上的render方法
+
+
+</script>

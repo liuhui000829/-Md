@@ -16,42 +16,71 @@
 
 <script>
 
-    const debounce = (fn, delay, middlate) => {
-        let dateCha = 0;
+    // const debounce = (fn, delay, middlate) => {
+    //     let dateCha = 0;
+    //     let timer = null;
+    //     let context, args;
+
+    //     const run = () => {
+    //         timer = setTimeout(() => {
+    //             fn.apply(context, args)
+    //         }, delay)
+    //     }
+
+
+    //     return function () {
+    //         context = this;
+    //         args = arguments;
+    //         let now = new Date().getTime();
+    //         if (middlate) {
+    //             fn.apply(context, args)
+    //             middlate = false;
+    //         }
+    //         if (now - dateCha < delay) {
+    //             clearTimeout(timer)
+    //             run();
+    //         }
+    //         else {
+    //             run();
+    //         }
+    //         dateCha = now;
+    //     }
+    // }
+
+    // function moseMove(){
+    //     console.log(this);
+    //     console.log(123);
+    // }
+    // document.addEventListener('mousemove', debounce(moseMove, 1000, true))
+
+
+
+     function mouseMove(){
+         console.log(123);
+     }   
+
+    document.addEventListener('mousemove',)
+
+
+
+    function debounce(fn,timer,a){
+        let dateCha = null;
         let timer = null;
-        let context, args;
-
-        const run = () => {
-            timer = setTimeout(() => {
-                fn.apply(context, args)
-            }, delay)
+        let 
+        
+        return function(){
+            
         }
-
-
-        return function () {
-            context = this;
-            args = arguments;
-            let now = new Date().getTime();
-            if (middlate) {
-                fn.apply(context, args)
-                middlate = false;
-            }
-            if (now - dateCha < delay) {
-                clearTimeout(timer)
-                run();
-            }
-            else {
-                run();
-            }
-            dateCha = now;
-        }
+            
     }
 
-    function moseMove(){
-        console.log(this);
-        console.log(123);
-    }
-    document.addEventListener('mousemove', debounce(moseMove, 3000, true))
+
+
+
+
+
+
+
 
 
 

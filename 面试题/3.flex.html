@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .father {
+            height: 760px;
+            border: 20px solid pink;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* flex-wrap: wrap-reverse;  换行 */
+
+            /* justify-content: flex-start; */
+            /* justify-content: flex-end; */
+            /* 平分布局  */
+            /* justify-content: space-around;   */
+            /* 左右两端紧贴边框 中间平分 */
+            /* justify-content: space-between;   */
+            /* 每个元素所有都是平分布局 */
+            /* justify-content: space-evenly;   */
+            /* justify-content: center; */
+
+            /* flex-direction:row-reverse; */
+            /* flex-direction:column; */
+            /* flex-direction:column-reverse; */
+
+            /* 用于父元素的属性 */
+            /* display:flex;
+            flex-direction:xx ;
+            flex-wrap:xx ;
+            justify-content: xx;
+            align-items: xx; */
+
+
+            /* 用于子元素上的属性 */
+            /* flex-grow: 1;  百分比
+            flex-shrink: 0; 不收缩 1 挤压为原来的一半
+            flex-basis: xx; 如果没有设置宽度 或者设置了宽度 以它属性为基准
+            flex: xx;  组合属性 前三个
+            align-self: xx; 覆盖父属性的值
+            order: xx; 默认为0 值越小越靠前
+
+
+            */
+        }
+
+        .box {
+            height: 200px;
+        }
+
+        .box1 {
+            background-color: red;
+            /* width: 200px; */
+            flex-basis: 300px;
+            flex-shrink: 0;
+
+        }
+
+        .box2 {
+            background-color: green;
+            width: 200px;
+            flex-shrink: 0;
+
+        }
+
+        .box3 {
+
+            background-color: blue;
+            width: 200px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="father">
+        <div class="box box1">1</div>
+        <div class="box box2">2</div>
+        <div class="box box3">3</div>
+    </div>
+</body>
+
+</html>

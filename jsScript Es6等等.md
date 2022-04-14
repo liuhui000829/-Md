@@ -1,4 +1,4 @@
-# 一. javaScript
+# 一. ES6
 
 ## 1. 基础部分 
 
@@ -124,11 +124,11 @@ let web;
 console.log(web);         		'' undefined
 console.log(typeof null);     	'' object
 console.log(typeof undefined);  '' undefined
-+
+
 function show(name){
-	console.log(name);     '' 没有传参为 undefined
+	console.log(name);      没有传参为 undefined
 }
-console.log(show());       '' 没有返回值为 undefined
+console.log(show());        没有返回值为 undefined
 ```
 
 ### 3.this指向
@@ -137,22 +137,22 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 1. 函数调用模式
 
-```
+```js
    
     当一个函数并非一个对象的属性时，那么它就是被当做函数来调用的。在此种模式下，
     this被绑定为全局对象，在浏览器环境下就是window对象
 
     function a(){
         var a = 'hello';
-        console.log(this.hello);        //undefined
-        console.log(this);              //window
+        console.log(this.hello);        // undefined
+        console.log(this);              // window
     }
     a();
 ```
 
 #### 2. 方法模式调用
 
-```
+```js
  	当函数被保存为一个对象的属性时，它就可称为这个对象的方法。当一个方法被调用时，this被绑定到这个对象上。
  	如果调用表达式包含一个提取属性的动作（. 或 []），那么它被称为方法调用
 	
@@ -215,7 +215,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 3. 构造函数模式
 
-```
+```js
  	如果在一个函数前面加上new关键字来调用，那么就会创建一个连接到该函数的prototype成员的新对象，
     同时，this会被绑定到这个新对象上。这种情况下，这个函数就可以成为此对象的构造函数。
 	
@@ -230,7 +230,7 @@ console.log(show());       '' 没有返回值为 undefined
         this.name = 'hello'
     }
     let a = new Fn();
-    console.log(a.name);             //hello
+    console.log(a.name);             // hello
 
     当用new关键字，返回的是一个对象，this指向的就是那个返回的对象；
     
@@ -300,8 +300,8 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 4. apply和call调用模式
 
-```
-	JS中，函数也是对象，所有函数对象都有两个方法：apply和call，
+```js
+	JS中，函数也是对象，所有函数对象都有两个方法：apply 和 call，
     这两个方法可以让我们构建一个参数数组传递给调用函数，也允许我们改变this的值
 
     var name='winName'
@@ -316,7 +316,7 @@ console.log(show());       '' 没有返回值为 undefined
     sayName.call();     //winName
     sayName.apply();    //winName
     sayName.call(o);    //obj
-    sayName.call(o);    //obj
+    sayName.apply(o);    //obj
     sayName.bind(o)()   //obj
 
 
@@ -342,7 +342,7 @@ console.log(show());       '' 没有返回值为 undefined
         name: 'world',
         sayName: function () {
            return person1.sayName;
-            //fun();
+            
 
         }
     }
@@ -391,7 +391,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 
     执行console.log(b.n)时，b对象有自己的属性n值
-    执行console.log(c.n)时，c对象没有自己的属性n值，会向上查找，找的A对象中的属性n值
+    执行console.log(c.n)时，c对象没有自己的属性n值，会向原型上查找，找的A对象中的属性n值
 ```
 
 ### 4. 数组的方法
@@ -406,11 +406,11 @@ console.log(show());       '' 没有返回值为 undefined
 ​     数组实例的 includes()
 ​     数组实例的 flat()，flatMap()
 ​     数组的空位
-​     Array.prototype.sort() 的排序稳定性
+​     Array.prototype.sort() 的排序稳定
 
 #### 1. 扩展运算符
 
-```
+```js
    展运算符（spread）是三个点（...）。它好比 rest 参数的逆运算，将一个数组转为用逗号分隔的参数序列。
 
     1.
@@ -601,7 +601,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 2. Array.from()
 
-```
+```js
 	Array.from方法用于将两类对象转为真正的数组：类似数组的对象（array-like object）和可遍历（iterable）的对象（包括 ES6    	 新增的数据结构 Set 和 Map）。
        
 
@@ -724,7 +724,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 3. Array.of
 
-```
+```js
     // Array.of()方法用于将一组值,转换为数组。
 
     Array.of(3, 11, 8)  // [3,11,8]
@@ -849,7 +849,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 7. includes()
 
-```
+```js
  
          [1, 2, 3].includes(2),        // true
          [1, 2, 3].includes(4),        // false
@@ -876,7 +876,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 8. flat()，flatMap()
 
-```
+```js
  [1, 2, [3, 4]].flat(),          // [1, 2, 3, 4]  
         [1, 2, [3, [4, 5]]].flat(),     // [1, 2, 3, [4, 5]]
         [1, 2, [3, [4, 5]]].flat(2),    // [1, 2, 3, 4, 5] 
@@ -898,9 +898,9 @@ console.log(show());       '' 没有返回值为 undefined
     }[, thisArg])
 ```
 
-#### 9 . 数组的空位
+#### 9. 数组的空位
 
-```
+```js
  	// forEach(), filter(), reduce(), every() 和some()都, flat() 会跳过空位。
     // map()会跳过空位，但会保留这个值
     // join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串。
@@ -975,9 +975,21 @@ console.log(show());       '' 没有返回值为 undefined
     );
 ```
 
+#### 10. includes(item, finIndex)
+
+includes()，判断数组是否存在有指定元素，参数：查找的值(必填)、起始位置，可以替换 ES5 时代的 indexOf 判断方式。indexOf 判断元素是否为 NaN，会判断错误。
+
+```js
+var a = [1, 2, 3];
+let bv = a.includes(2); // true
+let cv = a.includes(4); // false
+```
+
+
+
 ### 5. call apply bind
 
-```
+```js
     Function.prototype.call()
     Function.prototype.apply()
     Function.prototype.bind()		这个不确定
@@ -1025,7 +1037,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 1. 属性的简洁表示法
 
-```
+```js
 	1. 基本
     const foo = 'bar';
     const foo2 = 'bar2';
@@ -1311,7 +1323,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 5. super关键字
 
-```
+```js
 	1.this关键字总是指向函数所在的当前对象，ES6 又新增了另一个类似的关键字super，指向当前对象的原型对象。
     const proto = {
         foo: 'hello'
@@ -1589,7 +1601,7 @@ console.log(show());       '' 没有返回值为 undefined
 
 #### 7. AggregateError 错误对象
 
-```
+```js
  	ES2021 标准之中，为了配合新增的Promise.any()方法（详见《Promise 对象》一章），还引入一个新的错误对象AggregateError，	也放在这一章介绍。
      AggregateError 在一个错误对象里面，封装了多个错误。如果某个单一操作，同时引发了多个错误，，需要同时抛出这些错误，
      那么就可以抛出一个 AggregateError 错误对象，把各种错误都放在这个对象里面。
@@ -1632,6 +1644,40 @@ console.log(show());       '' 没有返回值为 undefined
         console.log(e.errors);                    // [ Error: "some error" ]
 ```
 
+#### 8.class
+
+```js
+
+    class Person {
+        constructor(name, age) {
+            // 构造器中的this 实例对象
+            this.name = name;
+            this.age = age;
+        }
+        speak() {
+            // speak 在Person的原型对象身上
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age)
+        }
+    }
+
+// student继承Person
+    class student extends Person {
+        constructor(name, age, hoby) {
+            super(name, age)        // 显示调用父类构造器
+            this.hoby = hoby;
+        }
+        speak() {
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age + "我的爱好是" + this.hoby)
+
+        }
+    }
+    let stu = new student("张学友", 18, '唱歌');
+
+    // 总结:
+    // 1. 类中的构造器不是必须写的,如果要做一些初始化的操作 是要写的
+    // 2. 类中的方法都是放在原型上的
+
+```
 
 
 
@@ -1649,14 +1695,13 @@ console.log(show());       '' 没有返回值为 undefined
 
 
 
-
-
-
-## 2. 浏览器 以及Dom对象
+## 2. 浏览器相关
 
 ### 1.冒泡、捕获、阻止、委托
 
-```
+![image-20220407124751118](typora-user-images\image-20220407124751118.png)
+
+```js
 const div1 = document.querySelector('[class=div1]');
 const div2 = document.querySelector('[class=div2]');
 const div3 = document.querySelector('[class=div3]');
@@ -1718,7 +1763,6 @@ div4.addEventListener('click', function () { console.log('捕获div4');}, true)
 
 
 
-
 // 6. 事件委托
 document.querySelector("ul").addEventListener('click', function (e) {
 var event = e || window.event;
@@ -1735,13 +1779,15 @@ if (target.nodeName.toLocaleLowerCase() === 'li') {
 
 
 
-## 3. 异步编程
+
+
+## 3. 高级部分
 
 ### 1. Promise
 
-#### 1.状态改变成另一个
+#### 1. 状态改变成另一个
 
-```
+```js
 let p1 = new Promise((resolve, reject) => {
 setTimeout(() => {
 	reject('456')
@@ -1767,7 +1813,7 @@ p2.then(success => {
 
 #### 2. resolve 或者reject后面的代码还是会执行
 
-```
+```js
 new Promise((resolve, reject) => {
 	resolve(1);
 	console.log(2);
@@ -1790,27 +1836,22 @@ new Promise((resolve, reject) => {
 
 #### 4. 返回一个Promsie的情况
 
-```
+```js
 new Promise((resolve, reject) => {
-    setTimeout(() => {
-        reject('123')
-    }, 2000);
-}).then(fill => { }, err => {
-	return new Promise((resolve, reject) => {
-	resolve(err)
-	}); // const f = () => console.log('now');
-    // (
-    //     () => new Promise(
-    //         resolve => resolve(f())
-    //     )
-    // )();
-    // console.log('next');
-    // now
-    // next
-	console.log('a', a);
-}, b => {
-	console.log('b', b);
-})
+        setTimeout(() => {
+            reject('123')
+        }, 2000);
+    }).then(fill => { }, err => {
+        return new Promise((resolve, reject) => {
+            resolve(err)
+        });
+        
+    }).then(a=>{
+        console.log("a",a)
+    },b=>{
+        console.log("b",b)
+    })
+
 // 两秒钟之后输出 a 123
 // 每个then都是拿到上一个then返回的结果，如果返回的是promise那么就等待他的状态，
 
@@ -1818,7 +1859,7 @@ new Promise((resolve, reject) => {
 
 #### 5. 继上一个例子不写return的情况
 
-```
+```js
 new Promise((resolve, reject) => {
     setTimeout(() => {
         reject('123')
@@ -1839,7 +1880,7 @@ new Promise((resolve, reject) => {
 
 #### 5.成功状态或者是失败状态
 
-```
+```js
 //如果状态是成功 没有处理(没有写then) 默认不会报错 
 new Promise(resolve=>{
 	resolve('success')
@@ -1854,7 +1895,7 @@ new Promise((resolve, reject)=>{
 
 #### 6. 返回一个普通的值
 
-```
+```js
 new Promise((resolve, reject)=>{
 	resolve('123')
 }).then(resolve=>{
@@ -1867,7 +1908,7 @@ new Promise((resolve, reject)=>{
 
 #### 7. catch的使用
 
-```
+```js
 new Promise((resolve, reject) => {
 	reject('123')
 }).then(resolve => {
@@ -1884,21 +1925,22 @@ new Promise((resolve, reject) => {
 // 如果有catch 处理了这个错误 那么后方的catch就不会在处理了 紧接着走下一个then
 // 上一个promise什么都没有返回 那么 下一个then就是undefined catch返回的也是要给promise
 
-// 例子2
-new Promise((resolve, reject) => {
-	resolve(123)
-}).then(resolve => {
-	throw new Error(resolve)
-}, reject => {
-	console.log('reject', reject);
-}).catch(a => console.log(a))
 
-// Error 123
+  // 例子2
+    new Promise((resolve, reject) => {
+        resolve(123)
+    }).then(resolve => {
+        throw new Error(resolve)
+    }, reject => {
+        console.log('reject', reject);
+    }).catch(a => console.log("error",a))
+
+// error Error: 123
 ```
 
 #### 8. promise处理与不处理的情况
 
-```
+```js
 //返回了 promsie
 new Promise((resolve, reject) => {
         resolve('123')
@@ -1941,7 +1983,7 @@ new Promise((resolve, reject) => {
 
 ####  11. then处理与没有处理的情况
 
-```
+```js
 // 处理了情况
  new Promise((resolve, reject) => {
         resolve('123')
@@ -1963,7 +2005,7 @@ new Promise((resolve, reject) => {
 
 #### 12. then默认是成功的
 
-```
+```js
 new Promise((resolve, reject) => {
         reject('失败')
     }).then().catch(error => {
@@ -1979,7 +2021,7 @@ new Promise((resolve, reject) => {
 
 #### 13. then两种写法区别  
 
-```
+```js
 // 两个回调函数的写法
 const p1 = new Promise((resolve, reject) => {
         resolve('123')
@@ -2008,7 +2050,7 @@ const p2 = new Promise((resolve, reject) => {
 
 #### 14. catch连续问题
 
-```
+```js
 const p3 = new Promise((resolve, reject) => {
         reject('456')
     })
@@ -2055,7 +2097,7 @@ const p3 = new Promise((resolve, reject) => {
 
 #### 15. promise体内状态改变与否 then的输出问题
 
-```
+```js
 const promise = new Promise(function (resolve, reject) {
         return 666
     });
@@ -2070,7 +2112,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 16. promise体内出现错误的问题
 
-```
+```js
     const promise = new Promise((resolve, reject)=> {
         // throw new Error('err')
         // a+1
@@ -2090,7 +2132,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 17. catch捕获的范围更广
 
-```
+```js
   const promise = new Promise((resolve, reject)=> {
       resolve('132')
     });
@@ -2106,8 +2148,8 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 18. 状态一经改变无法回退
 
-```
-   // 1.
+```js
+    // 1.
     const promise = new Promise((resolve, reject) => {
         throw new Error('test')
         resolve('ok');
@@ -2153,7 +2195,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 19. Promise.all
 
-```
+```js
 // cosnt p = Promise.all([p1,p2,p3]) 
 // p的状态由p1、p2、p3决定，分成两种情况。
 // (1)只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1 p2 p3的返回值组成一个数组，传递给p的回调函数。
@@ -2184,7 +2226,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 20. Promise.rice
 
-```
+```js
  // cosnt p = Promise.rice([p1,p2,p3]) 
  // 上面代码中，只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。
  // 那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
@@ -2198,9 +2240,11 @@ const promise = new Promise(function (resolve, reject) {
     上面代码中，如果 5 秒之内fetch方法无法返回结果，变量p的状态就会变为rejected，从而触发catch方法指定的回调函数。
 ```
 
+
+
 #### 21. Promise.allSettled
 
-```
+```js
 // Promise.allSettled()方法接受一个数组作为参数，数组的每个成员都是一个 Promise 对象并返回一个新的 Promise 对象。
 // 只有等到参数数组的所有 Promise 对象都发生状态变更（不管是fulfilled还是rejected),返回的 Promise 对象才会发生状态变更。
     cosnt p = Promise.allSettled([p1,p2,p3]) 
@@ -2220,7 +2264,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 22. Promise.any
 
-```
+```js
  cosnt p = Promise.any([p1,p2,p3]) 
     // 只要参数实例有一个变成fulfilled状态，包装实例就会变成fulfilled状态；
     // 如果所有参数实例都变成rejected状态，包装实例就会变成rejected状态。
@@ -2238,7 +2282,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 23. Promise.prototype.finally()
 
-```
+```js
 // Promise.prototype.finally()   // finally不接受任何参数  与状态无关
     Promise.reject('456').then().catch(err=>{
         console.log('err',err);
@@ -2251,7 +2295,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 24.  Promise.resolve();
 
-```
+```js
     有时候需要将现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用  参数分为四种情况
     
     （1）参数是一个 Promise 实例
@@ -2330,7 +2374,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 25. Promise.reject
 
-```
+```js
      Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
      Promise.reject().catch(e=>console.log(e))           //undefined
      console.log(123456);
@@ -2342,7 +2386,7 @@ const promise = new Promise(function (resolve, reject) {
 
 #### 26. promise 异步加载图片
 
-```
+```js
 function loadingIMg(path) {
         return new Promise((resolve, reject) => {
             const image = new Image()
@@ -2376,9 +2420,7 @@ function loadingIMg(path) {
 
 
 
-## 4. 高级部分
-
-### 1. 构造函数以及原型
+### 2. 构造函数 、原型、继承
 
 #### 1.1 概述 :
 
@@ -2388,8 +2430,10 @@ function loadingIMg(path) {
 
 1. 对象字面量
 	let obj2 = {};
+
 2. new Object()
 	let obj = new Object();
+
 3. 自定义构造函数
 	function Star(uname, age) {
         this.uname = uname;
@@ -2465,7 +2509,7 @@ function loadingIMg(path) {
 
 **构造函数方法很好用,但是存在内存浪费的问题**
 
-![image-20220108000658085](\typora-user-images\image-20220108000658085.png)
+![image-20220108000658085](typora-user-images\image-20220108000658085.png)
 
 
 
@@ -2546,7 +2590,7 @@ console.dir(Star);
 console.info(ldh);
 ```
 
-![image-20220108145221983](\typora-user-images\image-20220108145221983.png)
+![image-20220108145221983](typora-user-images\image-20220108145221983.png)
 
 ```javascript
 	// 4. 对象原型__proto__
@@ -2575,7 +2619,7 @@ console.info(ldh);
 * <span style="color:red">**_ _proto_ _对象原型的意义就在于为对象的查找机制提供了一个方向，或者说一条线路,但是它是一个非标准的属性,因此实际开发中，不可以使用这个属性,他只是内部指向原型对象的prototype**</span>
 * **下图说明**
 
-![image-20220108145110313](\typora-user-images\image-20220108145110313.png)
+![image-20220108145110313](typora-user-images\image-20220108145110313.png)
 
 #### 1.6 constructor 构造函数
 
@@ -2595,7 +2639,7 @@ console.log(Star.prototype.constructor );
 
 **返回的结果 :**
 
-![image-20220108164133588](\typora-user-images\image-20220108164133588.png)
+![image-20220108164133588](typora-user-images\image-20220108164133588.png)
 
 **Code :**
 
@@ -2605,7 +2649,7 @@ console.log(Star.prototype.constructor );
         this.uname = uname;
         this.age = age;
     }
-    // 很多情况下,我们需要手动的利用constructor这个属性 指回原来的构造函数
+   
     // Star.prototype.sing=function(){
     //     return "我会唱歌";
     // }
@@ -2614,6 +2658,7 @@ console.log(Star.prototype.constructor );
     // }
     // ...
 
+// 这种方式改变了对象 因为是赋值得形式 所以 // 很多情况下,我们需要手动的利用constructor这个属性 指回原来的构造函数
     Star.prototype={
         // 如果修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
         constructor:Star,
@@ -2635,15 +2680,15 @@ console.log(Star.prototype.constructor );
     console.log(Star.prototype.constructor); // constructor: ƒ Star(uname, age)
 ```
 
-#### 1.7 构造函数 、实例对象、原型对象三者的关系
+#### 1.7 构造函数 、实例、原型的关系
 
-![image-20220108171722293](\typora-user-images\image-20220108171722293.png)
+![image-20220108171722293](typora-user-images\image-20220108171722293.png)
 
 <span style="color:red">**每个构造函数都有一个对象prototype原型对象, 可是原型对象身上又有一个属性constructor又指回了构造函数,构造函数实例化之后产生了一个对象实例,对象实例身上有一个_ _proto_  _对象原型,又指向了prototype原型对象 所以形成了一个铁三角的关系**</span>
 
 #### 1.8 原型链
 
-![image-20220108174102049](\typora-user-images\image-20220108174102049.png)
+![image-20220108174102049](typora-user-images\image-20220108174102049.png)
 
 <span style="color:red">**访问一个对象的属性，如果它自身没有，那么他会根据它自身的_ _proto_ _去构造函数的原型对象prototype上去寻找，如果还是没有，那么继续根据构造函数的_ _proto_ _属性继续寻找，直到object的原型对象，还是没有则返回null, 所以查找一个对象的属性 层层递进的_ _proto_ _ 形成了一个链条，这个链条就是原型链**</span>
 
@@ -2691,7 +2736,7 @@ console.log(Star.prototype.constructor );
 
 ```
 
-#### 1.11 扩展内置对象
+#### 1.11  扩展内置对象
 
 ==可以通过原型对象,对原来内置对象进行扩展自定义的方法，比如给数组增加自定义方法的功能==
 
@@ -2714,7 +2759,7 @@ console.log(Star.prototype.constructor );
 
 ```
 
-### 2. 继承
+#### 2. 继承
 
 ES6之前并没有给我们提供extends继承,我们可以通过<span style="color:red">**构造函数+原型对象**</span>实现继承，被称为<span style="color:red">**组合继承**</span>
 
@@ -2774,7 +2819,7 @@ fun.call(thisArg, arg1, arg2)
 
 ```
 
-#### 2.3 继承原型对象继承父类型方法
+#### 2.3 完整继承
 
 ```js
 	// 2. 借用父构造函数继承属性
@@ -2793,7 +2838,7 @@ fun.call(thisArg, arg1, arg2)
         this.score = score;             // 还可以添加自己的属性
     }
 
-    // Zi.prototype=Fu.prototype;       // 这样赋值有问题,直接把父原型对象赋值给子原型对象,那么f身上也有了z的方法
+    // Zi.prototype = Fu.prototype;       // 这样赋值有问题,直接把父原型对象赋值给子原型对象,那么f身上也有了z的方法
     Zi.prototype = new Fu(); 			// 参考 x           
     Zi.prototype.constructor = Zi;
     Zi.prototype.exam = function () {
@@ -2807,11 +2852,181 @@ fun.call(thisArg, arg1, arg2)
 
 **x :**
 
-![image-20220108221301218](\typora-user-images\image-20220108221301218.png)
+![image-20220108221301218](typora-user-images\image-20220108221301218.png)
 
 
 
+### 3. 学习Javascript闭包（Closure）
 
+作者： [阮一峰](https://www.ruanyifeng.com/)
+
+日期： [2009年8月30日](https://www.ruanyifeng.com/blog/2009/08/)
+
+闭包（closure）是Javascript语言的一个难点，也是它的特色，很多高级应用都要依靠闭包实现。
+
+下面就是我的学习笔记，对于Javascript初学者应该是很有用的。
+
+**一、变量的作用域**
+
+要理解闭包，首先必须理解Javascript特殊的变量作用域。
+
+变量的作用域无非就是两种：全局变量和局部变量。
+
+Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。
+
+> 　　var n=999;
+>
+> 　　function f1(){
+> 　　　　alert(n);
+> 　　}
+>
+> 　　f1(); // 999
+
+另一方面，在函数外部自然无法读取函数内的局部变量。
+
+> 　　function f1(){
+> 　　　　var n=999;
+> 　　}
+>
+> 　　alert(n); // error
+
+这里有一个地方需要注意，函数内部声明变量的时候，一定要使用var命令。如果不用的话，你实际上声明了一个全局变量！
+
+> 　　function f1(){
+> 　　　　n=999;
+> 　　}
+>
+> 　　f1();
+>
+> 　　alert(n); // 999
+
+**二、如何从外部读取局部变量？**
+
+出于种种原因，我们有时候需要得到函数内的局部变量。但是，前面已经说过了，正常情况下，这是办不到的，只有通过变通方法才能实现。
+
+那就是在函数的内部，再定义一个函数。
+
+> 　　function f1(){
+>
+> 　　　　var n=999;
+>
+> 　　　　function f2(){
+> 　　　　　　alert(n); // 999
+> 　　　　}
+>
+> 　　}
+
+在上面的代码中，函数f2就被包括在函数f1内部，这时f1内部的所有局部变量，对f2都是可见的。但是反过来就不行，f2内部的局部变量，对f1就是不可见的。这就是Javascript语言特有的"链式作用域"结构（chain scope），子对象会一级一级地向上寻找所有父对象的变量。所以，父对象的所有变量，对子对象都是可见的，反之则不成立。
+
+既然f2可以读取f1中的局部变量，那么只要把f2作为返回值，我们不就可以在f1外部读取它的内部变量了吗！
+
+> 　　function f1(){
+>
+> 　　　　var n=999;
+>
+> 　　　　function f2(){
+> 　　　　　　alert(n);
+> 　　　　}
+>
+> 　　　　return f2;
+>
+> 　　}
+>
+> 　　var result=f1();
+>
+> 　　result(); // 999
+
+**三、闭包的概念**
+
+上一节代码中的f2函数，就是闭包。
+
+各种专业文献上的"闭包"（closure）定义非常抽象，很难看懂。我的理解是，闭包就是能够读取其他函数内部变量的函数。
+
+由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成"定义在一个函数内部的函数"。
+
+所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。
+
+**四、闭包的用途**
+
+闭包可以用在许多地方。它的最大用处有两个，一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。
+
+怎么来理解这句话呢？请看下面的代码。
+
+> 　　function f1(){
+>
+> 　　　　var n=999;
+>
+> 　　　　nAdd=function(){n+=1}
+>
+> 　　　　function f2(){
+> 　　　　　　alert(n);
+> 　　　　}
+>
+> 　　　　return f2;
+>
+> 　　}
+>
+> 　　var result=f1();
+>
+> 　　result(); // 999
+>
+> 　　nAdd();
+>
+> 　　result(); // 1000
+
+在这段代码中，result实际上就是闭包f2函数。它一共运行了两次，第一次的值是999，第二次的值是1000。这证明了，函数f1中的局部变量n一直保存在内存中，并没有在f1调用后被自动清除。
+
+为什么会这样呢？原因就在于f1是f2的父函数，而f2被赋给了一个全局变量，这导致f2始终在内存中，而f2的存在依赖于f1，因此f1也始终在内存中，不会在调用结束后，被垃圾回收机制（garbage collection）回收。
+
+这段代码中另一个值得注意的地方，就是"nAdd=function(){n+=1}"这一行，首先在nAdd前面没有使用var关键字，因此nAdd是一个全局变量，而不是局部变量。其次，nAdd的值是一个匿名函数（anonymous function），而这个匿名函数本身也是一个闭包，所以nAdd相当于是一个setter，可以在函数外部对函数内部的局部变量进行操作。
+
+**五、使用闭包的注意点**
+
+1）由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。
+
+2）闭包会在父函数外部，改变父函数内部变量的值。所以，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。
+
+**六、思考题**
+
+如果你能理解下面两段代码的运行结果，应该就算理解闭包的运行机制了。
+
+代码片段一。
+
+> 　　var name = "The Window";
+>
+> 　　var object = {
+> 　　　　name : "My Object",
+>
+> 　　　　getNameFunc : function(){
+> 　　　　　　return function(){
+> 　　　　　　　　return this.name;
+> 　　　　　　};
+>
+> 　　　　}
+>
+> 　　};
+>
+> 　　alert(object.getNameFunc()());
+
+
+代码片段二。
+
+> 　　var name = "The Window";
+>
+> 　　var object = {
+> 　　　　name : "My Object",
+>
+> 　　　　getNameFunc : function(){
+> 　　　　　　var that = this;
+> 　　　　　　return function(){
+> 　　　　　　　　return that.name;
+> 　　　　　　};
+>
+> 　　　　}
+>
+> 　　};
+>
+> 　　alert(object.getNameFunc()());
 
 
 
@@ -2823,7 +3038,7 @@ fun.call(thisArg, arg1, arg2)
 
 ### 1.属性代理
 
-```
+```js
 let person = {
 ​    name: "张三",
 ​    sex: "男",
@@ -2867,7 +3082,7 @@ Object.defineProperty(person, 'age', {
 
 
 
-```
+```js
  computed:{
 ​      // fullName:{
 ​      //   //get什么时候调用 :1.初次调用时 2.所依赖的数据发生改变
@@ -2880,14 +3095,14 @@ Object.defineProperty(person, 'age', {
 
 注意:
 
-```
+```js
 1.初始化时候会调用，所依赖的数据发生改变时调用
 
 2.如果只是读取 那么只用一个get 如果要修改数据 就的用set(){}
 3.computed 会有缓存 写法简单
 ```
 
-```
+```js
 //watch  data cumputed都能监听
         // watch: {
         //     info: {
@@ -2911,7 +3126,7 @@ Object.defineProperty(person, 'age', {
 
 ### 4.样式
 
-```
+```js
 :class='red'  			 //字符串形式
 :class="['font','red']"  //数组形式 	或者 :class="classArr"
 :class="classObj"	 	 //对象形式
@@ -3070,7 +3285,7 @@ Vue.directive('big-number', (element, binding) => {
 
 ### 10. vue检测数组 ，对象的原理
 
-```
+```js
   data() {
       return {
           arr: [1, 2, 3],
@@ -3118,7 +3333,7 @@ Vue.directive('big-number', (element, binding) => {
 
 ### 11. 模拟一个数据检测
 
-```
+```js
 let data = {
         a: 1,
         b: 2
@@ -3144,13 +3359,13 @@ let data = {
 
 
 
-## 2.路由
+## 2. 路由
 
 ### 1.路由配置
 
 <!--简陋的路由配置 具体的在 项目中 Vue  router ==> index.js-->
 
-```
+```js
 new VueRouter({
   routes:[
      { path: '/', redirect: '/login' },
@@ -3303,13 +3518,13 @@ $route.params.title
 
 **<span style="color:red">需要特别注意: 使用params对象写法时候 不能用path 配置项 必须使用name</span>**
 
-### 5.路由的props配置
+### 5. 路由的props配置
 
 作用:让路由组件更方便的接收到参数
 
 
 
-```
+```js
 {
 ​              name: 'detail',           		//给路由命名
 ​              path: 'detail/:id/:title',       //params占位
@@ -3338,7 +3553,7 @@ $route.params.title
 
 2.组件接收
 
-```
+```js
 export default {
  props: ["id", "title"],
  data() {
@@ -3416,13 +3631,13 @@ export default {
 2.deactivated 路由组件失活时触发
 ```
 
-### 10 路由守卫
+### 10. 路由守卫
 
 1.作用: 对路由进行权限控制
 
 2.分类： <span style="color:red">全局守卫</span>  <span style="color:blue">独享守卫 </span> <span style="color:green">组件内守卫</span>
 
-1.<span style="background-color:red">全局守卫</span> 
+1.<span style="background-color:red">**全局守卫**</span> 
 
 ```
 //全局前置守卫 初始化执行 每次路由切换前都执行
@@ -3446,7 +3661,7 @@ router.afterEach((to, from) => {
 })
 ```
 
-2.<span style="background-color:blue">独享守卫 </span>
+2.<span style="background-color:blue">**独享守卫** </span>
 
 作用: 只是这一个路由需要守卫 
 
@@ -3474,7 +3689,7 @@ router.afterEach((to, from) => {
 ​        },
 ```
 
-3.<span style="background-color:green">组件内守卫</span>
+3.<span style="background-color:green">**组件内守卫**</span>
 
 作用：某一个组件想用这个守卫 news新闻组件 在组件内写的 也是与afterEach(全局后置守卫配合)
 
@@ -4564,21 +4779,206 @@ module.exports = {
 
 
 
+# 三. React
+
+**react官方** : https://react.docschina.org/
+
+## 1. 基础部分
+
+引入react库 以及babel 在react官方文档引入的
+
+```html
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+```
+
+### 1. 虚拟Dom和真实DOM
+
+1. 虚拟dom本质是Object类型的对象(一般对象)
+
+2. 虚拟dom比较轻，真实dom比较重，因为虚拟dom是react内部使用，无需真实dom上那么多属性
+3. 虚拟dom最终会被react转化为真实dom，呈现在页面上
+
+a. 虚拟dom
+
+![image-20220414101006914](\typora-user-images\image-20220414101006914.png)
+
+b. 真实dom
+
+![image-20220414101147786](\typora-user-images\image-20220414101147786.png)
+
+完整的code
+
+```react
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div">
+
+    </div>
+</body>
+
+</html>
+
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/babel">
+    // 虚拟dom创建
+    const VDOM = <h1>Hello,React</h1>
+    console.log(VDOM);
+
+    // 渲染
+    ReactDOM.render(VDOM, document.getElementById("div"));
+    // debugger;
+    console.log(typeof VDOM,VDOM instanceof Object);    // Object true
+
+    // 真实dom
+    console.dir(document.getElementById("div"));
+
+</script>
+    
+```
+
+### 2. jsx的规则
+
+```jsx
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .yellow{
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div"> </div>
+   
+</body>
+
+</html>
+
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/babel">
+
+    const myId = "hello"
+    const myData = "hello,React"
+
+    const VDOM = (
+        <div>
+            <h2 className='yellow' id={myId.toLowerCase()}>
+                <span>{myData.toLocaleUpperCase()}</span>
+            </h2>
+            <h2  id={myId.toLowerCase()}>
+                <span style={{color:"skyblue"}}>{myData.toLocaleUpperCase()}</span>
+            </h2>
+        </div>
+    )
+
+    ReactDOM.render(VDOM, document.getElementById("div"));
+
+    /*
+        jsx语法规则:
+            1. 定义虚拟dom不要写引号.
+            2. 标签中混入js表达式时要用{}
+            3. 样式的类名指定不要用class,要用className
+            4. 内联样式要用 style={{key:value}}的形式去写
+            5. 只能有一个根元素
+    */
+
+</script>
+```
+
+### 3. 函数组件
+
+```react
+ function MyComponent() {
+        const a = () => console.log("123")
+        const b = () => console.log("456");
+
+        const myId = "hello"
+        const myData = "hello,React"
+        const project = ['Angular', 'React', 'Vue']
+
+        return (
+            <div>
+                <h2 className='yellow' id={myId.toLowerCase()}>
+                    <span style={{ color: "skyblue" }}>{myData.toUpperCase()}</span>
+                </h2>
+                <ul>
+                    {
+                        project.map((v, index) => <li key={index}>{v}</li>)
+                    }
+                </ul>
+            </div>
+        )
+    }
+
+    ReactDOM.render(<MyComponent />, document.getElementById("div"));
+
+/*
+    执行了ReactDOM.render(<MyComponent />...之后发生了什么?
+        1.react解析组件标签,找到了MyComponent组件
+        2.发现组件是使用函数定义的，随后调用该函数,将返回的值虚拟Dom转为真实dom，随后呈现在页面上
+
+*/
+```
+
+### 4. 类式组件
+
+```jsx
+  class MyComponent extends React.Component {
+        render() {
+            //render再什么地方? render在组件原型对象身上
+            console.log("this", this);  // this是MyComponent组件实例对象
+            return (
+                <div>
+                    <h1>你好, 类组件</h1>
+                </div>
+            )
+        }
+
+    }
+    ReactDOM.render(<MyComponent />, document.getElementById("div"))
+    // ReactDOM.render 之后发生了什么事情
+    // 实例化了MyComponent组件,随后调用了其原型上的render方法
+
+```
 
 
 
+### 5.
 
+6.
 
+7.
 
+8.
 
+9.
 
-
-
-
-
-
-
-
+10.
 
 
 
@@ -4600,11 +5000,9 @@ module.exports = {
 
 # 三. Git
 
-## 1. 基础部分
+### 1. 基础
 
-
-
-```
+```nim
 git add -m '  '
 git commit -m ' '
 git checkout <name>			//切换分支
@@ -4632,7 +5030,7 @@ git config --global user.email  "asdasdliuhui@sina.com"
 
 ### 2. 连接远程仓库
 
-```
+```nim
 1.git(github)配置密钥（私钥、ssh、公钥）
 
 1.本地安装好git；
@@ -4657,9 +5055,9 @@ git config --global user.email  "asdasdliuhui@sina.com"
 
 ```
 
-### 3.修改了远程仓库的名字，本地怎么切换仓库
+### 3. 修改了远程仓库的名字，本地怎么切换仓库
 
-```java
+```nim
 方法:
 1. 修改远程仓库名字，如图：
     
@@ -4880,7 +5278,7 @@ date:11/3
 
 概念错误 导致代码过多 卡了很久 不知如何下手 很经典的例子
 
-```
+```js
 let arr=[1, 2, 3 ]
 
 arr.splice(i,1).join(',')   这是头脑中的一直坚信是对的  以为这就是 数组删除一个并且用逗号链接 想要的结果是删除任意一个 并且转换成 字符串  
@@ -4911,7 +5309,7 @@ Property or method "handleCurrentChange" is not defined
 
 新建 vue.config.js
 
-```
+```js
 module.exports = {
   chainWebpack: config => {
 ​    config.when(process.env.NODE_ENV==='production',config=>{
@@ -4984,7 +5382,7 @@ dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 
 **3.vue-table-with-tree-grid   树形插件 效果**
 
-![image-20211106170810478](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211106170810478.png)
+![image-20211106170810478](typora-user-images\image-20211106170810478.png)
 
 
 

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .yellow {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div"> </div>
+
+</body>
+
+</html>
+
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/babel">
+
+    const myId = "hello"
+    const myData = "hello,React"
+
+    const VDOM = (
+        <div>
+            <h2 className='yellow' id={myId.toLowerCase()}>
+                <span>{myData.toLocaleUpperCase()}</span>
+            </h2>
+            <h2 id={myId.toLowerCase()}>
+                <span style={{ color: "skyblue" }}>{myData.toLocaleUpperCase()}</span>
+            </h2>
+        </div>
+    )
+
+    ReactDOM.render(VDOM, document.getElementById("div"));
+
+    /*
+        jsx语法规则:
+            1. 定义虚拟dom不要写引号.
+            2. 标签中混入js表达式时要用{}
+            3. 样式的类名指定不要用class,要用className
+            4. 内联样式要用 style={{key:value}}的形式去写
+            5. 只能有一个根元素
+    
+    */
+
+ 
+
+
+</script>

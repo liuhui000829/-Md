@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    //  1. this得指向问题
+    //  var name = 'window';
+    //     function showName() {
+    //         console.log(this.name);
+    //     }
+
+    //     var person1 = {
+    //         name: "hello",
+    //         sayName: showName
+    //     }
+
+    //     var person2 = {
+    //         name: 'world',
+    //         sayName: function () {
+    //            return person1.sayName;
+    //         }
+    //     }
+
+    //     person1.sayName();                  // hello
+    //     // person2.sayName();                  // window
+    //     person2.sayName()()
+
+
+    // 2. 原型问题 构造函数
+    // var A = { n: 4399 };
+    // var B = function () {
+    //     this.n = 9999
+    // }
+    // var C = function () {
+    //     var n = 8888
+    // }
+
+    // B.prototype = A;
+    // C.prototype = A;
+
+    // var b = new B();
+    // var c = new C();
+
+    // A.n++;
+    // console.log(b.n);       //9999
+    // console.log(c.n);       //4400
+
+    // function f1() {
+    //     var n = 999;
+    //     nAdd = function () {
+    //         n += 1;
+    //     }
+
+    //     function f2() {
+    //         console.log(n)
+    //     }
+    //     return f2;
+    // }
+
+    // var result = f1();
+    // result(); // 999
+    // nAdd();
+    // result(); // 1000
+
+
+
+    // let arr = [, null, NaN, ,];
+    // let arr1 = arr.forEach((v, i, arr) => {
+    //     return v;
+    // })
+
+    // let arr2 = arr.map((v, i, arr) => {
+    //     return v;
+    // })
+
+    // // console.log(...arr)
+    // console.log(arr1);
+    // console.log(arr2);
+
+
+    // const arr1 = [1, 1, 'true', 'true', true, true, 15, 15, false, false,
+    //     undefined, undefined, null, null, NaN, NaN, 'NaN', 0, 0, 'a', 'a'];
+
+    // const arr2 = [1, 1, 'true', 'true', true, true, 15, 15, false, false,
+    //     undefined, undefined, null, null, NaN, NaN, 'NaN', 0, 0, 'a', 'a'];
+
+    // const equalsIgnoreOrder = (a, b) => {
+    //     if (a.length !== b.length) return false
+    //     const uniqueValues = new Set([...a, ...b])
+    //     for (const v of uniqueValues) {
+    //         const aCount = a.filter(e => e === v).length
+    //         const bCount = b.filter(e => e === v).length
+    //         if (aCount != bCount) return false
+    //     }
+    //     return true
+    // }
+
+
+
+    // console.log(
+    //     equalsIgnoreOrder(arr1, arr2)
+    // )
+
+
+
+    // console.log(
+    //     null == undefined,                //true
+    //     null === undefined,               //false
+
+    //     JSON.stringify([null]),         //[null]
+    //     JSON.stringify([undefined]),    //[null]
+    //     JSON.stringify([null]) === JSON.stringify([undefined]), //true
+    // )
+
+
+
+
+
+    let obj1 = {
+        a: 1,
+        b: {
+            c: [2,1]
+        }
+    }
+    let obj2 = {
+        b: {
+            c: [1,2]
+        },
+        a: 1
+    }
+    function isObjectValueEqual(a, b) {
+        // 判断两个对象是否指向同⼀内存，指向同⼀内存返回true
+        if (a === b) return true
+        // 获取两个对象键值数组
+        let aProps = Object.getOwnPropertyNames(a)
+        let bProps = Object.getOwnPropertyNames(b)
+        // 判断两个对象键值数组长度是否⼀致，不⼀致返回 false
+        if (aProps.length !== bProps.length) return false
+        // 遍历对象的键值
+        for (let prop in a) {
+            // 判断a的键值，在b中是否存在，不存在，返回false
+            if (b.hasOwnProperty(prop)) {
+                // 判断a的键值是否为对象，是则递归，不是对象直接判断键值是否相等，不相等返回false
+                if (typeof a[prop] === 'object') {
+                    if (!isObjectValueEqual(a[prop], b[prop])) return false
+                } else if (a[prop] !== b[prop]) {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
+        return true
+    }
+
+    console.log(isObjectValueEqual(obj1, obj2))  // false
+
+
+
+
+
+
+
+
+
+
+
+</script>
