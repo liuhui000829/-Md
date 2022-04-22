@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+<script type="text/babel">
+    // 状态更新 ref内联写法 会被调用两次
+    // class Demo extends React.Component {
+
+    //     state = { isHot: true }
+    //     showData = () => {
+    //         console.log(this.input1.value)
+    //     }
+    //     saveInput = c => {
+    //         this.input2 = c;
+
+    //     }
+    //     showData2 = () => {
+    //         console.log(this.input2.value)
+    //     }
+
+    //     changeWeather = v => {
+    //         const { isHot } = this.state;
+    //         this.setState({ isHot: !isHot })
+    //     }
+
+    //     render() {
+    //         const { isHot } = this.state;
+    //         return (
+    //             <div>
+    //                 <input ref={c => { this.input1 = c ;console.log("@", c) }} type="text" placeholder="请输入人文字" />&nbsp;
+    //                 <button onClick={this.showData}>点击我弹出文字</button>
+    //                 &nbsp;
+    //                 {/* 一下ref方式不是内连方式*/}
+    //                 <input onBlur={this.showData2} ref={this.saveInput} type="text" placeholder="失去焦点弹出" />
+    //                 <h2>今天天气很{isHot ? '炎热' : '凉爽'}</h2>
+    //                 <button onClick={this.changeWeather}>点击我跟新组件状态</button>
+    //             </div>
+    //         )
+    //     }
+    // }
+
+    //  2.  createRef 形式
+    class Demo extends React.Component {
+
+        state = { a: 1 }
+        myRef = React.createRef();  //创建ref容器
+        myRef2 = React.createRef();
+
+        showData = () => {
+            const { current } = this.myRef
+            console.log(current.value);
+            const { a } = this.state;
+        }
+
+
+        showData2 = () => {
+            const { current } = this.myRef2
+            console.log(current.value);
+        }
+
+        render() {
+            console.log(this.state);
+            return (
+                <div >
+                    <input ref={this.myRef} type="text" placeholder="请输入人文字" />&nbsp;
+                    <button onClick={this.showData}>点击我弹出文字</button>
+                    &nbsp;
+                    <input onBlur={this.showData2} ref={this.myRef2} type="text" placeholder="失去焦点弹出" />
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Demo />, document.getElementById("div"));
+
+
+</script>

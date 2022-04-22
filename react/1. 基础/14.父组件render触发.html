@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+<script type="text/babel">
+
+
+
+    class Fu extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { count: 1 }
+            console.log("Fu---constructor");
+        }
+        UNSAFE_componentWillMount() {
+            console.log("Fu---componentWillMount");
+        }
+
+
+        componentDidMount() {
+            console.log("Fu---componentDidMount");
+        }
+
+
+        shouldComponentUpdate() {
+            console.log("Fu---shouldComponentUpdate");
+            return true;
+        }
+
+        // 更新之前
+        UNSAFE_componentWillUpdate() {
+            console.log("Fu---componentWillUpdate");
+        }
+        // 更新完成
+        componentDidUpdate() {
+            console.log("Fu---componentDidUpdate");
+        }
+        UNSAFE_componentWillReceiveProps(props){
+            console.log("Fu---componentWillReceiveProps",props);
+        }
+
+        // 卸载
+        componentWillUnmount() {
+            console.log("Fu---componentWillUnmount");
+        }
+        add = e => {
+            let { count } = this.state;
+            this.setState({ count: count + 1 })
+        }
+        death = e => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("div"))
+        }
+
+        force = e => {
+            this.forceUpdate();
+        }
+
+        render() {
+            console.log("Fu---render");
+            let { count } = this.state;
+            return (
+                <div >
+                    <h1>{count}</h1>
+                    <button onClick={this.add}>点我加1</button>
+                    <button onClick={this.death}>卸载</button>
+                    <button onClick={this.force}>强制更新,没有更改状态force</button>
+                    <br/>
+                    <br/>
+
+                    <Zi count={count} ></Zi>
+                </div>
+            )
+        }
+    }
+
+
+    
+    class Zi extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { count: 1 }
+            console.log("Zi---constructor");
+        }
+        UNSAFE_componentWillReceiveProps(props){
+            console.log("Zi---componentWillReceiveProps",props);
+        }
+        UNSAFE_componentWillMount() {
+            console.log("Zi---componentWillMount");
+        }
+
+
+        componentDidMount() {
+            console.log("Zi---componentDidMount");
+        }
+
+
+        shouldComponentUpdate() {
+            console.log("Zi---shouldComponentUpdate");
+            return true;
+        }
+
+        // 更新之前
+        UNSAFE_componentWillUpdate() {
+            console.log("Zi---componentWillUpdate");
+        }
+        // 更新完成
+        componentDidUpdate() {
+            console.log("Zi---componentDidUpdate");
+        }
+
+        // 卸载
+        componentWillUnmount() {
+            console.log("Zi---componentWillUnmount");
+        }
+        add = e => {
+            let { count } = this.state;
+            this.setState({ count: count + 1 })
+        }
+        death = e => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("div"))
+        }
+
+        force = e => {
+            this.forceUpdate();
+        }
+
+        render() {
+            console.log("Zi---render");
+
+            return (
+                <div>
+                    <h1>{this.props.count}</h1>
+                    <button onClick={this.add}>点我加1</button>
+                    <button onClick={this.death}>卸载</button>
+                    <button onClick={this.force}>强制更新,没有更改状态force</button>
+                </div>
+            )
+        }
+    }
+
+
+
+    ReactDOM.render(<Fu />, document.getElementById("div"))
+
+
+
+
+
+
+</script>

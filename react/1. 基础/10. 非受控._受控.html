@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+<script type="text/babel">
+    // 受控非受控
+    class Login extends React.Component {
+
+        handleSubmit = (e) => {
+            let { username, password } = this
+            console.log(username.value, password.value);
+            e.preventDefault();
+
+        }
+        render() {
+            return (
+                <form action="http://www.baidu.com" onSubmit={this.handleSubmit}>
+                    <input ref={c => this.username = c} type="text" name="username" />
+                    <input ref={c => this.password = c} type="password" name="password" />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+
+
+    // 受控组件
+    class Login extends React.Component {
+
+        state = { username: "", password: "" }
+
+        handleSubmit = (e) => {
+            let { username, password } = this.state
+            console.log(username, password);
+            e.preventDefault();
+
+        }
+        saveUsername = (event) => {
+            this.setState({
+                username: event.target.value
+            })
+        }
+        savePassword = (event) => {
+            this.setState({
+                password: event.target.value
+            })
+        }
+
+
+        render() {
+            return (
+                <form action="http://www.baidu.com" onSubmit={this.handleSubmit}>
+                    <input onChange={this.saveUsername} type="text" name="username" />
+                    <input onChange={this.savePassword} type="password" name="password" />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+
+
+    ReactDOM.render(<Login />, document.getElementById("div"))
+
+    // 1. 受控组件: 页面上所有输入类的DOM  随着用户的输入把数据维护状态中去 等用的时候直接从状态中取 
+    // 2. 非受控组件: 页面上所有输入类的DOM 现用现取， 非受控组件上有时候不可避免的使用ref 但是ref不推荐过多使用
+
+
+
+
+
+</script>

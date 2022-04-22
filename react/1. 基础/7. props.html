@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+
+
+<script type="text/babel">
+
+    // // props是从外部带进去的
+    // class Person extends React.Component {
+
+    //     render() {
+    //         const { name, age, sex } = this.props;  // props是只读的
+    //         return (
+    //             <ul>
+    //                 <li>{name}</li>
+    //                 <li>{age}</li>
+    //                 <li>{sex}</li>
+    //             </ul>
+    //         )
+    //     }
+    // }
+
+    // Person.propTypes = {
+    //     name: PropTypes.string.isRequired,  //限制name必传,且为字符串
+    //     sex: PropTypes.string,
+    //     age: PropTypes.number,  // 限制age为数字
+    //     speak: PropTypes.func,  // 限制speak为函数
+    // }
+    // Person.defaultProps = {
+    //     sex: "nan", // 默认值
+    //     age: 18
+    // }
+
+    // function speak() {
+    //     console.log("我会说话");
+    // }
+
+
+
+    // ReactDOM.render(<Person name="张三" age={18} sex="女" />, document.getElementById("div1"))  // 18 为数字
+
+    // const p = { name: "张三", age: 20, speak }
+    // ReactDOM.render(<Person {...p} />, document.getElementById("div2"))
+
+
+
+    // 2. 简写方式
+    // class Person extends React.Component {
+
+    //     static propTypes = {
+    //         name: PropTypes.string.isRequired,  //限制name必传,且为字符串
+    //         sex: PropTypes.string,
+    //         age: PropTypes.number,  // 限制age为数字
+    //         speak: PropTypes.func,  // 限制speak为函数
+    //     }
+    //     static defaultProps = {
+    //         sex: "nan", // 默认值
+    //         age: 18
+    //     }
+
+    //     render() {
+    //         const { name, age, sex } = this.props;  // props是只读的
+    //         return (
+    //             <ul>
+    //                 <li>{name}</li>
+    //                 <li>{age}</li>
+    //                 <li>{sex}</li>
+    //             </ul>
+    //         )
+    //     }
+    // }
+
+
+    // // Person.propTypes 等价于 static defaultProps
+
+    // function speak() {
+    //     console.log("我会说话");
+    // }
+
+    // ReactDOM.render(<Person name="张三" age={18} sex="女" />, document.getElementById("div1"))  // 18 为数字
+
+    // const p = { name: "张三", age: 20, speak }
+    // ReactDOM.render(<Person {...p} />, document.getElementById("div2"))
+
+    // 3. 函数组件
+    const Person = props => {
+        const { name, age, sex, speak } = props;  // props是只读的
+        console.log(props);
+        return (
+            <ul>
+                <li>{name}</li>
+                <li>{age}</li>
+                <li>{sex}</li>
+                <li>{speak()}</li>
+            </ul>
+        )
+    }
+
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,  //限制name必传,且为字符串
+        sex: PropTypes.string,
+        age: PropTypes.number,  // 限制age为数字
+        speak: PropTypes.func,  // 限制speak为函数
+    }
+    Person.defaultProps = {
+        sex: "nan", // 默认值
+        age: 100,
+        speak: function () {
+            return "default speak"
+        }
+    }
+    function speak() {
+        return "speak"
+    }
+
+    ReactDOM.render(<Person name="张三" age={18} sex="女" />, document.getElementById("div1"))  // 18 为数字
+
+    const p = { name: "张三", speak }
+    ReactDOM.render(<Person {...p} />, document.getElementById("div2"))
+
+
+</script>

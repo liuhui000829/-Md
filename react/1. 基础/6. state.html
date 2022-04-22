@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body,
+        html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 700px;
+        }
+
+        #content {
+            width: 300px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: wheat;
+            font-weight: 700;
+            border: 1px solid saddlebrown;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/babel">
+
+
+    // class Weather extends React.Component {
+    //     constructor(props) {
+    //         super(props)
+    //         this.state = { isHot: true }
+    //         this.changeWeather = this.changeWeather.bind(this)    // 把原型上的changWeather通过bind生成一个新的实例上的方法
+    //     }
+
+
+
+    //     changeWeather() {
+    //         console.log(" changeWeather", this);  // this是weather实例对象
+    //         let { isHot } = this.state;
+    //         this.setState({ isHot: !isHot })
+
+    //         this.changeWeather2();  
+    //     }
+
+    //     changeWeather2() {
+    //         console.log(" changeWeather2", this);    // this是weather实例对象
+
+    //     }
+
+    //     render() {
+    //         console.log(this); // this是weather实例对象 因为在类组件的原型上
+    //         const { isHot } = this.state;
+    //         return (
+    //             // onClick={this.changeWeather} 由于changeWeather是通过onClick的回调 直接调用 所以它里面的this是undefined
+    //             // 所以得加上 this.changeWeather = this.changeWeather.bind(this)
+    //             //  相当于  const x =this.changeWeather
+    //             //  x();  所以this指向发生了改变 
+    //             <div id="content" onClick={this.changeWeather}>
+    //                 <h1>今天天气很{isHot ? '炎热' : '凉爽'}</h1>
+    //             </div>
+    //         )
+    //     }
+    // }
+
+
+    // 2 简写方式
+    class Weather extends React.Component {
+
+        state = { isHot: true }
+        changeWeather = () => {
+
+            let { isHot } = this.state;
+            this.setState({ isHot: !isHot })
+
+        }
+
+        render() {
+            const { isHot } = this.state;
+            return (
+                <div id="content" onClick={this.changeWeather}>
+                    <h1>今天天气很{isHot ? '炎热' : '凉爽'}</h1>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Weather />, document.getElementById("div"))
+
+
+  
+
+
+</script>

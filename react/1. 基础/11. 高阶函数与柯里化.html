@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+<script type="text/babel">
+
+    // 高阶函数: 一个函数的参数或者返回值为 函数  那么这个函数成为之高阶函数 Promise/setTimerout/Array.Map(()=>) ...
+    // 函数柯里化: 通过函数调用继续返回函数的方式 ，实现多次接收参数最后统一处理的编码方式
+    class Login extends React.Component {
+
+        state = { username: "", password: "" }
+        handleSubmit = (e) => {
+            let { username, password } = this.state
+            console.log(username, password);
+            e.preventDefault();
+
+        }
+
+        // 接收的参数统一处理  dataType event 统一处理
+        // saveFromData = (dataType) => {
+        //     return (event) => {
+        //         this.setState({ [dataType]: event.target.value })
+
+        //     }
+        // }
+        // 简写: 
+        saveFromData = dataType => event => this.setState({ [dataType]: event.target.value })
+
+        render() {
+            return (
+                <form action="http://www.baidu.com" onSubmit={this.handleSubmit}>
+                    <input onChange={this.saveFromData('username')} type="text" name="username" />
+                    <input onChange={this.saveFromData('password')} type="password" name="password" />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+
+
+
+    // 2. 不用柯里化的方式
+    class Login extends React.Component {
+
+        state = { username: "", password: "" }
+        handleSubmit = e => {
+            let { username, password } = this.state
+            console.log(username, password);
+            e.preventDefault();
+        }
+
+
+        // saveFromData = (dataType, event) => {
+        //     this.setState({ [dataType]: event.target.value })
+
+        // }
+        // 简写: 
+        saveFromData = (dataType, event) => this.setState({ [dataType]: event.target.value })
+
+        render() {
+            return (
+                <form action="http://www.baidu.com" onSubmit={this.handleSubmit}>
+                    <input onChange={event => this.saveFromData('username', event)} type="text" name="username" />
+                    <input onChange={event => this.saveFromData('password', event)} type="password" name="password" />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+
+
+    ReactDOM.render(<Login />, document.getElementById("div"))
+
+
+
+
+
+
+
+</script>

@@ -1,4 +1,4 @@
-# 一. ES6
+# 一. javaScript
 
 ## 1. 基础部分 
 
@@ -131,7 +131,7 @@ function show(name){
 console.log(show());        没有返回值为 undefined
 ```
 
-### 3.this指向
+### 3. this指向
 
 **this的指向在函数定义的时候是确定不了的，只有函数执行的时候才能确定，this最终指向调用它的对象。**
 
@@ -394,9 +394,94 @@ console.log(show());        没有返回值为 undefined
     执行console.log(c.n)时，c对象没有自己的属性n值，会向原型上查找，找的A对象中的属性n值
 ```
 
-### 4. 数组的方法
 
-​     扩展运算符
+
+### 5. call apply bind
+
+```js
+    Function.prototype.call()
+    Function.prototype.apply()
+    Function.prototype.bind()		这个不确定
+    
+    // call
+    let o = { name: '张三' }
+    function f(...args) {
+        console.log(this.name, ...args);        // 张三 1 2 3
+    }
+    f.call(o, 1, 2, 3);
+ 
+
+
+
+    // apply
+    let o = { name: '张三' }
+    function f(...args) {
+        console.log(this.name, args);           // 张三 [1, 2, 3]
+    }
+    f.apply(o, [1, 2, 3]);
+
+
+    // 案例
+    let max = Math.max.apply(Math,[1,3,2])
+    console.log(max);               // 3  求最大值
+
+
+
+
+    // bind 方法           详情参考: 犀牛书195
+    function f(y, z) {
+        return this.x + y + z
+    }
+    let g = f.bind({ x: 1 }, 2, 3)
+    console.log(g());                 // 6
+
+
+   
+    const f = (x, y, z) => x + y + z;
+    const g = f.bind(null)(1,2,3)
+    console.log(g);
+```
+
+### 6.Class
+
+```js
+class Person {
+        constructor(name, age) {
+            // 构造器中的this 实例对象
+            this.name = name;
+            this.age = age;
+        }
+        speak() {
+            // speak 在Person的原型对象身上
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age)
+        }
+    }
+
+// student继承Person
+    class student extends Person {
+        constructor(name, age, hoby) {
+            super(name, age)        // 显示调用父类构造器
+            this.hoby = hoby;
+        }
+        speak() {
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age + "我的爱好是" + this.hoby)
+
+        }
+    }
+    let stu = new student("张学友", 18, '唱歌');
+
+    // 总结:
+    // 1. 类中的构造器不是必须写的,如果要做一些初始化的操作 是要写的
+    // 2. 类中的方法都是放在原型上的
+```
+
+
+
+## 2. 数组 & 对象
+
+### 1. Array   
+
+  扩展运算符
 ​     Array.from()
 ​     Array.of()
 ​     数组实例的 copyWithin()
@@ -877,7 +962,7 @@ console.log(show());        没有返回值为 undefined
 #### 8. flat()，flatMap()
 
 ```js
- [1, 2, [3, 4]].flat(),          // [1, 2, 3, 4]  
+ 		[1, 2, [3, 4]].flat(),          // [1, 2, 3, 4]  
         [1, 2, [3, [4, 5]]].flat(),     // [1, 2, 3, [4, 5]]
         [1, 2, [3, [4, 5]]].flat(2),    // [1, 2, 3, 4, 5] 
         
@@ -985,55 +1070,18 @@ let bv = a.includes(2); // true
 let cv = a.includes(4); // false
 ```
 
-
-
-### 5. call apply bind
+#### 11. reduce
 
 ```js
-    Function.prototype.call()
-    Function.prototype.apply()
-    Function.prototype.bind()		这个不确定
-    
-    // call
-    let o = { name: '张三' }
-    function f(...args) {
-        console.log(this.name, ...args);        // 张三 1 2 3
-    }
-    f.call(o, 1, 2, 3);
- 
-
-
-
-    // apply
-    let o = { name: '张三' }
-    function f(...args) {
-        console.log(this.name, args);           // 张三 [1, 2, 3]
-    }
-    f.apply(o, [1, 2, 3]);
-
-
-    // 案例
-    let max = Math.max.apply(Math,[1,3,2])
-    console.log(max);               // 3  求最大值
-
-
-
-
-    // bind 方法           详情参考: 犀牛书195
-    function f(y, z) {
-        return this.x + y + z
-    }
-    let g = f.bind({ x: 1 }, 2, 3)
-    console.log(g());                 // 6
-
-
-   
-    const f = (x, y, z) => x + y + z;
-    const g = f.bind(null)(1,2,3)
-    console.log(g);
+ function fn(...numbers) {
+    return numbers.reduce((pre, current) => {
+        return pre + current;
+    })
+ }
+ console.log(fn(1,2,3));			// 计算和
 ```
 
-### 6. 对象的扩展
+### 2. Object
 
 #### 1. 属性的简洁表示法
 
@@ -1644,40 +1692,6 @@ let cv = a.includes(4); // false
         console.log(e.errors);                    // [ Error: "some error" ]
 ```
 
-#### 8.class
-
-```js
-
-    class Person {
-        constructor(name, age) {
-            // 构造器中的this 实例对象
-            this.name = name;
-            this.age = age;
-        }
-        speak() {
-            // speak 在Person的原型对象身上
-            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age)
-        }
-    }
-
-// student继承Person
-    class student extends Person {
-        constructor(name, age, hoby) {
-            super(name, age)        // 显示调用父类构造器
-            this.hoby = hoby;
-        }
-        speak() {
-            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age + "我的爱好是" + this.hoby)
-
-        }
-    }
-    let stu = new student("张学友", 18, '唱歌');
-
-    // 总结:
-    // 1. 类中的构造器不是必须写的,如果要做一些初始化的操作 是要写的
-    // 2. 类中的方法都是放在原型上的
-
-```
 
 
 
@@ -1691,91 +1705,6 @@ let cv = a.includes(4); // false
 
 
 
-
-
-
-
-## 2. 浏览器相关
-
-### 1.冒泡、捕获、阻止、委托
-
-![image-20220407124751118](typora-user-images\image-20220407124751118.png)
-
-```js
-const div1 = document.querySelector('[class=div1]');
-const div2 = document.querySelector('[class=div2]');
-const div3 = document.querySelector('[class=div3]');
-const div4 = document.querySelector('[class=div4]');
-
-// 1. 全部是冒泡
-div1.addEventListener('click',function(){ console.log('冒泡div1');})
-div2.addEventListener('click',function(){ console.log('冒泡div2');})
-div3.addEventListener('click',function(){ console.log('冒泡div3');})
-div4.addEventListener('click',function(){ console.log('冒泡div4');})
-
-// 点击div4 冒泡4 > 冒泡3 > 冒泡2 > 冒泡1
-
-
-// 2. 全部是捕获
-div1.addEventListener('click',function(){ console.log('捕获div1');},true)
-div2.addEventListener('click',function(){ console.log('捕获div2');},true)
-div3.addEventListener('click',function(){ console.log('捕获div3');},true)
-div4.addEventListener('click',function(){ console.log('捕获div4');},true)
-
-// 点击div4 捕获1 > 捕获2 > 捕获3 > 捕获4
-
-
-
-// 3. 既有冒泡 又有捕获 又有目标元素冒泡与捕获
-div1.addEventListener('click', function () { console.log('捕获div1'); }, true)
-div2.addEventListener('click', function (e) {console.log('冒泡div2'); })
-div3.addEventListener('click', function () { console.log('捕获div3'); }, true)
-div4.addEventListener('click', function () { console.log('冒泡div4'); })
-div4.addEventListener('click', function () { console.log('捕获div4'); }, true)
-
-// 点击div4 捕获div1 > 捕获div3 > 捕获div4 > 冒泡div4 > 冒泡div2
-
-
-
-// 4. stopPropagation
-div1.addEventListener('click', function () { console.log("捕获div1"); }, true)
-div2.addEventListener('click', function () { console.log("冒泡div2"); })
-div3.addEventListener('click', function () { console.log('捕获div3'); }, true)
-div4.addEventListener('click', function (e) { console.log('冒泡div4'); e.stopPropagation(); })
-div4.addEventListener('click', function () { console.log('捕获div4'); }, true)
-
-// 点击div4  捕获div1 > 捕获div3 > 捕获div4 > 冒泡div4
-
-
-// 5.  stopPropagation 2
-div1.addEventListener('click', function () { console.log("捕获div1");}, true)
-div2.addEventListener('click', function (e) { console.log("冒泡div2"); event.stopPropagation();})
-div3.addEventListener('click', function () { console.log('捕获div3');}, true)
-div4.addEventListener('click', function () { console.log('冒泡div4');})
-div4.addEventListener('click', function () { console.log('捕获div4');}, true)
-
-// 点击 div4 捕获div1 > 捕获div3 > 捕获div4 > 冒泡div4 > 冒泡div2
-
-
-// 总结 阻止冒泡还是捕获 都是要走一遍 遇到event.stopPropagation()  整个事件流就停止了 
-// retrun false 听说也是 阻止 事件冒泡捕获  但是自己没有成功 （在dom2级别事件中）
-
-
-
-
-// 6. 事件委托
-document.querySelector("ul").addEventListener('click', function (e) {
-var event = e || window.event;
-var target = event.target || event.srcElement;
-if (target.nodeName.toLocaleLowerCase() === 'li') {
-	console.log('the content is: ', target.innerHTML);
-}
-});
-
-// 在上述代码中， target 元素则是在 #list 元素之下具体被点击的元素，
-// 然后通过判断 target 的一些属性（比如：nodeName，id 等等）可以更
-// 精确地匹配到某一类 #list li 元素之上；
-```
 
 
 
@@ -3028,7 +2957,80 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
 >
 > 　　alert(object.getNameFunc()());
 
+### 4. 防抖节流
 
+**1. 防抖**
+
+```js
+ const debounce = (fn, delay, middlate) => {
+        let dateCha = 0;
+        let timer = null;
+        let context, args;
+
+        const run = () => {
+            timer = setTimeout(() => {
+                fn.apply(context, args)
+            }, delay)
+        }
+
+
+        return function () {
+            context = this;
+            args = arguments;
+            let now = new Date().getTime();
+            if (middlate) {
+                fn.apply(context, args)
+                middlate = false;
+            }
+            if (now - dateCha < delay) {
+                clearTimeout(timer)
+                run();
+            }
+            else {
+                run();
+            }
+            dateCha = now;
+        }
+    }
+
+    function moseMove(){
+        console.log(this);
+        console.log(123);
+    }
+    document.addEventListener('mousemove', debounce(moseMove, 1000, true))
+```
+
+**2.节流**
+
+```js
+    function mouseMove() {
+        console.log(456);
+    }
+
+    const throttling = (fn, delay, middlate) => {
+        let timer = null;
+        let context, args;
+
+        const run = () => {
+            timer = setTimeout(() => {
+                fn.apply(context, args);
+                clearTimeout(timer);
+                timer = null;
+            }, delay)
+        }
+
+        return function() {
+            context = this;
+            args = arguments;
+            if (middlate) {
+                fn.apply(context, args);
+                middlate = false;
+            }
+            if (!timer) run();
+        }
+    }
+    document.addEventListener('mousemove', throttling(mouseMove, 3000, true))
+```
 
 
 
@@ -3181,7 +3183,7 @@ Object.defineProperty(person, 'age', {
 
 ### 6.过滤器
 
-```vue
+```js
  {{time | timeFormat}}
  {{time | timeFormat('YYYY-MM-DD') | mySlice}}		//过滤器可以叠加
  {{name | mySlice}}
@@ -3278,7 +3280,7 @@ Vue.directive('big-number', (element, binding) => {
 
 ### 9. 生命周期
 
-```
+```js
  this.$destroy();  调用 beforeDestroy 和destroyed的函数 可以在里面做一些清除定时器 取消订阅消息等等操作
  			
 ```
@@ -3464,7 +3466,7 @@ $route.query.title
 
 2.简化跳转
 
-```
+```vue
 <!--简化前，需要写完整的路径 -->
 <router-link to='/demo/test/welcome'></router-link>
 
@@ -3476,7 +3478,7 @@ $route.query.title
 
 1.路由配置
 
-```
+```json
 {
 ​          path:'message',
 ​          component:Message,
@@ -3492,7 +3494,7 @@ $route.query.title
 
 2.路由传参
 
-```
+```json
 	 <!-- 跳转并携带params参数, to的字符串写法 -->
 ​    <!-- <router-link :to="`/home/message/detail/${val.id}/${val.title}`">{{val.title}}</router-link> -->
 
@@ -3577,7 +3579,7 @@ export default {
 
   
 
-```
+```vue
 <button @click='$router.back()'>后退</button>
 <button @click="$router.forward()">前进</button>
 <button @click="$router.go(0)">go(0)</button>
@@ -3610,7 +3612,7 @@ export default {
 
 2.使用:
 
-```
+```vue
 <!-- keep-alive  include 匹配的是组件的名字(name) 如果不写include 那么就是缓存所有的路由组件 两
 	种写法 include='' 或者 :include='["a","b"]'
 	缓存了两个路由组件
@@ -4947,6 +4949,53 @@ b. 真实dom
 
 ### 4. 类式组件
 
+**1. es6中的类**
+
+```js
+
+    class Person {
+        constructor(name, age) {    //构造器得作用 初始化一些值
+            // 构造器中的this 实例对象
+            this.name = name;
+            this.age = age;
+        }
+        speak() {
+            // speak 在Person的原型对象身上
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age)
+        }
+    }
+
+
+    class student extends Person {
+        constructor(name, age, hoby) {
+            super(name, age)        // 显示调用父类构造器
+            this.hoby = hoby;
+        }
+        speak() {
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age + "我的爱好是" + this.hoby)
+
+        }
+    }
+    let stu = new student("张学友", 18, '唱歌');
+
+
+    class Car {
+        // 没有写构造器
+        // 一下代码得含义是 给类得实例身上添加一个属性 a=1
+        a = 1;
+    }
+    let c1 = new Car();
+    console.log(c1)     // Car{ a=1 }
+
+    // 总结:
+    // 1. 类中的构造器不是必须写的,如果要做一些初始化的操作 是要写的
+    // 2. 类中的方法都是放在原型上的
+
+
+```
+
+**2. 组件编程:**
+
 ```jsx
   class MyComponent extends React.Component {
         render() {
@@ -4966,19 +5015,2430 @@ b. 真实dom
 
 ```
 
+### 5. 组件中this指向问题
+
+```react
+
+    class Weather extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { isHot: true }
+            this.changeWeather = this.changeWeather.bind(this)    // 把原型上的changWeather通过bind生成一个新的实例上的方法
+        }
+
+        changeWeather() {
+            // this.setState({
+            //     isHot=!isHot
+            // })
+            console.log(" changeWeather", this);  	// this是weather实例对象
+            this.changeWeather2();
+        }
+
+        changeWeather2() {
+            console.log(" changeWeather2", this);	// this是weather实例对象
+            // this.changeWeather();
+        }
+
+        render() {
+            console.log(this); 						// this是weather实例对象 因为在类组件的原型上
+            const { isHot } = this.state;
+            return (
+                // onClick={this.changeWeather} 由于changeWeather是通过onClick的回调 
+                // 直接调用 所以它里面的this是undefined
+                // 相当于  const x =this.changeWeather
+                // x();  所以this指向发生了改变 
+                // 解决方案  this.changeWeather = this.changeWeather.bind(this)
+                <div id="content" onClick={this.changeWeather}>
+                    <h1>今天天气很{isHot ? '炎热' : '凉爽'}</h1>
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(<Weather />, document.getElementById("div"))
+
+```
+
+### 6. state
+
+1. state是组件对象最重要的属性,值是对象(可以包含多个key value的组合)
+
+2. 组件被称为"状态机",通过更新组件的state来更新对应的页面的显示(或者更新渲染组件) 
+
+3. 组件中render方法中的this为组件实例对象
+
+4. 组件自定义方法中的this为undefined
+
+   a. 强制绑定this，通过函数对象的bind()
+
+   b. 箭头函数
+
+   **两者区别: bind()只绑定一次 箭头函数会重复创建**
+
+5. 状态数据,不能直接修改或者更新
+
+```react
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body,
+        html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 700px;
+        }
+
+        #content {
+            width: 300px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: wheat;
+            font-weight: 700;
+            border: 1px solid saddlebrown;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/babel">
 
 
-### 5.
+    class Weather extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { isHot: true }
+            this.changeWeather = this.changeWeather.bind(this)    // 把原型上的changWeather通过bind生成一个新的实例上的方法
+        }
 
-6.
+        changeWeather() {
+            console.log(" changeWeather", this);     // this是weather实例对象
+            let { isHot } = this.state;
+            this.setState({ isHot: !isHot })
 
-7.
+            this.changeWeather2();  
+        }
 
-8.
+        changeWeather2() {
+            console.log(" changeWeather2", this);    // this是weather实例对象
+           
+        }
 
-9.
+        render() {
+            console.log(this); // this是weather实例对象 因为在类组件的原型上
+            const { isHot } = this.state;
+            return (
+                // onClick={this.changeWeather} 由于changeWeather是通过onClick的回调 直接调用 所以它里面的this是undefined
+                // 所以得加上 this.changeWeather = this.changeWeather.bind(this)
+                //  相当于  const x =this.changeWeather
+                //  x();  所以this指向发生了改变 
+                <div id="content" onClick={this.changeWeather}>
+                    <h1>今天天气很{isHot ? '炎热' : '凉爽'}</h1>
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(<Weather />, document.getElementById("div"))
 
-10.
+</script>
+
+```
+
+**2.简写方式**
+
+```react
+	// 2 简写方式
+    class Weather extends React.Component {
+
+        state = { isHot: true }
+        changeWeather = () => {
+            let { isHot } = this.state;
+            this.setState({ isHot: !isHot })
+        }
+        render() {
+            const { isHot } = this.state;
+            return (
+                <div id="content" onClick={this.changeWeather}>
+                    <h1>今天天气很{isHot ? '炎热' : '凉爽'}</h1>
+                </div>
+            )
+        }
+    }
+```
+
+### 7. props
+
+1. 每个组件都有props属性(properties的简写)属性
+2. 组件标签的所有属性都包含在props中
+
+3. props是从外部带进去的
+
+4. props是只读的，不要修改props的值
+
+**1. code案列**
+
+```react
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+    <div id="div3"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+
+
+<script type="text/babel">
+
+    // props是从外部带进去的
+    class Person extends React.Component {
+        
+        constructor(){
+            super()
+            console.info(props);  // undefend  // 如果要接收到props在初始化的时候判断 则得接受
+        }
+        render() {
+            const { name, age, sex } = this.props;  // props是只读的
+            return (
+                <ul>
+                    <li>{name}</li>
+                    <li>{age}</li>
+                    <li>{sex}</li>
+                </ul>
+            )
+        }
+    }
+
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,  //限制name必传,且为字符串
+        sex: PropTypes.string,
+        age: PropTypes.number,  // 限制age为数字
+        speak: PropTypes.func,  // 限制speak为函数
+    }
+    
+    Person.defaultProps = {
+        sex: "nan", // 默认值
+        age: 18
+    }
+
+    function speak() {
+        console.log("我会说话");
+    }
+
+    ReactDOM.render(<Person name="张三" age={18} sex="女" />, document.getElementById("div1"))  // 18 为数字
+
+    const p = { name: "张三", age: 20, speak }
+    ReactDOM.render(<Person {...p} />, document.getElementById("div2"))
+
+</script>
+```
+
+**2. 简写方式**
+
+```react
+	// 2. 简写方式
+    class Person extends React.Component {
+        
+        static propTypes = {
+            name: PropTypes.string.isRequired,  //限制name必传,且为字符串
+            sex: PropTypes.string,
+            age: PropTypes.number,  // 限制age为数字
+            speak: PropTypes.func,  // 限制speak为函数
+        }
+        static defaultProps = {
+            sex: "nan", // 默认值
+            age: 18
+        }
+
+        render() {
+            const { name, age, sex } = this.props;  // props是只读的
+            return (
+                <ul>
+                    <li>{name}</li>
+                    <li>{age}</li>
+                    <li>{sex}</li>
+                </ul>
+            )
+        }
+    }
+   
+    // Person.propTypes 等价于 static defaultProps
+
+    function speak() {
+        console.log("我会说话");
+    }
+
+    ReactDOM.render(<Person name="张三" age={18} sex="女" />, document.getElementById("div1"))  // 18 为数字
+
+    const p = { name: "张三", age: 20, speak }
+    ReactDOM.render(<Person {...p} />, document.getElementById("div2"))
+
+```
+
+**3. 函数写法**
+
+```react
+ 	// 3. 函数组件
+	// const Person = props =>{} 箭头函数方式
+    function Person(props) {
+        const { name, age, sex, speak } = props;  // props是只读的
+        return (
+            <ul>
+                <li>{name}</li>
+                <li>{age}</li>
+                <li>{sex}</li>
+                <li>{speak()}</li>
+            </ul>
+        )
+    }
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,  //限制name必传,且为字符串
+        sex: PropTypes.string,
+        age: PropTypes.number,  // 限制age为数字
+        speak: PropTypes.func,  // 限制speak为函数
+    }
+    Person.defaultProps = {
+        sex: "nan", // 默认值
+        age: 100,
+        speak: function () {
+            return "default speak"
+        }
+    }
+    function speak() {
+        return "speak"
+    }
+
+    ReactDOM.render(<Person name="张三" age={18} sex="女" />, document.getElementById("div1"))  // 18 为数字
+
+    const p = { name: "张三", speak }
+    ReactDOM.render(<Person {...p} />, document.getElementById("div2"))
+```
+
+### 8. refs
+
+1. 组件内标签可以定义refs属性来标识自己
+
+![image-20220415194001876](typora-user-images\image-20220415194001876.png)
+
+```react
+    // 状态更新 ref内联写法 会被调用两次 但是问题不大
+    class Demo extends React.Component {
+
+        state = { isHot: true }
+        showData = () => {
+            console.log(this.input1.value)
+        }
+        // 直接调用方式
+        saveInput = c => {
+            this.input2 = c;
+
+        }
+        showData2 = () => {
+            console.log(this.input2.value)
+        }
+
+        changeWeather = v => {
+            const { isHot } = this.state;
+            this.setState({ isHot: !isHot })
+        }
+
+        render() {
+            const { isHot } = this.state;
+            return (
+                <div>
+                    // 内联方式 
+                    <input ref={c => { this.input1 = console.log("@", c) }} type="text" placeholder="请输入人文字" />&nbsp;
+                    <button onClick={this.showData}>点击我弹出文字</button>
+                    &nbsp;
+                    {/* 以下ref方式直接调用方式*/}
+                    <input onBlur={this.showData2} ref={this.saveInput} type="text" placeholder="失去焦点弹出" />
+                    <h2>今天天气很{isHot ? '炎热' : '凉爽'}</h2>
+                    <button onClick={this.changeWeather}>点击我跟新组件状态</button>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Demo />, document.getElementById("div"));
+```
+
+**2. createRef形式**
+
+```react
+ //  2.  createRef 形式
+    class Demo extends React.Component {
+
+        myRef = React.createRef();
+        myRef2 = React.createRef();
+
+        showData = () => {
+          const {current}=  this.myRef
+          console.log(current.value);
+        }
+
+        showData2 = () => {
+            const {current}=  this.myRef2
+          console.log(current.value);
+        }
+
+        render() {
+            return (
+                <div>
+                    <input ref={this.myRef} type="text" placeholder="请输入人文字" />&nbsp;
+                    <button onClick={this.showData}>点击我弹出文字</button>
+                    &nbsp;
+                    <input onBlur={this.showData2} ref={this.myRef2} type="text" placeholder="失去焦点弹出" />
+
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Demo />, document.getElementById("div"));
+```
+
+
+
+
+
+### 9. 事件处理
+
+
+
+1. 通过onXxx属性指定事件处理函数(注意大小写)
+
+  		a. React使用的是自定义(合成)事件,而不是使用原生DOM事件  ————为了更好的兼容性
+  	
+  	   b. React中的事件是通过事件委托方式处理的(委托给最外层的元素) ————为了高效
+
+2. 通过event.target得到发生事件的DOM元素对象            ————不要过度使用ref
+
+
+
+### 10. 受控/非受控组件
+
+1. 受控组件: 页面上所有输入类的DOM  随着用户的输入把数据维护状态中去 等用的时候直接从状态中取 
+
+2. 非受控组件: 页面上所有输入类的DOM 现用现取， 非受控组件上有时候不可避免的使用ref 但是ref不推荐过多使
+
+**1. 非受控组件**
+
+```react
+   class Login extends React.Component {
+
+        handleSubmit = (e) => {
+            let { username, password } = this
+            console.log(username.value, password.value);
+            e.preventDefault();
+
+        }
+        render() {
+            return (
+                <form action="http://www.baidu.com" onSubmit={this.handleSubmit}>
+                    <input ref={c => this.username = c} type="text" name="username" />
+                    <input ref={c => this.password = c} type="password" name="password" />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+```
+
+**2. 受控组件**
+
+```react
+ class Login extends React.Component {
+
+        state = { username: "", password: "" }
+        handleSubmit = (e) => {
+            let { username, password } = this.state
+            console.log(username, password);
+            e.preventDefault();
+
+        }
+        saveUsername = (event) => {
+            this.setState({
+                username: event.target.value
+            })
+        }
+        savePassword = (event) => {
+            this.setState({
+                password: event.target.value
+            })
+        }
+
+        render() {
+            return (
+                <form action="http://www.baidu.com" onSubmit={this.handleSubmit}>
+                    <input onChange={this.saveUsername} type="text" name="username" />
+                    <input onChange={this.savePassword} type="password" name="password" />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+
+    ReactDOM.render(<Login />, document.getElementById("div"))
+
+```
+
+### 11.高阶函数/函数柯里化
+
+1. **高阶函数: 一个函数的参数或者返回值为函数  那么这个函数成为之高阶函数 Promise/setTimerout/Array.Map(()=>) ...**
+2. **函数柯里化: 通过函数调用继续返回函数的方式 ，实现多次接收参数最后统一处理的编码方式**
+
+```react
+	
+    class Login extends React.Component {
+
+        state = { username: "", password: "" }
+        handleSubmit = (e) => {
+            let { username, password } = this.state
+            console.log(username, password);
+            e.preventDefault();
+
+        }
+
+        // 接收的参数统一处理  dataType event 统一处理
+        // saveFromData = (dataType) => {
+        //     return (event) => {
+        //         this.setState({ [dataType]: event.target.value })
+
+        //     }
+        // }
+
+        // 简写: 
+        saveFromData = dataType => event => this.setState({ [dataType]: event.target.value })
+
+        render() {
+            return (
+                <form action="http://www.baidu.com" onSubmit={this.handleSubmit}>
+                    <input onChange={this.saveFromData('username')} type="text" name="username" />
+                    <input onChange={this.saveFromData('password')} type="password" name="password" />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+
+
+
+
+    	// 2. 不用柯里化的方式
+    
+        // saveFromData = (dataType, event) => {
+        //     this.setState({ [dataType]: event.target.value })
+        // }
+
+        // 简写: 
+        saveFromData = (dataType, event) => this.setState({ [dataType]: event.target.value })
+       
+        <input onChange={event => this.saveFromData('username', event)} type="text" name="username" />
+        <input onChange={event => this.saveFromData('password', event)} type="password" name="password" />
+    
+
+
+    	ReactDOM.render(<Login />, document.getElementById("div"))
+
+```
+
+### 12. 生命周期
+
+**1. 初始化阶段: 由ReactDom.render()触发一次渲染**
+
+​      	**1.constructor()**
+
+​      	**2.componentWillMount()**
+
+​      	**3.render()**
+
+​      	**4.componentDidMount() ==> 常用 一般在这个钩子做一些初始化的事情，开启定时器，发送网络请求，订阅消息**
+
+  **2. 更新阶段 由组件内部this.setState()或父组件render触发**
+
+​     	 **1.shouldComponentUpdate()**
+
+​      	**2.componentWillUpdate()**
+
+​      	**3.render() ===> 必须使用的一个**
+
+​      	**4.componentDidUpdate()**
+
+  **3. 卸载组件: 由ReactDOM.unmountComponentAtNode() 触发**
+
+​      	**1.componentWillUnmount()  一般做一些收尾的事。例如 关闭定时器,取消订阅**
+
+​       							
+
+**1. 旧的** 
+
+![image-20220416170548259](\typora-user-images\image-20220416170548259.png)
+
+#### a. code
+
+```react
+	<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+<script type="text/babel">
+
+    class Fu extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { count: 1 }
+            console.log("Fu---constructor");
+        }
+        componentWillMount() {
+            console.log("Fu---componentWillMount");
+        }
+
+
+        componentDidMount() {
+            console.log("Fu---componentDidMount");
+        }
+
+
+        shouldComponentUpdate() {
+            console.log("Fu---shouldComponentUpdate");
+            return true;
+        }
+
+        // 更新之前
+        componentWillUpdate() {
+            console.log("Fu---componentWillUpdate");
+        }
+        // 更新完成
+        componentDidUpdate() {
+            console.log("Fu---componentDidUpdate");
+        }
+        componentWillReceiveProps(props){
+           ;
+            console.log("Fu---componentWillReceiveProps",props);
+        }
+
+        // 卸载
+        componentWillUnmount() {
+            console.log("Fu---componentWillUnmount");
+        }
+        add = e => {
+            let { count } = this.state;
+            this.setState({ count: count + 1 })
+        }
+        death = e => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("div"))
+        }
+
+        force = e => {
+            this.forceUpdate();
+        }
+
+        render() {
+            console.log("Fu---render");
+            let { count } = this.state;
+            return (
+                <div >
+                    <h1>{count}</h1>
+                    <button onClick={this.add}>点我加1</button>
+                    <button onClick={this.death}>卸载</button>
+                    <button onClick={this.force}>强制更新,没有更改状态force</button>
+                    <br/>
+                    <br/>
+
+                    <Zi count={count} ></Zi>
+                </div>
+            )
+        }
+    }
+
+
+    
+    class Zi extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { count: 1 }
+            console.log("Zi---constructor");
+        }
+        componentWillReceiveProps(props){
+            console.log("Zi---componentWillReceiveProps",props);
+        }
+        componentWillMount() {
+            console.log("Zi---componentWillMount");
+        }
+
+
+        componentDidMount() {
+            console.log("Zi---componentDidMount");
+        }
+
+
+        shouldComponentUpdate() {
+            console.log("Zi---shouldComponentUpdate");
+            return true;
+        }
+
+        // 更新之前
+        componentWillUpdate() {
+            console.log("Zi---componentWillUpdate");
+        }
+        // 更新完成
+        componentDidUpdate() {
+            console.log("Zi---componentDidUpdate");
+        }
+
+        // 卸载
+        componentWillUnmount() {
+            console.log("Zi---componentWillUnmount");
+        }
+        add = e => {
+            let { count } = this.state;
+            this.setState({ count: count + 1 })
+        }
+        death = e => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("div"))
+        }
+
+        force = e => {
+            this.forceUpdate();
+        }
+
+        render() {
+            console.log("Zi---render");
+
+            return (
+                <div>
+                    <h1>{this.props.count}</h1>
+                    <button onClick={this.add}>点我加1</button>
+                    <button onClick={this.death}>卸载</button>
+                    <button onClick={this.force}>强制更新,没有更改状态force</button>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Fu/>, document.getElementById("div"))
+
+</script>
+```
+
+**运行图: 第一个父 第二个是子**
+
+![image-20220416193950484](\typora-user-images\image-20220416193950484.png)
+
+#### b. 执行情况
+
+```react
+
+1. 初始化阶段
+    Fu---constructor
+    Fu---componentWillMount
+    Fu---render
+    Zi---constructor
+    Zi---componentWillMount
+    Zi---render
+    Zi---componentDidMount
+    Fu---componentDidMount
+
+2. 父组件点击点我加1 更新状态
+	Fu---shouldComponentUpdate		阀门
+    Fu---componentWillUpdate		
+    Fu---render
+   	Zi---componentWillReceiveProps {count: 2}
+    Zi---shouldComponentUpdate
+    Zi---componentWillUpdate
+   	Zi---render
+    Zi---componentDidUpdate
+    Fu---componentDidUpdate
+
+3. 父组件点击 强制更新没有更改状态
+	继上个输出只是少了个shouldComponentUpdate  因为force 在componentWillUpdate阶段 看图
+    
+4. 子组件点击 点我加1 更新状态 (并不影响父组件)
+    Zi---shouldComponentUpdate
+    Zi---componentWillUpdate
+    Zi---render
+    Zi---componentDidUpdate
+
+
+```
+
+
+
+**2. 新的钩子**
+
+旧的废弃了3个will 新的增加了2个
+
+![image-20220416205434734](\typora-user-images\image-20220416205434734.png)
+
+
+
+### 13. Diff算法
+
+![image-20220417153218216](\typora-user-images\image-20220417153218216.png)
+
+```react
+let person = [
+        { id: 1, name: '张三', age: 18 },
+        { id: 2, name: '李四', age: 20 },
+    ]
+    let date = new Date();
+
+    class Person extends React.Component {
+        state = { person, date }
+
+        componentDidMount() {
+            setInterval(() => {
+                this.setState({
+                    date: new Date()
+                })
+
+            }, 1000)
+        }
+
+
+        add = e => {
+            let { person } = this.state
+            let p = { id: person.length + 1, name: '李四', age: 20 }
+            this.setState({
+                person: [p, ...person]
+            })
+        }
+
+        render() {
+
+            let { date, person } = this.state
+            return (
+                <div>
+                    <h1>日期:{date.toString()}</h1>
+                    <button onClick={this.add}>添加一个人员</button>
+                    <ul>
+                        {
+                            // index作为key的弊端  1. 性能问题  2 .对比错位
+                            // person.map((item, index) => <li key={index}>{JSON.stringify(item)}<input type="text" /></li>)
+                            person.map((item, index) => <li key={item.id}>{JSON.stringify(item)}<input type="text" /></li>)
+                        }
+                    </ul>
+                </div>
+            )
+        }
+
+    }
+```
+
+**如果使用index引发的问题**
+
+![image-20220417161337912](\typora-user-images\image-20220417161337912.png) 
+
+![image-20220417153059921](\typora-user-images\image-20220417153059921.png)
+
+## 2. 第二部分
+
+### 1.react应用(基于react脚手架)
+
+```react
+a.脚手架: 用来帮助程序员快速的创建一个基于xxx的模型项目
+
+    1.包含了所有需要的配置 (语法检查,jsx编译,devServer...)
+    2.下载了所有的相关依赖
+    3.可以直接运行一个简单效果
+
+b.react提供了一个用于创建react项目的脚手架架构 create-react-app
+
+	1.项目整体技术架构为 react+webpack+es6+eslint
+	2.使用脚手架开发项目的特点，模块化、组件化、工程化
+
+
+e.创建项目并启动
+
+    1.全局安装 npm install -g create-react-app
+    2.创建项目: create-react-app hello-react
+    3. cd hello-react
+    4. npm start
+
+```
+
+### 2. React路由
+
+**1. spa的理解**
+
+1. 单页应用(single page web application, SPA)。
+2. 整个页面只有一个**完整的页面**
+
+3. 点解页面中的链接**不会刷新**页面，只会做页面的**局部更新**
+
+4. 数据都要通过axios获取, 并在前端异步展现
+
+**2. 路由的理解**
+
+​	**1. 什么是路由?**
+
+​		a. 一个路由就是一个映射关系(key：value)
+
+​		b.key为路径,value可能是function或者 component 
+
+​	**2. 路由的分类**
+
+​		a. 后端路由:
+
+​			Ⅰ. 理解: value是function，用来处理客户端的请求
+
+​			Ⅱ. 注册路由: router.get(path,function(req,res))
+
+​			Ⅲ. 工作过程：当node接收到一个请求时,根据请求路径找到匹配的路由,调用路由中的函数来处理请求,返回响应数据
+
+​		b. 前端路由:
+
+​			Ⅰ. 浏览器端路由, value是componet，用于展现页面内容
+
+​			Ⅱ. 注册路由: <Route path="/test" component={Test}>
+
+​			Ⅲ.工作过程: 当浏览器的path变为/test时,当前路由组件就会变成Test组件
+
+​	**3. react-router 的理解**
+
+​		a. react的一个插件库
+
+​		b. 专门用来实现一个 spa应用
+
+​		c. 基于react的项目基本都会用到此库
+
+​	**4. react-router-dom相关Api**
+
+```react
+	1. <BrowerRouter>
+	2. <HashRouter>
+	3. <Route>
+    4. <Redirect>
+    5. <Link>
+    6. <NavLink>
+    7. <Switch>
+    8.
+```
+
+​	**5. 其他**
+
+```
+ 	1. history对象
+ 	2. match对象
+ 	3. withRouter函数
+```
+
+**6. 用法  6.0之后** 
+
+```react
+ 	导航区:   <Link to="/about">About</Link>
+ 			 <Link to="/home">Home</Link>
+
+
+	展示区:
+ 			 <Routes>
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+             </Routes>
+ 
+	路由器:  <BrowserRouter> 
+        		<App/>	
+        	<BrowserRouter/>
+ 
+ 	
+```
+
+**7. 组件分类**
+
+一般组件:  直接引入的就是一般组件 一般放在components文件夹
+	
+路由组件:  靠路由渲染的组件 称为路由组件 一般放在pages文件夹
+
+
+
+
+
+
+
+### 3. React Router 6快速上手
+
+#### 1. 概述
+
+1. React Router 以三个不同的包发布到npm上，他们分别为:
+   1. react-router: 路由的核心库,提供了很多的 组件， 钩子
+   2. <span style="color:red">**react-router-dom: 包含了react-router所有内容,并添加了一些专门用于DOM的组件，例如<BrowserRouter>等**</span>
+   3. react-router-native: 包括了react-router所有内容,并添加了一些专门用于ReactNative的API,例如<NativeRouter>等
+2. 与React router 5.x版本相比,改变了什么
+   1. 内置组件的变化：移除了<Switch/> 新增<Routes/>等.
+   2. 语法的变化,component={About} 改为 element={<About/>}等
+   3. 新增了多个hook: useParams、useNavigate、useMatch等
+   4. <span style="color:red">**官方明确推荐使用函数式组件了**</span>
+
+#### 2. Component
+
+##### 1. `<BrowerRouter>`
+
+1. 说明:BrowerRoute用于包裹整个应用
+
+2. 示例代码:
+
+   ```react
+   import React from 'react';
+   import ReactDOM from 'react-dom/client';
+   import { BrowserRouter } from 'react-router-dom'
+   
+   
+   
+   const root = ReactDOM.createRoot(document.getElementById('root'));
+   root.render(
+       <BrowserRouter>
+           { /*整体结构,通常为App组件*/}
+       </BrowserRouter>
+   
+   );
+   ```
+
+
+
+
+##### 2. `<HashRouter>`
+
+1.说明:作用与BrowserRouter一样,但hashRouter修改的是地址栏的hash值
+
+2.备注:6.x版本中hashRouter、BrowserRouter用法一致
+
+
+
+##### 3. `<Routes/> 与 <Route/>`
+
+1. v6版本中移除了先前的<Switch/>引入了新的替代者:<Routes/>
+
+2. <Routes>和<Route>要配合使用,且必须要用<Routes>包裹<Route>
+
+3. <Route>相对于一个if语句,如果路径与当前URL匹配,则呈现其对应的组件。
+
+4. <Route caseSensitive>属性用于指定: 匹配时是否区分大小写(默认为false)。
+5. 当URL发生变化时,<Routes>都会查看其所有子<Route>元素以找到最佳匹配并呈现组件.
+6. <Route>也可以嵌套使用.且配合`useRoute()`配置 ”路由表“ ,但需要通过<Outlet>组件来渲染其子路由
+
+##### 4. `<Link>`
+
+```react
+
+<Link to="/home">  Home  </NavLink>
+ 
+ 
+```
+
+
+
+##### 5. `<NavLink>`
+
+**写法有些不同,这个函数会重复渲染,比如同级路由 这个路由的子路由触发的 它都渲染**
+
+```react
+6.x版本之后 ClassName得写一种回调得方式:
+
+home为原生行内写法
+about为定义了一个函数的写法
+
+
+export default function App() {
+    
+  const computedClassName = ({ isActive }) => {
+    return isActive ? "colorRed" : "";
+  };
+  return (
+    <div>
+      <h1>庄子·逍遥游丨</h1>
+      <div id="main">
+        <div id="left">
+          <ul>
+            <li>
+              <NavLink
+                className={({ isActive }) => (isActive ? "colorRed" : "")}
+                to="/home"
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className={computedClassName} to="/about">
+                About
+              </NavLink>
+            </li>
+          </ul>
+```
+
+
+
+##### 6. `<Navigate>` 
+
+**重定向：**
+
+1. 作用: 只要<Navigate>组件被渲染,就会修改路径,切换视图.
+
+2. `replace`属性用于控制跳转的模式 (push 或 replace, 默认是push)。
+
+3. 示例代码:
+
+   ```react
+    
+   第一种:
+   <Routes>
+       <Route path="/home" element={<Home a={"123"} />} />
+       <Route path="/about" element={<About />} />
+       <Route path="/" element={<Navigate to="/about" />} />
+   </Routes>
+   
+   第二种:
+   import React, { useState } from "react";
+   import { Navigate } from "react-router-dom";
+   
+   export default function Home() {
+     let [sum, setSum] = useState(1);
+     return (
+       <div>
+         <h2>我是home组件</h2>
+         {/* Navigate 跳转 replace={替换路径} */}
+         {sum === 2 ? (
+           <Navigate to="/about/" replace={true} />
+         ) : (
+           <h4>当前的sum值是:{sum}</h4>
+         )}
+         <button onClick={() => setSum(2)}>点我将sum变为2</button>
+       </div>
+     );
+   }
+   ```
+
+##### 7. `<Outlet>`
+
+```react
+Home组件:
+<NavLink to="news">News</NavLink>&nbsp;&nbsp;
+<NavLink to="Message">Message</NavLink><br /><br />
+
+<div style={{height:100,backgroundColor:"yellow"}}>
+	 {/* 指定路由组件展示的位置 */}
+ <Outlet/>		// 有多级路由 就在这个位置展示
+</div>
+```
+
+
+
+#### 3. Hooks
+
+##### 1. useRoutes()
+
+**路由列表**
+
+```react
+import React from "react";
+import { Navigate, NavLink, useRoutes } from "react-router-dom";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+
+import "./App.css";
+
+export default function App() {
+
+ const element = useRoutes([
+    {
+      path: "/home",
+      element: <Home />,
+      children: [
+        {
+          path: "news",
+          element: <News />,
+        },
+        {
+          path: "message",
+          element: <Message />,
+        },
+        // { path: "/home", element: <Navigate to="/home/news" /> },
+      ],
+    },
+    { path: "/about", element: <About /> },
+    { path: "/", element: <Navigate to="/home" /> },
+  ]);
+  const computedClassName = ({ isActive }) => {
+    console.log(isActive);
+    return isActive ? "colorRed" : "";
+  };
+
+  return (
+    <div>
+      <h1>庄子·逍遥游丨</h1>
+      <div id="main">
+        <div id="left">
+          <ul>
+            <li>
+              <NavLink className={computedClassName} to="/home">
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className={computedClassName} to="/about">
+                About
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+        <div id="right">{element}</div>
+      </div>
+    </div>
+  );
+}
+
+Home组件:
+<NavLink to="news">News</NavLink>&nbsp;&nbsp;
+<NavLink to="Message">Message</NavLink><br /><br />
+
+<div style={{height:100,backgroundColor:"yellow"}}>
+	 {/* 指定路由组件展示的位置 */}
+ <Outlet/>		// 有二级路由 就在这个位置展示
+</div>
+
+```
+
+
+
+##### 2. useNavigate()
+
+**编程式路由导航**
+
+```react
+import React, { useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+export default function Message() {
+  const navigate = useNavigate();
+    // navigate(1) 前进
+    // navigate(-1) 后退
+
+  const lookDetail = (v) => {
+   
+    navigate("detail", {
+      replace: false,       // 是否替换
+      state: {
+        id: v.id,
+        title: v.title,
+        context: v.context,
+      },
+    });
+  };
+
+  const [message] = useState([
+    { id: "001", title: "消息1", context: "锄禾日当午" },
+    { id: "002", title: "消息2", context: "汗滴禾下土" },
+    { id: "003", title: "消息3", context: "谁知盘中餐" },
+    { id: "004", title: "消息4", context: "粒粒皆辛苦" },
+  ]);
+  return (
+    <div>
+      <ul>
+        {message.map((v) => {
+          return (
+            <li key={v.id}>
+              <Link
+                to="detail"
+                state={{
+                  id: v.id,
+                  title: v.title,
+                  context: v.context,
+                }}
+              >
+                {v.title}
+              </Link>
+              <button onClick={() => lookDetail(v)}>查看详情</button>
+            </li>
+          );
+        })}
+      </ul>
+      <Outlet />
+    </div>
+  );
+}
+接收参数 直接看useLocation 接收state类型的参数
+
+```
+
+
+
+##### 3. useParams()
+
+**路由接收params参数**
+
+```react
+路由列表	
+{
+  path: 'message',
+  element: <Message />,
+  children: [
+    {
+      path: 'detail/:id/:title/:context',   // params形式
+      element: <Detail />,
+    },
+  ],
+},
+
+
+//传参形式
+    
+import React, { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
+
+export default function Message() {
+  const [message] = useState([
+    { id: "001", title: "消息1", context: "锄禾日当午" },
+    { id: "002", title: "消息2", context: "汗滴禾下土" },
+    { id: "003", title: "消息3", context: "谁知盘中餐" },
+    { id: "004", title: "消息4", context: "粒粒皆辛苦" },
+  ]);
+  return (
+    <div>
+      <ul>
+        {message.map((v) => {
+          return (
+            <li key={v.id}>
+              <Link to={`detail/${v.id}/${v.title}/${v.context}`}>
+                {v.title}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <Outlet />
+    </div>
+  );
+}
+
+接收参数
+
+import React from 'react'
+import { useParams } from 'react-router-dom'
+
+export default function Detail() {
+
+    const { id, title, context } = useParams();
+
+    return (
+        <div>
+            <ul>
+                <li>{id}</li>
+                <li>{title}</li>
+                <li>{context}</li>
+            </ul>
+        </div>
+    )
+
+
+
+}
+
+
+
+```
+
+
+
+##### 4.useSearchParams()
+
+**接收参数的方式 search**
+
+```react
+路由规则不变
+ {
+      path: 'message',
+      element: <Message />,
+      children: [
+        {
+          path: 'detail',
+          element: <Detail />,
+        },
+      ],
+    },
+     
+  
+传参形式
+   
+ <Link to={`detail/?id=${v.id}&title=${v.title}&context=${v.context}}> {v.title}   
+  </Link>
+    
+接收参数  
+
+import React from 'react'
+import {  useSearchParams } from 'react-router-dom'
+
+export default function Detail() {
+
+    const [search, setSearch] = useSearchParams(); // setSearch用来设置路由参数 
+
+    const id = search.get('id');
+    const title = search.get('title');
+    const context = search.get('context');
+
+    return (
+        <div>
+            <ul>
+                <li>{id}</li>
+                <li>{title}</li>
+                <li>{context}</li>
+            </ul>
+        </div>
+    )
+
+}
+
+     
+
+```
+
+
+
+##### 5.useLocation()
+
+**接收state参数**
+
+```react
+
+路由规则不变
+ {
+      path: 'message',
+      element: <Message />,
+      children: [
+        {
+          path: 'detail',
+          element: <Detail />,
+        },
+      ],
+    },
+     
+  
+        
+传参形式
+ <li key={v.id}>
+      <Link
+        to="detail"
+        state={{
+          id: v.id,
+          title: v.title,
+          context: v.context,
+        }}
+      >
+        {v.title}
+      </Link>
+    </li>
+
+    
+接收参数  
+
+import React from 'react'
+import { useLocation } from 'react-router-dom'
+
+export default function Detail() {
+
+    const { state:{id,title,context} } = useLocation();
+
+    console.log(id)
+
+    return (
+        <div>
+            <ul>
+                <li>{id}</li>
+                <li>{title}</li>
+                <li>{context}</li>
+            </ul>
+        </div>
+    )
+}
+```
+
+
+
+##### 6. useMatch()
+
+
+
+### 4.Redux
+
+#### 1. Redux是什么
+
+1. redux是一个专门用于做<span style="color:red">**状态管理**</span>的js库(不是react插件库)
+
+2. 它可以用在React Vue Angular等多个项目中, 但是基本与React配合
+3. 作用: 集中式管理 react应用中多个组件<span style="color:red"> **共享** </span>的状态
+
+#### 2 .什么情况下需要使用Redux
+
+1. 某个组件的状态，需要让其他组件可以随时拿到 (共享)
+
+2. 一个组件需要改变另一个组件的状态 (通信)
+
+3. 总体原则: 能不用就不用,如果不用感觉到 **吃力** 才考虑使用
+
+#### 3. redux 工作流程
+
+![image-20220420175914349](\typora-user-images\image-20220420175914349.png)
+
+
+
+#### 4. Redux三个核心概念
+
+**1. action**
+
+1.  动作的对象
+2. 包含2个属性
+   * type : 标识属性，值为字符串 ,唯一必要属性
+   * data: 数据类型, 值类型任意,可选属性
+3. 例子: {type:'ADD_STUDENT',data:{name:'Tom',age:18}}
+
+
+
+**2. reducer**
+
+1. 用于初始化状态 和 加工状态
+2. 加工时,根究旧的state和action ，产生新的state的 <span style="color:red"> **纯函数** </span>
+
+
+
+**3. store**
+
+1. 将state、action、reducer联系在一起的对象
+2. 如何得到此对象
+   1.  import {createStore} from 'redux'
+   2. import reducer from './reducers'
+   3. const store =createStore(reducer)   
+3. 此对象的功能
+   1. getState() : 得到state
+   2. dispatch(action) : 分发action,触发 reducer调用,产生新的state
+   3. subscribe(listener) : 注册监听,当产生新的state时,自动调用
+
+#### 5. Redux的核心API
+
+1. reducer
+
+   combineReducers() 合并reducer
+
+2. store
+
+   createStore 创建一个stoer对象
+
+   dispatch(aciton) 分发一个action
+
+   subscribe() 检测更改了状态得state
+
+3. action
+
+​	middleaware 中间件
+
+ 
+
+
+
+#### 6. 求和案例
+
+![image-20220420202117301](\typora-user-images\image-20220420202117301.png)
+
+##### 1. 原生react写法
+
+```react
+import React from "react";
+
+export default class Count extends React.Component {
+  state = { count: 0 };
+  operation = (type) => {
+    return () => {
+      let { count } = this.state;
+      let { value } = this.selectNumber;
+
+      if (type === "increment") {
+        count += value * 1;
+      }
+      if (type === "decrement") {
+        count -= value * 1;
+      }
+      if (type === "addIncrement") {
+        if (count % 2 !== 0) {
+          count += value * 1;
+        }
+      }
+
+      this.setState({ count });
+    };
+  };
+  asycIncrement = () => {
+   
+    setTimeout(() => {
+        let { count } = this.state;
+        let { value } = this.selectNumber;
+    //   count += value * 1;
+    //   this.setState({ count:this.state.count+this.selectNumber.value*1 });
+      count += value * 1;
+      this.setState({ count});
+    }, 1000);
+  };
+
+  render() {
+    let { count } = this.state;
+    return (
+      <div>
+        <h1>当前求和为: {count}</h1>
+        <br />
+        <select ref={(c) => (this.selectNumber = c)} style={{ width: 100 }}>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        &nbsp;
+        <button onClick={this.operation("increment")} style={{ width: 100 }}>
+          +
+        </button>
+        &nbsp;
+        <button onClick={this.operation("decrement")} style={{ width: 100 }}>
+          -
+        </button>
+        &nbsp;
+        <button onClick={this.operation("addIncrement")}>
+          当前求和为奇数再加
+        </button>
+        &nbsp;
+        <button onClick={this.asycIncrement}>异步加</button>
+      </div>
+    );
+  }
+}
+
+```
+
+##### 2. 简单版的求和
+
+1. 要引入redux包 npm i redux -S
+
+​	**总结:**
+
+​	a. 去除Count组件自身的状态
+
+​	b.  src文件夹下建立:
+
+​					--rdeux
+
+​							--store.js
+
+​							--count_Reducer.js
+
+​	c.  store.js
+
+​				1>> 引入redux中的createStore函数,创建一个store
+
+​				2>> .createStore调用时候要传入一个为其服务的reducer
+
+​				3>> 记得暴露store对象
+
+​	d. count_Reducer.js
+
+​				1.Reducer本质是一个纯函数,接收. preState,action 返回加工后的状态
+
+​				2.reducer有两个作用: 初始化状态,加工状态
+
+​				3.reducer被第一调用时候,是store自动触发的,传递的preState是undefined	
+
+​	e.  在index.js 中检测store中状态的改变,一旦发生改变重新渲染<App/>
+
+​			备注: redux只负责管理状态,至于状态的改变驱动着页面的显示,要靠我们自己写
+
+
+
+```react
+1. store.js
+// 整个应用只有一个store对象
+
+// 引入createStore,专门用于创建redux中最为核心的store对象
+import { legacy_createStore as createStore } from 'redux'
+// import {createStore } from 'redux'		//启用了所以用了上面写法
+
+//引入为Count组件服务的reducer
+import {countReducer} from './count_Reducer'
+
+// 暴露store
+export default createStore(countReducer)
+
+
+
+
+2. count_Reducer.js
+// 创建一个reducer, 本质是一个纯函数
+// 会接收到两个参数 一个是之前的对象 和动作对象action
+const initState = 0   //初始化
+export const countReducer = (preState = initState, action) => {
+    if (preState === undefined) preState = 0;        // 如果是初始化的时候
+    const { type, data } = action;   // action形式为 {type:'increment',data:1};
+    switch (type) {
+        case 'increment':
+            return preState + data
+        case 'decrement':
+            return preState - data
+        default:
+            return preState
+    }
+}
+
+
+
+3. 入口文件index.js 
+import store from './redux/store';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
+store.subscribe(() => {		// 不写这个store状态更改了 页面检测不到
+    root.render(<App />);
+
+})
+
+
+
+
+4. Count  组件
+import React from "react";
+import store from "../../redux/store";
+
+export default class Count extends React.Component {
+  operation = (type) => {
+    return () => {
+      const count = store.getState();
+      let { value } = this.selectNumber;
+
+      if (type === "increment")
+        store.dispatch({ type: "increment", data: value * 1 });  // store分发一个action
+      else if (type === "decrement")
+        store.dispatch({ type: "decrement", data: value * 1 });
+      else if (type === "addIncrement") {
+        if (count % 2 !== 0) {
+          store.dispatch({ type: "increment", data: value * 1 });
+        }
+      } else if (type === "asycIncrement") {
+        setTimeout(() => {
+          store.dispatch({ type: "increment", data: value * 1 });
+        }, 1000);
+      }
+    };
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>当前求和为: {store.getState()}</h1>
+         // 从上个例子copy html 不然很冗余
+    );
+  }
+}
+
+```
+
+##### 3. 完整版
+
+新增了两个文件:
+
+	1. count_Action.js 专门用于创建action对象
+	1. constant.js 放置编码忽略写错action中的 type
+
+```react
+1. count_Action.js
+
+// 专门为Count组件生成action对象
+import { INCREMENT, DECREMENT } from './constant'
+
+export const createIncrementAction = data => ({ type: INCREMENT, data })  //注意: 返回一个对象写法
+export const createDecrementAction = data => ({ type: DECREMENT, data })
+
+
+2.constant.js
+// 该模块是用于定义action对象中type类型的常量值  目的只有一个便于管理 防止程序员写错
+
+export const INCREMENT ='increment'
+export const DECREMENT ='decrement'
+
+
+3. count组件
+import store from "../../redux/store";
+import {
+  createIncrementAction,
+  createDecrementAction,
+} from "../../redux/count_Action";
+
+export default class Count extends React.Component {
+  incrementAction = () => {
+    let { value } = this.selectNumber;
+    store.dispatch(createIncrementAction(value * 1));
+  };
+
+  operation = (type) => {
+    return () => {
+      const count = store.getState();
+      let { value } = this.selectNumber;
+
+      if (type === "increment") {
+        this.incrementAction();
+      } else if (type === "decrement") {
+        store.dispatch(createDecrementAction(value * 1));
+      } else if (type === "addIncrement") {
+        if (count % 2 !== 0) {
+          this.incrementAction();
+        }
+      } else if (type === "asycIncrement") {
+        setTimeout(() => {
+          this.incrementAction();
+        }, 1000);
+      }
+    };
+  };
+
+  render() {
+    return(
+    ...
+    )
+  }
+}
+
+
+```
+
+##### 4. 同步、异步 action
+
+1. npm i redux-thunk --save 引入中间件 	用于支持异步action
+
+   **action**: **1. 返回object{} 同步**  **2. 返回function异步**
+
+```react
+1. count_Action.js
+
+// 专门为Count组件生成action对象
+import { INCREMENT, DECREMENT } from './constant'
+
+// 同步action 返回一个一般对象
+export const createIncrementAction = data => ({ type: INCREMENT, data })  //注意: 返回一个对象写法
+export const createDecrementAction = data => ({ type: DECREMENT, data })
+
+
+// 异步action 返回一个是个函数 异步action一般都会调用同步action
+// export const createIncrementAsyncAction = (data, time) => {
+//     return dispatch => {
+//         console.log(dispatch)       // 是store中dispatch对象 参考x
+//         setTimeout(() => {
+//             dispatch(createIncrementAction(data))
+//         }, time);
+//     }
+// }
+
+// x:
+// store.dispatch(createIncrementAsyncAction(value * 1, 500));调用的 返回的函数参数就是 调用对象 dispatch
+
+// 简写方式:
+export const createIncrementAsyncAction = (data, time) => dispatch => {
+    setTimeout(() => {
+        dispatch(createIncrementAction(data))
+    }, time);
+}
+
+
+
+
+2.store.js
+// 引入createStore,专门用于创建redux中最为核心的store对象  applyMiddlewar中间件
+import { legacy_createStore as createStore ,applyMiddleware } from 'redux'
+// import {createStore } from 'redux'
+
+//引入为Count组件服务的reducer
+import {countReducer} from './count_Reducer'
+
+// 引入redux-thunk ,用于支持异步action
+import thunk from 'redux-thunk'
+
+
+// 暴露store  异步action借助一个中间件 引入一个thunk库
+export default createStore(countReducer,applyMiddleware(thunk))
+
+
+
+
+3. count组件
+import store from "../../redux/store";
+import {
+  createIncrementAction,
+  createDecrementAction,
+  createIncrementAsyncAction,
+} from "../../redux/count_Action";
+
+  store.dispatch(createIncrementAsyncAction(value * 1, 1000));
+
+```
+
+##### 5. react-redux
+
+![image-20220421111218835](\typora-user-images\image-20220421111218835.png)
+
+1. 引入react-redux 依赖包 npm i react-redux --save
+
+2. 明确两个概念:
+
+   1. UI组件: 不能使用任何redux的api,只负责页面的呈现 交互
+   2. 容器组件: 负责和redux通信，将结果交给Ui组件
+
+3. 如何创建一个容器组件 -- 靠react-redux 的connect函数
+
+   ```react
+   connect(mapStateToProps, mapDispatchToProps)(CountUI);
+   	--mapStateToProps：映射状态,返回值是一个对象
+   	--mapDispatchToProps：映射操作状态的方法: 返回值是一个对象
+   	
+   ```
+
+ 4. 备注: 容器组件的store是靠props传进去的 而不是在容器组件中直接使用
+
+    ```react
+     <Count store={store} a={1} b={()=>123}/>
+    ```
+
+    备注2：mapDispatchToProps 也可以是一个对象
+
+
+
+```react
+1. index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+import './index.css';
+import App from './App';
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+     // 优势在于 不管App中有多少个容器组件 都会把store传递给它 
+    <Provider store={store}> 
+        <App />
+    </Provider>
+);
+
+//取消了 store.subscribe() 监听页面 react-redux做了这个事情
+
+
+
+2. App.js
+import React from "react";
+import Count from "./containers/Count"; // 容器组件
+// 引入store
+import store from "./redux/store";
+
+import "./App.css";
+
+export default function App() {
+  return (
+    <div>
+      <Count/>
+    </div>
+  );
+}
+
+
+
+3. /* 容器组件*/
+
+//引入CountUI组件
+import CountUI from "../../components/Count";
+
+import {
+  createIncrementAction,
+  createDecrementAction,
+  createIncrementAsyncAction,
+} from "../../redux/count_Action";
+
+// 引入connect用于连接 UI组件与redux
+import { connect } from "react-redux";
+
+// 映射状态
+const mapStateToProps = (state) => ({ count: state });
+
+
+// 映射操作状态的方法
+// 这个的返回一个对象 对象中的方法是函数
+const mapDispatchToProps = (dispatch) => {
+  return {
+    increment: (number) => dispatch(createIncrementAction(number)),
+    decrement: (number) => dispatch(createDecrementAction(number)),
+    asyncIncrement: (number, time) =>
+      dispatch(createIncrementAsyncAction(number, time)),
+  };
+};
+
+// 创建并暴漏一个Count的容器组件
+// connect 是个高阶函数  mapStateToProps 是个函数 返回一个对象 接收state状态 
+// mapDispatchToProps 也是一个函数  返回一个对象 接收操作状态的方法
+export default connect(mapStateToProps, mapDispatchToProps)(CountUI);
+
+// 解释:
+// export default connect(mapStateToProps, mapDispatchToProps)(CountUI);
+// 相当于   <Count store={store} a={1} b={()=>123}/> a和b写成了  mapStateToProps mapDispatchToProps 
+// 然后CountUI组件 可以通过this.props接收
+
+
+
+// 优化写法  重要
+// //引入CountUI组件
+// import CountUI from "../../components/Count";
+
+// import {
+//   incrementAction,
+//   decrementAction,
+//   incrementAsyncAction,
+// } from "../../redux/count_Action";
+
+// // 引入connect用于连接 UI组件与redux
+// import { connect } from "react-redux";
+
+// //底层做了封装 如果传入的是对象自动调用了dispatach  
+// export default connect((state) => ({ count: state }), {
+//     incrementAction,
+//     decrementAction,
+//     incrementAsyncAction,
+// })(CountUI);
+
+
+
+
+
+4. CountUI组件
+import React from "react";
+
+export default class Count extends React.Component {
+  
+  operation = (type) => {
+    return (e) => {
+    
+      //  props的值在容器组件中connect(a,b)() 中传递了
+      let { count, increment, decrement, asyncIncrement } = this.props; 
+      let value = this.selectNumber.value * 1;
+
+      if (type === "increment") increment(value);
+      if (type === "decrement") decrement(value);
+      if (type === "addIncrement" ? (count % 2 !== 0 ? increment(value):''):'');
+      if (type === "asycIncrement") asyncIncrement(value, 5000);
+    };
+  };
+
+  render() {
+    console.log(this);
+    return (
+      <div>
+        <h1>当前求和为: {this.props.count}</h1>
+    );
+  }
+}
+
+
+```
+
+##### 6. react-redux2更加完善
+
+1. 合并UI跟容器组件
+2. 文件夹创建格式 创建actions reducers文件夹 store.js 就一个 constans.js也是一个
+
+```react
+1. store.js
+/*
+整个应用只有一个store对象
+*/
+
+// 引入createStore,专门用于创建redux中最为核心的store对象  applyMiddlewar中间件
+import { legacy_createStore as createStore, applyMiddleware, combineReducers } from 'redux'
+// import {createStore } from 'redux'
+
+//引入为Count组件服务的reducer
+import { countReducer } from './reduces/count'
+import { personReducer } from './reduces/person'
+
+// 引入redux-thunk ,用于支持异步action
+import thunk from 'redux-thunk'
+
+// 汇总所有的reducer  //会把所有的state汇总成一个大state  比如  state:{count:0,person:[...]}
+const allReduces = combineReducers({
+    count: countReducer,
+    person: personReducer
+})
+
+// 暴露store
+export default createStore(allReduces, applyMiddleware(thunk))
+
+
+
+
+
+2.Count 容器组件genUI组件得合并:
+/* 容器组件*/
+
+//2 . 优化写法
+import React from "react";
+// 引入connect用于连接 UI组件与redux
+import { connect } from "react-redux";
+
+import {
+  incrementAction,
+  decrementAction,
+  incrementAsyncAction,
+} from "../../redux/actions/count";
+
+class Count extends React.Component {
+  };
+
+  render() {
+    console.log(this);
+    return (
+      <div>
+        <h1>当前求和为: {this.props.count}</h1>
+        <h2>person组件的人数是{this.props.person.length}</h2>
+        <br />
+    );
+  }
+}
+
+// 自动调用了dispatach
+export default connect(
+  (state) => ({ count: state.count, person: state.person }),  //因为是总的state所以得结构
+  {
+    incrementAction,
+    decrementAction,
+    incrementAsyncAction,
+  }
+)(Count);
+
+
+```
+
+##### 7. 纯函数
+
+1. 一类特别的函数,只要同样的输入(实参),必须得到同样的输出
+2. 必须遵循一下一些约束
+   1. 不得改写参数数据
+   2. 不会产生任何副作用,列如网络请求,输入和输出设备
+   3. 不能调用Date.now()或者Math.random()等不纯的方法、
+
+3. redux的reducer必须是一个纯函数
+
+##### 8.最终版:项目中
+
+##### 9.项目打包
+
+1. 全局安装serve cnpm i serve -g
+2. 打包代码 npm run build
+3. 把文件build作为根目录，启动 serve build
+
+
+
+
+
+
+
+## 3. 高级部分
+
+### 1. 不用高阶组件写法
+
+```react
+
+    // 节流
+    const throttling = (fn, delay, middlate) => {
+
+        let context, args;
+        let timer = null;
+        const run = () => {
+            timer = setTimeout(() => {
+                fn.apply(context, args)
+                clearTimeout(timer);
+                timer = null;
+            }, delay)
+        }
+
+        return function () {
+
+            context = this;
+            args = arguments;
+            if (middlate) {
+                fn.apply(context, args)
+                middlate = false;
+            }
+            if (!timer) run();
+        }
+    }
+   
+
+    class Sub extends React.Component {
+        state = {
+            xPos: document.documentElement.clientWidth,
+            yPos: document.documentElement.clientHeight
+        }
+        getPos = (e) => {
+            console.log(e, this);
+            this.setState({
+                xPos: document.documentElement.clientWidth,
+                yPos: document.documentElement.clientHeight
+            })
+        }
+        componentDidMount() {
+            window.addEventListener('resize', throttling(this.getPos, 200, true))
+        }
+        componentWillUnmount() {
+            window.removeEventListener('resize', this.getPos)
+        }
+        render() {
+            let { xPos, yPos } = this.state;
+            return (
+                <div>
+                    <button>
+                        xPos---{xPos}
+                        yPos---{yPos}
+                    </button>
+                </div>
+            )
+        }
+    }
+    
+    class Foo extends React.Component {
+        state = {
+            xPos: document.documentElement.clientWidth,
+            yPos: document.documentElement.clientHeight
+        }
+        getPos = () => {
+            this.setState({
+                xPos: document.documentElement.clientWidth,
+                yPos: document.documentElement.clientHeight
+            })
+        }
+        componentDidMount() {
+            window.addEventListener('resize', throttling(this.getPos, 200, true))
+        }
+        componentWillUnmount() {
+            window.removeEventListener('resize', this.getPos)
+        }
+        render() {
+            let { xPos, yPos } = this.state;
+            return (
+                <div>
+                    <p>
+                        xPos---{xPos}
+                        yPos---{yPos}
+                    </p>
+                </div>
+            )
+        }
+    }
+
+    class App extends React.Component {
+
+        render() {
+            return (
+                <div>
+                    <Foo />
+                    <Sub />
+                </div>
+            )
+        }
+    }
+
+
+    ReactDOM.render(<App />, document.getElementById("div"))
+
+</script>
+```
+
+
+
+### 2. 高阶组件
+
+```react
+
+    // 节流
+    const throttling = (fn, delay, middlate) => {
+        let context, args;
+        let timer = null;
+        const run = () => {
+            timer = setTimeout(() => {
+                fn.apply(context, args)
+                clearTimeout(timer);
+                timer = null;
+            }, delay)
+        }
+
+        return function () {
+
+            context = this;
+            args = arguments;
+            if (middlate) {
+                fn.apply(context, args)
+                middlate = false;
+            }
+            if (!timer) run();
+
+
+        }
+
+    }
+    // 高阶组件
+    const WithSize = Component => {
+        return class toSize extends React.Component {
+            state = {
+                xPos: document.documentElement.clientWidth,
+                yPos: document.documentElement.clientHeight
+            }
+            getPos = (e) => {
+                console.log(e, this);
+                this.setState({
+                    xPos: document.documentElement.clientWidth,
+                    yPos: document.documentElement.clientHeight
+                })
+            }
+            componentDidMount() {
+                window.addEventListener('resize', throttling(this.getPos, 200, true))
+            }
+            componentWillUnmount() {
+                window.removeEventListener('resize', this.getPos)
+            }
+            render() {
+                // 把state当成props传递
+                return <Component {...this.state} />
+            }
+
+        }
+    }
+
+
+    class Sub extends React.Component {
+        render() {
+            let { xPos, yPos } = this.props;
+            return (
+                <div>
+                    <button>
+                        xPos---{xPos}
+                        yPos---{yPos}
+                    </button>
+                </div>
+            )
+        }
+    }
+
+    class Foo extends React.Component {
+        render() {
+            let { xPos, yPos } = this.props;
+            return (
+                <div>
+                    <p>
+                        xPos---{xPos}
+                        yPos---{yPos}
+                    </p>
+                </div>
+            )
+        }
+    }
+
+    const FooWithSize = WithSize(Foo);
+    const SubWithSize = WithSize(Sub);
+
+    class App extends React.Component {
+        render() {
+            return (
+                <div>
+                    <FooWithSize />
+                    <SubWithSize />
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(<App />, document.getElementById("div"))
+
+
+
+
+</script>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 9. 脚手架bug总汇
+
+
+
+### 1. react-scripts' 不是内部或外部命令，也不是可运行的程序
+
+npm i 重新下载包 可能有丢包的问题
+
+### 2. npm audit fix --force
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5000,7 +7460,7 @@ b. 真实dom
 
 # 三. Git
 
-### 1. 基础
+## 1. 基础
 
 ```nim
 git add -m '  '
@@ -5028,7 +7488,7 @@ git config --global user.email  "asdasdliuhui@sina.com"
 
 
 
-### 2. 连接远程仓库
+## 2. 连接远程仓库
 
 ```nim
 1.git(github)配置密钥（私钥、ssh、公钥）
@@ -5055,7 +7515,7 @@ git config --global user.email  "asdasdliuhui@sina.com"
 
 ```
 
-### 3. 修改了远程仓库的名字，本地怎么切换仓库
+## 3. 修改了远程仓库的名字，本地怎么切换仓库
 
 ```nim
 方法:
@@ -5283,7 +7743,7 @@ let arr=[1, 2, 3 ]
 
 arr.splice(i,1).join(',')   这是头脑中的一直坚信是对的  以为这就是 数组删除一个并且用逗号链接 想要的结果是删除任意一个 并且转换成 字符串  
 
-可是: splice(0,1) 返回的是 被删除的元素组成的数组 ==》[1] .join(',')
+可是: splice(0,1) 返回的是 被删除的元素组成的数组 ==>[1] .join(',')
 
 正确的是
 arr.splice(i,1)

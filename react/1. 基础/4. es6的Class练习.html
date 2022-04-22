@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    class Person {
+        constructor(name, age) {    //构造器得作用 初始化一些值
+            // 构造器中的this 实例对象
+            this.name = name;
+            this.age = age;
+        }
+        speak() {
+            // speak 在Person的原型对象身上
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age)
+        }
+    }
+
+    class student extends Person {
+        constructor(name, age, hoby) {
+            super(name, age)        // 显示调用父类构造器
+            this.hoby = hoby;
+        }
+        speak() {
+            console.log("我的名字叫做" + this.name + "我的年龄是" + this.age + "我的爱好是" + this.hoby)
+
+        }
+    }
+    let stu = new student("张学友", 18, '唱歌');
+
+
+    class Car {
+        // 没有写构造器
+        // 一下代码得含义是 给类得实例身上添加一个属性 a=1
+        a = 1;
+    }
+    let c1 = new Car();
+    console.log(c1)     // Car{ a=1 }
+
+    // 总结:
+    // 1. 类中的构造器不是必须写的,如果要做一些初始化的操作 是要写的
+    // 2. 类中的方法都是放在原型上的
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

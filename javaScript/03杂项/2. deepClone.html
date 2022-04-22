@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    function deepClone(obj) {
+        let objClone = Array.isArray(obj) ? [] : {};
+        if (obj && typeof obj === "object") {
+            for (let key in obj) {
+                // if (obj.hasOwnProperty(key)) {
+                //判断obj⼦元素是否为对象，如果是，递归复制
+                if (obj[key] && typeof obj[key] === "object") {
+                    objClone[key] = deepClone(obj[key]);
+                } else {
+                    //如果不是，简单复制
+                    objClone[key] = obj[key];
+                    // }
+                }
+            }
+        }
+        return objClone;
+    }
+
+    let arr = [undefined, null, [1, 2]]
+
+    let obj = {
+        a: 1,
+        b: [1, 2, 3],
+        c: {
+            d: 4
+        }
+    }
+
+    console.log(
+        deepClone2(arr),
+        deepClone2(obj)
+
+    )
+
+
+
+    function deepClone2(obj) {
+        let cloneObj = Array.isArray(obj) ? [] : {}
+        if (obj && typeof obj === "object") {
+            for (let key in obj) {
+                if (typeof obj[key] === "object") {
+                    cloneObj[key] = deepClone2(obj[key])
+                } else {
+                    cloneObj[key] = obj[key]
+                }
+            }
+            return cloneObj;
+
+        }
+    }
+
+    // function isObjectValueEqual(a, b) {
+    //     // 判断两个对象是否指向同⼀内存，指向同⼀内存返回true
+    //     if (a === b) return true
+    //     // 获取两个对象键值数组
+    //     let aProps = Object.getOwnPropertyNames(a)
+    //     let bProps = Object.getOwnPropertyNames(b)
+    //     // 判断两个对象键值数组长度是否⼀致，不⼀致返回 false
+    //     if (aProps.length !== bProps.length) return false
+    //     // 遍历对象的键值
+    //     for (let prop in a) {
+    //         // 判断a的键值，在b中是否存在，不存在，返回false
+    //         if (b.hasOwnProperty(prop)) {
+    //             // 判断a的键值是否为对象，是则递归，不是对象直接判断键值是否相等，不相等返回false
+    //             if (typeof a[prop] === 'object') {
+    //                 if (!isObjectValueEqual(a[prop], b[prop])) return false
+    //             } else if (a[prop] !== b[prop]) {
+    //                 return false
+    //             }
+    //         } else {
+    //             return false
+    //         }
+    //     }
+    //     return true
+    // }
+
+    let obj2 = {
+        a: 1,
+        b: [1, 2, 3],
+        c: {
+            d: 5
+        }
+    }
+    let obj3 = {
+        a: 1,
+        b: [1, 2, 3],
+        c: {
+            d: 1
+        }
+    }
+
+
+    const isSame = (a, b) => {
+
+        if (a === b) return true;
+        let [akeys, bkeys] = [Object.keys(a), Object.keys(b)]
+        if (akeys.length !== bkeys.length) return false
+
+        for (let key in a) {
+            if (Object.hasOwnProperty.call(b, key)) {
+                if (typeof a[key] === "object") {
+                    if (!isSame(a[key], b[key])) return false;
+                }
+                else if (a[key] !== b[key]) {
+                    return false;
+
+                }
+            }
+            else {
+                return false
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+    // console.log(isObjectValueEqual(obj2, obj3))
+    console.log(isSame(obj2, obj3))
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

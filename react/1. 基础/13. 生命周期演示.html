@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div"></div>
+</body>
+
+</html>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+<script type="text/babel">
+
+    /*
+        1. 初始化阶段: 有ReactDom.render()触发一次渲染
+            1.constructor()
+            2.componentWillMount()
+            3.render()
+            4.componentDidMount() ==》常用
+                    一般在这个钩子做一些初始化的事情，开启定时器，发送网络请求，订阅消息
+        2. 更新阶段 由组件内部this.setState()或父组件render触发
+            1.shouldComponentUpdate()
+            2.componentWillUpdate()
+            3.render()===> 必须使用的一个
+            4.componentDidUpdate()
+        3. 卸载组件: 由ReactDOM.unmountComponentAtNode()触发
+            1.componentWillUnmount()
+                一般做一些收尾的事。例如 关闭定时器,取消订阅
+    
+    */
+
+    class Count extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { count: 1 }
+            console.log("count---constructor");
+        }
+        componentWillMount() {
+            console.log("count---componentWillMount");
+        }
+
+
+        componentDidMount() {
+            console.log("count---componentDidMount");
+        }
+
+        // 阀门是否要更新  不写这个钩子 底层默认返回true  /如果写了必须有返回值返回true向下走 返回false 不走
+        shouldComponentUpdate() {
+            console.log("count---shouldComponentUpdate");
+            return true;
+        }
+
+        // 更新之前
+        componentWillUpdate() {
+            console.log("count---componentWillUpdate");
+        }
+        // 更新完成
+        componentDidUpdate() {
+            console.log("count---componentDidUpdate");
+        }
+
+        // 卸载
+        componentWillUnmount() {
+            console.log("count---componentWillUnmount");
+        }
+        add = e => {
+            let { count } = this.state;
+            this.setState({ count: count + 1 })
+        }
+        death = e => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("div"))
+        }
+
+        force = e => {
+            this.forceUpdate();
+        }
+
+        render() {
+            console.log("count---render");
+            let { count } = this.state;
+            return (
+                <div>
+                    <h1>{count}</h1>
+                    <button onClick={this.add}>点我加1</button>
+                    <button onClick={this.death}>卸载</button>
+                    <button onClick={this.force}>强制更新,没有更改状态force</button>
+                </div>
+            )
+        }
+    }
+
+
+
+    ReactDOM.render(<Count />, document.getElementById("div"))
+
+
+
+
+
+
+</script>

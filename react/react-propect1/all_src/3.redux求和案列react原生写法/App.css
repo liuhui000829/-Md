@@ -1,0 +1,25 @@
+#main{
+    display: flex;
+    
+}
+#left{
+    height: 200px; 
+    width: 200px;
+}
+#right{
+    height: 500px;
+   flex-grow: 1;
+}
+
+.colorRed{
+ 
+    color:red;
+   
+}
+#left{
+
+     border: 1px solid salmon;
+}
+#right{
+     border: 1px solid skyblue;
+}
