@@ -7163,9 +7163,9 @@ export default connect(
 
 3. redux的reducer必须是一个纯函数
 
-##### 8.最终版:项目中
+##### 8. 最终版:项目中
 
-##### 9.项目打包
+##### 9. 项目打包
 
 1. 全局安装serve cnpm i serve -g
 2. 打包代码 npm run build
